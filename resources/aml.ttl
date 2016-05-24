@@ -1,0 +1,525 @@
+@prefix aml:     <https://w3id.org/eis/vocabs/aml#> .
+@prefix dc:      <http://purl.org/dc/elements/1.1/> .
+@prefix dct:     <http://purl.org/dc/terms/> .
+@prefix foaf:    <http://xmlns.com/foaf/spec/> .
+@prefix om:      <http://www.wurvoc.org/vocabularies/om-1.8/> .
+@prefix owl:     <http://www.w3.org/2002/07/owl#> .
+@prefix prov:    <http://www.w3.org/ns/prov#> .
+@prefix rdf:     <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs:    <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix schema:  <http://schema.org/> .
+@prefix skos:    <http://www.w3.org/2004/02/skos/core#> .
+@prefix terms:   <http://purl.org/dc/terms/> .
+@prefix vann:    <http://purl.org/vocab/vann/> .
+@prefix void:    <http://rdfs.org/ns/void#> .
+@prefix xml:     <http://www.w3.org/XML/1998/namespace> .
+@prefix xsd:     <http://www.w3.org/2001/XMLSchema#> .
+
+schema:name
+      a owl:FunctionalProperty , owl:DatatypeProperty .
+
+aml:  a owl:Ontology ;
+      rdfs:isDefinedBy aml: ;
+      dc:title "AutomationML Vocabulary" ;
+      dct:created "2016-03-23"^^xsd:date ;
+      dct:creator "Irlan Grangel" ;
+      dct:license <http://creativecommons.org/licenses/by-nc-sa/2.0/> ;
+      vann:preferredNamespacePrefix
+              "aml" ;
+      vann:preferredNamespaceUri
+              "https://w3id.org/eis/vocabs/aml#" ;
+      void:vocabulary aml: , xsd: , rdfs: , foaf: , rdf: , <http://www.w3.org/XML/1998/namespace> , dc: , skos: , dct: ;
+      owl:versionInfo "0.1" ;
+      skos:definition "A vocabulary which represents the AutomationML Standard - IEC 62714."@en ;
+      skos:prefLabel "aml"@en .
+
+aml:AdditionalInformation
+      a owl:Class ;
+      rdfs:label "Additional Information"@en ;
+      rdfs:rdfscomment "Additional Information for CAEX File"@en .
+
+aml:Attribute
+      a owl:Class ;
+	  rdfs:label "Attribute"@en ;
+      rdfs:comment "Property which belongs to an AML object"@en ;
+	  rdfs:isDefinedBy "1417686950-AutomationML Whitepaper Part 1 - AutomationML Architecture v2_Oct2014, page 11" ;
+	.  
+
+aml:BaseInterface
+      a owl:Class ;
+      rdfs:comment "Basic abstract interface; shall be used as parent for the description of all AML interface classes"@en ;
+      rdfs:label "BaseInterface"@en ;
+      rdfs:subClassOf aml:InterfaceClass .
+
+aml:CAEXBasicObject
+      a owl:Class ;
+      rdfs:label "CAEX Basic Object"@en ;
+      rdfs:rdfscomment "CAEX basis object that comprises a basic set of attributes and header information which exist for all CAEX elements."@en .
+
+aml:CAEXFile
+      a owl:Class ;
+      rdfs:label "CAEX File"@en ;
+      rdfs:rdfscomment "Root-element of the CAEX schema"@en .
+
+aml:ChangeMode
+      a owl:Class ;
+      rdfs:comment "Optionally describes the change state of an CAEX object. If used, the ChangeMode shall have the following value range: state, create, delete and change. This information should be used for further change management applications"@en ;
+      rdfs:label "unit External Interface"@en ;
+      owl:oneOf (aml:State aml:Create aml:Create aml:Change) .
+
+aml:Direction
+      a owl:DatatypeProperty ;
+      rdfs:comment "Specifies the Direction of an Order. The permitted values are In, Out."@en ;
+      rdfs:domain aml:Order ;
+      rdfs:label "Direction"@en ;
+      rdfs:range xsd:string .
+
+aml:ExternalInterface
+      a owl:Class ;
+      rdfs:label "External Interface"@en .
+
+aml:ExternalReference
+      a owl:Class ;
+      rdfs:comment "External Reference for a CAEX File"@en ;
+      rdfs:label "External Reference"@en .
+
+aml:IEPartOf
+      a owl:TransitiveProperty , owl:ObjectProperty ;
+      rdfs:comment "Connects the Internal Element with other Internal Elements that are part of the given Internal Element"^^xsd:string ;
+      rdfs:domain aml:InternalElement ;
+      rdfs:label "InternalElementPartOf"^^xsd:string ;
+      rdfs:range aml:InternalElement .
+
+aml:InstanceHierarchy
+      a owl:Class ;
+      rdfs:label "Instance Hierarchy"@en .
+
+aml:InterfaceClass
+      a owl:Class ;
+      rdfs:comment "Defines the relations between AML Objects. Should be identified with its tag name"@en ;
+      rdfs:label "Interface Class"@en .
+
+aml:InterfaceClassAttribute
+      a owl:DatatypeProperty ;
+      rdfs:comment "Points to an Attribute for the Interface Class"^^xsd:string ;
+      rdfs:domain aml:InterfaceClass ;
+      rdfs:label "InterfaceClassAttribute"^^xsd:string ;
+      rdfs:range aml:Attribute .
+
+aml:InterfaceClassLib
+      a owl:Class ;
+      rdfs:label "Interface Class Lib"@en ;
+      schema:name "MyInterfaces"@en .
+
+aml:InterfaceClassName
+      a owl:DatatypeProperty ;
+      rdfs:comment "Name of the Interface Class"^^xsd:string ;
+      rdfs:domain aml:InterfaceClass ;
+      rdfs:label "InterfaceClassName"^^xsd:string ;
+      rdfs:range xsd:string .
+
+aml:InternalElement
+      a owl:Class ;
+      rdfs:label "Internal Element"@en ;
+	  rdfs:comment "Shall be used in order to define nested objects inside of a SystemUnitClass or another InternalElement. Allows description of the internal structure of an CAEX object"@en ;
+	.  
+
+aml:InternalLink
+      a owl:Class ;
+	  rdfs:label "InternalLink"^^xsd:string ;
+      rdfs:comment "InternalLink"^^xsd:string ;
+	.  
+
+aml:Order
+      a owl:Class ;
+      rdfs:comment "Abstract class that shall be used for the descriptions description of orders, e.g. a successor or a predecessor."@en ;
+      rdfs:label "Order"@en ;
+      rdfs:subClassOf aml:InterfaceClass .
+
+aml:PPRConnector
+      a owl:Class ;
+      rdfs:comment "Provide a high level relation between ports Relates resources, products and processes"@en ;
+      rdfs:label "PPRConnector"@en ;
+      rdfs:subClassOf aml:InterfaceClass .
+
+aml:PortConnector
+      a owl:Class ;
+      rdfs:comment "Provide a high level relation between ports"@en ;
+      rdfs:label "Order"@en ;
+      rdfs:subClassOf aml:InterfaceClass .
+
+aml:Project
+      a owl:Class ;
+      rdfs:label "Project"@en ;
+      rdfs:rdfscomment "A Project related to the header information with the CAEX File"@en .
+
+aml:RefBaseSystemUnitPath
+      a owl:DatatypeProperty ;
+      rdfs:domain aml:InternalElement ;
+      rdfs:label "Ref Base System Unit Path"@en ;
+      rdfs:range xsd:string .
+
+aml:RoleClass
+      a owl:Class ;
+      rdfs:comment "RoleClasses are vendor independent and generic entities. They are used to assign a generic semantics to an object instance and to describe requirements of this object instance. Also, they can help in mapping data models of different engineering tools."@en ;
+      rdfs:label "RoleClass"@en ;
+	.  
+
+aml:RoleClassLib
+      a owl:Class ;
+      rdfs:comment "Definitions of abstract characteristics of CAEX objects and thus serve the automatic semantic interpretation of user-defined AML objects"@en ;
+      rdfs:label "RoleClassLib"@en .
+
+aml:RoleRequirements
+      a owl:Class ;
+      rdfs:label "Role Requirements"@en .
+
+aml:SupportedRoleClass
+      a owl:Class ;
+      rdfs:label "Supported Role Class"@en .
+
+aml:SystemUnitClass
+      a owl:Class ;
+      rdfs:label "System Unit Class"@en ;
+      rdfs:rdfscomment "Allows for different user-defined classes. Inheritance between a SystemUnitClass and an object instance is not allowed."@en .
+
+aml:SystemUnitClassLib
+      a owl:Class ;
+      rdfs:label "System Unit ClassLib"@en ;
+      rdfs:rdfscomment "Store vendor specific AML classes"@en .
+
+aml:SystemUnitClassName
+      a owl:FunctionalProperty , owl:DatatypeProperty ;
+      rdfs:comment "Given Name of the System Unit Class"^^xsd:string ;
+      rdfs:domain aml:SystemUnitClass ;
+      rdfs:label "SystemUnitClassName"^^xsd:string ;
+      rdfs:range xsd:string .
+
+aml:SystemUnitClassPartOf
+      a owl:ObjectProperty ;
+      rdfs:comment "Connects the System Unit Class with another System Unit Class Elements"^^xsd:string ;
+      rdfs:domain aml:SystemUnitClass ;
+      rdfs:label "SystemUnitClassName"^^xsd:string .
+
+aml:classificationClass
+      a owl:DatatypeProperty ;
+      rdfs:comment "Points to the eClass classification Class a given Element"@en ;
+      rdfs:doman aml:eClassConnection ;
+      rdfs:label "eClass classification Class"@en ;
+      rdfs:range xsd:string .
+
+aml:eClassConnection
+      a owl:Class ;
+      rdfs:comment "Describe the necessary links to eCl@ass Standard(e.g., version, classification and IRDI)"@en ;
+      rdfs:label "eClassInterlink"@en .
+
+aml:eClassID
+      a owl:FunctionalProperty , owl:DatatypeProperty ;
+      rdfs:comment "Points to the eClass unique identification(IRDI) a given Element"@en ;
+      rdfs:doman aml:eClassConnection ;
+      rdfs:label "eClass ID"@en ;
+      rdfs:range xsd:string .
+
+aml:eClassIsConnectedTo
+      a owl:ObjectProperty ;
+      rdfs:comment "Points to the eCl@ass connection for a given element"@en ;
+      rdfs:label "eClassIsConnectedTo"@en .
+
+aml:eClassVersion
+      a owl:DatatypeProperty ;
+      rdfs:comment "Points to the eClass version for a given Element"@en ;
+      rdfs:doman aml:eClassConnection ;
+      rdfs:label "eClass Version"@en ;
+      rdfs:range xsd:string .
+
+aml:externalInterfaceId
+      a owl:DatatypeProperty , owl:FunctionalProperty ;
+      rdfs:comment "Unique Id of an External Interface"@en ;
+      rdfs:domain aml:ExternalInterface ;
+      rdfs:label "External Interface Id"@en ;
+      rdfs:range xsd:string .
+
+aml:externalInterfaceName
+      a owl:DatatypeProperty ;
+      rdfs:domain aml:ExternalInterface ;
+      rdfs:label "external Interface Name"@en ;
+      rdfs:range xsd:string .
+
+aml:externalReferenceAlias
+      a owl:DatatypeProperty ;
+      rdfs:comment "A external Reference of a CAEX File has Alias" ;
+      rdfs:domain aml:ExternalReference ;
+      rdfs:label "external Reference Alias"@en ;
+      rdfs:range xsd:string .
+
+aml:externalReferencePath
+      a owl:DatatypeProperty ;
+      rdfs:comment "A external Reference of a CAEX File contains path to the file" ;
+      rdfs:domain aml:ExternalReference ;
+      rdfs:label "external Reference Path"@en ;
+      rdfs:range xsd:string .
+
+aml:hasAdditionalInformation
+      a owl:ObjectProperty ;
+      rdfs:domain aml:CAEXFile ;
+      rdfs:label "has Additional Information" ;
+      rdfs:range aml:AdditionalInformation .
+
+aml:hasAttribute
+      a owl:ObjectProperty ;
+      rdfs:domain aml:InternalElement ;
+      rdfs:label "has Attribute"@en ;
+      rdfs:range aml:Attribute .
+
+aml:hasAttributeName
+      a owl:DatatypeProperty ;
+      rdfs:domain aml:Attribute ;
+      rdfs:label "hasAttributeName"@en ;
+      rdfs:range xsd:string .
+
+aml:hasAutomationMLVersion
+      a owl:DatatypeProperty ;
+      rdfs:domain aml:AdditionalInformation ;
+      rdfs:label "has Automation ML Version" ;
+      rdfs:range xsd:string .
+
+aml:hasChangeMode
+      a owl:ObjectProperty ;
+      rdfs:comment "Points to the different Elements with the Change Mode Concept"@en ;
+      rdfs:doman aml:CAEXBasicObject ;
+      rdfs:label "has Change Mode"@en ;
+      rdfs:range aml:ChangeMode .
+
+aml:hasDataType
+      a owl:DatatypeProperty ;
+      rdfs:domain aml:Attribute ;
+      rdfs:label "hasDataType"@en ;
+      rdfs:range xsd:anyURI .
+
+aml:hasExternalInterface
+      a owl:ObjectProperty ;
+      rdfs:comment "Connects an internal Element with an External Interface"@en ;
+      rdfs:domain aml:InternalElement ;
+      rdfs:label "has External Interface"@en ;
+      rdfs:range aml:ExternalInterface .
+
+aml:hasExternalReference
+      a owl:ObjectProperty ;
+      rdfs:comment "A CAEX File contains external references" ;
+      rdfs:domain aml:CAEXFile ;
+      rdfs:label "has External Reference"@en ;
+      rdfs:range aml:ExternalReference .
+
+aml:hasFileName
+      a owl:DatatypeProperty ;
+      rdfs:domain aml:CAEXFile ;
+      rdfs:label "has File Name" ;
+      rdfs:range xsd:string .
+
+aml:hasInstanceHierarchy
+      a owl:ObjectProperty ;
+      rdfs:domain aml:CAEXFile ;
+      rdfs:label "has Instance Hierarchy"@en ;
+      rdfs:range aml:InstanceHierarchy .
+
+aml:hasInterfaceClass
+      a owl:ObjectProperty ;
+      rdfs:comment "Model the relation between Interface Class Lib and Interface Class"@en ;
+      rdfs:domain aml:InterfaceClassLib ;
+      rdfs:label "has Interface Class"@en ;
+      rdfs:range aml:InterfaceClass .
+
+aml:hasInterfaceClassLib
+      a owl:ObjectProperty ;
+      rdfs:comment "Model the relation between CAEX File and Interface Class Lib"@en ;
+      rdfs:domain aml:CAEXFile ;
+      rdfs:label "has Interface Class Lib"@en ;
+      rdfs:range aml:InterfaceClassLib .
+
+aml:hasInternalElement
+      a owl:ObjectProperty ;
+      rdfs:comment "Hierarchy has many internal elements"@en ;
+      rdfs:domain aml:InstanceHierarchy ;
+      rdfs:label "has Internal Element"@en ;
+      rdfs:range aml:InternalElement .
+
+aml:hasProject
+      a owl:ObjectProperty ;
+      rdfs:domain aml:AdditionalInformation ;
+      rdfs:label "Related Project for the CAEX File" ;
+      rdfs:range aml:Project .
+
+aml:hasProjectId
+      a owl:DatatypeProperty ;
+      rdfs:domain aml:Project ;
+      rdfs:label "hasProjectId"@en ;
+      rdfs:range xsd:string ;
+      rdfs:subPropertyOf dc:title , dc:identifier .
+
+aml:hasProjectTitle
+      a owl:DatatypeProperty ;
+      rdfs:domain aml:Project ;
+      rdfs:label "hasProjectTitle"@en , "has Project Release" ;
+      rdfs:range xsd:string ;
+      rdfs:subPropertyOf dc:title .
+
+aml:hasRoleClass
+      a owl:ObjectProperty ;
+      rdfs:comment "A Role Class lib contains a Role Class"@en ;
+      rdfs:domain aml:RoleClassLib ;
+      rdfs:label "has Role Class"@en ;
+      rdfs:range aml:RoleClass .
+
+aml:hasRoleClassLib
+      a owl:ObjectProperty ;
+      rdfs:comment "A CAEX file contains a RoleClassLib"@en ;
+      rdfs:domain aml:CAEXFile ;
+      rdfs:label "has Role Class Lib"@en ;
+      rdfs:range aml:RoleClassLib .
+
+aml:hasRoleRequeriment
+      a owl:ObjectProperty ;
+      rdfs:domain aml:InternalElement ;
+      rdfs:label "has Role Requeriment"@en ;
+      rdfs:range aml:RoleRequirements .
+
+aml:hasSchemaVersion
+      a owl:DatatypeProperty ;
+      rdfs:domain aml:CAEXFile ;
+      rdfs:label "has Schema Version" ;
+      rdfs:range xsd:string .
+
+aml:hasSystemUnitClass
+      a owl:ObjectProperty ;
+      rdfs:domain aml:SystemUnitClassLib ;
+      rdfs:label "has System Unit Class" ;
+      rdfs:range aml:SystemUnitClass .
+
+aml:hasSystemUnitClassLib
+      a owl:ObjectProperty ;
+      rdfs:comment "A CAEX File contains a SystemUnitClassLib"@en ;
+      rdfs:domain aml:CAEXFile ;
+      rdfs:label "hasSystemUnitClassLib"@en ;
+      rdfs:range aml:SystemUnitClassLib .
+
+aml:hasUnit
+      a owl:ObjectProperty ;
+      rdfs:comment "An Attribute has an specific Unit of Measure (e.g. kg, m/s, etc)"@en ;
+      rdfs:domain aml:Attribute ;
+      rdfs:label "Unit"@en ;
+      rdfs:range om:Unit_of_measure .
+
+aml:hasValue
+      a owl:DatatypeProperty ;
+      rdfs:domain aml:Attribute ;
+      rdfs:label "has Value"@en ;
+      rdfs:range xsd:string .
+
+aml:hasVersion
+      a rdfs:DatatypeProperty ;
+      rdfs:label "has Version"@en ;
+      rdfs:range xsd:string .
+
+aml:hasWriterId
+      a owl:DatatypeProperty , owl:FunctionalProperty ;
+      rdfs:domain aml:AdditionalInformation ;
+      rdfs:label "has Writer Id" ;
+      rdfs:range xsd:string .
+
+aml:hasWriterName
+      a owl:DatatypeProperty ;
+      rdfs:domain aml:AdditionalInformation ;
+      rdfs:label "has Writer Name" ;
+      rdfs:range xsd:string .
+
+aml:hasWriterRelease
+      a owl:DatatypeProperty ;
+      rdfs:domain aml:AdditionalInformation ;
+      rdfs:label "has Writer Release" ;
+      rdfs:range xsd:string .
+
+aml:hasWriterVendor
+      a owl:DatatypeProperty ;
+      rdfs:domain aml:AdditionalInformation ;
+      rdfs:label "has Writer Vendor" ;
+      rdfs:range xsd:string .
+
+aml:hasWriterVendorURL
+      a owl:DatatypeProperty ;
+      rdfs:domain aml:AdditionalInformation ;
+      rdfs:label "has Writer Vendor URL" ;
+      rdfs:range xsd:string .
+
+aml:hasWriterVersion
+      a owl:DatatypeProperty ;
+      rdfs:domain aml:AdditionalInformation ;
+      rdfs:label "has Writer Version" ;
+      rdfs:range xsd:string .
+
+aml:interfaceClassIsPartOf
+      a owl:DatatypeProperty ;
+      rdfs:comment "An Interface Class is Part of of other Interface Class"^^xsd:string ;
+      rdfs:domain aml:InterfaceClass ;
+      rdfs:label "interfaceClassIsPartOf"^^xsd:string ;
+      rdfs:range aml:InterfaceClass .
+
+aml:internalElementId
+      a owl:DatatypeProperty , owl:FunctionalProperty ;
+      rdfs:comment "Unique Id of an Internal Element"@en ;
+      rdfs:domain aml:InternalElement ;
+      rdfs:label "internal Element Id"@en ;
+      rdfs:range xsd:string .
+
+aml:internalElementName
+      a owl:DatatypeProperty , owl:FunctionalProperty ;
+      rdfs:comment "Name of an Internal Element"@en ;
+      rdfs:domain aml:InternalElement ;
+      rdfs:label "internal Element Name"@en ;
+      rdfs:range xsd:string .
+
+aml:lastWritingDate
+      a owl:DatatypeProperty ;
+      rdfs:domain aml:AdditionalInformation ;
+      rdfs:label "has Writer Release" ;
+      rdfs:range xsd:dateTime .
+
+aml:refBaseClassPath
+      a owl:DatatypeProperty ;
+      rdfs:comment "Stores the name of the parent class"@en ;
+      rdfs:domain aml:RoleClassLib , aml:InterfaceClass , aml:ExternalInterface ;
+      rdfs:label "refBaseClassPath"@en ;
+      rdfs:range xsd:string .
+
+aml:refBaseRoleClassPath
+      a owl:ObjectProperty ;
+      rdfs:comment "RoleRequirements has Ref Base Role Class Path"@en ;
+      rdfs:domain aml:RoleRequirements ;
+      rdfs:label "RefBaseRoleClassPath"@en ;
+      rdfs:range xsd:string .
+
+aml:refRoleClassPath
+      a owl:DatatypeProperty ;
+      rdfs:domain aml:SupportedRoleClass ;
+      rdfs:label "Ref Role Class Path"@en ;
+      rdfs:range xsd:string .
+
+aml:roleClassName
+      a owl:FunctionalProperty , owl:DatatypeProperty ;
+      rdfs:comment "Name for a RoleClass"^^xsd:string ;
+      rdfs:domain aml:RoleClass ;
+      rdfs:label "roleClassName"^^xsd:string ;
+      rdfs:range xsd:string .
+
+aml:supportedRoleClass
+      a owl:ObjectProperty ;
+      rdfs:comment "Internal elements has Supported Role Class"@en ;
+      rdfs:domain aml:SystemUnitClass , aml:InternalElement ;
+      rdfs:label "Supported Role Class"@en ;
+      rdfs:range aml:SupportedRoleClass .
+
+aml:unitExternalInterface
+      a owl:ObjectProperty ;
+      rdfs:comment "Connects a System Unit Class with an External Interface"@en ;
+      rdfs:domain aml:SystemUnitClass ;
+      rdfs:label "unit External Interface"@en ;
+      rdfs:range aml:ExternalInterface .
