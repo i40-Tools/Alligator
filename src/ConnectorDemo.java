@@ -55,7 +55,7 @@ public class ConnectorDemo {
         process.queryOnce("assertz(father_of(john, george))");*/
 		
         // or by consulting a file
-        String consultQuery = QueryUtils.bT("reconsult", "'d:/Deutch/development/IntegratingI40Std/resources/father.pl'");
+        String consultQuery = QueryUtils.bT("reconsult", "'d:/Deutch/development/Rules4AMLIntegration/resources/father.pl'");
         process.queryOnce(consultQuery);
     }
 

@@ -85,9 +85,9 @@ aml:ExternalReference
 
 aml:IEPartOf
       a owl:TransitiveProperty , owl:ObjectProperty ;
-      rdfs:comment "Connects the Internal Element with other Internal Elements that are part of the given Internal Element"^^xsd:string ;
+      rdfs:comment "Connects the Internal Element with other Internal Elements that are part of the given Internal Element"@en ;
       rdfs:domain aml:InternalElement ;
-      rdfs:label "InternalElementPartOf"^^xsd:string ;
+      rdfs:label "InternalElementPartOf"@en ;
       rdfs:range aml:InternalElement .
 
 aml:InstanceHierarchy
@@ -101,9 +101,9 @@ aml:InterfaceClass
 
 aml:InterfaceClassAttribute
       a owl:DatatypeProperty ;
-      rdfs:comment "Points to an Attribute for the Interface Class"^^xsd:string ;
+      rdfs:comment "Points to an Attribute for the Interface Class"@en ;
       rdfs:domain aml:InterfaceClass ;
-      rdfs:label "InterfaceClassAttribute"^^xsd:string ;
+      rdfs:label "InterfaceClassAttribute"@en ;
       rdfs:range aml:Attribute .
 
 aml:InterfaceClassLib
@@ -113,9 +113,9 @@ aml:InterfaceClassLib
 
 aml:InterfaceClassName
       a owl:DatatypeProperty ;
-      rdfs:comment "Name of the Interface Class"^^xsd:string ;
+      rdfs:comment "Name of the Interface Class"@en ;
       rdfs:domain aml:InterfaceClass ;
-      rdfs:label "InterfaceClassName"^^xsd:string ;
+      rdfs:label "InterfaceClassName"@en ;
       rdfs:range xsd:string .
 
 aml:InternalElement
@@ -126,8 +126,8 @@ aml:InternalElement
 
 aml:InternalLink
       a owl:Class ;
-	  rdfs:label "InternalLink"^^xsd:string ;
-      rdfs:comment "InternalLink"^^xsd:string ;
+	  rdfs:label "InternalLink"@en ;
+      rdfs:comment "InternalLink"@en ;
 	.  
 
 aml:Order
@@ -190,21 +190,21 @@ aml:SystemUnitClassLib
 
 aml:SystemUnitClassName
       a owl:FunctionalProperty , owl:DatatypeProperty ;
-      rdfs:comment "Given Name of the System Unit Class"^^xsd:string ;
+      rdfs:comment "Given Name of the System Unit Class"@en ;
       rdfs:domain aml:SystemUnitClass ;
-      rdfs:label "SystemUnitClassName"^^xsd:string ;
+      rdfs:label "SystemUnitClassName"@en ;
       rdfs:range xsd:string .
 
 aml:SystemUnitClassPartOf
       a owl:ObjectProperty ;
-      rdfs:comment "Connects the System Unit Class with another System Unit Class Elements"^^xsd:string ;
+      rdfs:comment "Connects the System Unit Class with another System Unit Class Elements"@en ;
       rdfs:domain aml:SystemUnitClass ;
-      rdfs:label "SystemUnitClassName"^^xsd:string .
+      rdfs:label "SystemUnitClassName"@en .
 
 aml:classificationClass
       a owl:DatatypeProperty ;
       rdfs:comment "Points to the eClass classification Class a given Element"@en ;
-      rdfs:doman aml:eClassConnection ;
+      rdfs:domain aml:eClassConnection ;
       rdfs:label "eClass classification Class"@en ;
       rdfs:range xsd:string .
 
@@ -216,7 +216,7 @@ aml:eClassConnection
 aml:eClassID
       a owl:FunctionalProperty , owl:DatatypeProperty ;
       rdfs:comment "Points to the eClass unique identification(IRDI) a given Element"@en ;
-      rdfs:doman aml:eClassConnection ;
+      rdfs:domain aml:eClassConnection ;
       rdfs:label "eClass ID"@en ;
       rdfs:range xsd:string .
 
@@ -228,7 +228,7 @@ aml:eClassIsConnectedTo
 aml:eClassVersion
       a owl:DatatypeProperty ;
       rdfs:comment "Points to the eClass version for a given Element"@en ;
-      rdfs:doman aml:eClassConnection ;
+      rdfs:domain aml:eClassConnection ;
       rdfs:label "eClass Version"@en ;
       rdfs:range xsd:string .
 
@@ -286,7 +286,7 @@ aml:hasAutomationMLVersion
 aml:hasChangeMode
       a owl:ObjectProperty ;
       rdfs:comment "Points to the different Elements with the Change Mode Concept"@en ;
-      rdfs:doman aml:CAEXBasicObject ;
+      rdfs:domain aml:CAEXBasicObject ;
       rdfs:label "has Change Mode"@en ;
       rdfs:range aml:ChangeMode .
 
@@ -416,7 +416,7 @@ aml:hasValue
       rdfs:range xsd:string .
 
 aml:hasVersion
-      a rdfs:DatatypeProperty ;
+      a owl:DatatypeProperty ;
       rdfs:label "has Version"@en ;
       rdfs:range xsd:string .
 
@@ -458,9 +458,9 @@ aml:hasWriterVersion
 
 aml:interfaceClassIsPartOf
       a owl:DatatypeProperty ;
-      rdfs:comment "An Interface Class is Part of of other Interface Class"^^xsd:string ;
+      rdfs:comment "An Interface Class is Part of of other Interface Class"@en ;
       rdfs:domain aml:InterfaceClass ;
-      rdfs:label "interfaceClassIsPartOf"^^xsd:string ;
+      rdfs:label "interfaceClassIsPartOf"@en ;
       rdfs:range aml:InterfaceClass .
 
 aml:internalElementId
@@ -505,9 +505,9 @@ aml:refRoleClassPath
 
 aml:roleClassName
       a owl:FunctionalProperty , owl:DatatypeProperty ;
-      rdfs:comment "Name for a RoleClass"^^xsd:string ;
+      rdfs:comment "Name for a RoleClass"@en ;
       rdfs:domain aml:RoleClass ;
-      rdfs:label "roleClassName"^^xsd:string ;
+      rdfs:label "roleClassName"@en ;
       rdfs:range xsd:string .
 
 aml:supportedRoleClass
@@ -522,4 +522,17 @@ aml:unitExternalInterface
       rdfs:comment "Connects a System Unit Class with an External Interface"@en ;
       rdfs:domain aml:SystemUnitClass ;
       rdfs:label "unit External Interface"@en ;
-      rdfs:range aml:ExternalInterface .
+      rdfs:range aml:ExternalInterface ;
+	.
+	  
+aml:Attribute_1
+      rdf:type aml:Attribute ;
+      rdfs:label "Attribute 1"@en ;
+      schema:name "New Attribute"@en ;
+	.  
+	  
+aml:Attribute_2
+      rdf:type aml:Attribute ;
+      rdfs:label "Attribute 2"@en ;
+      schema:name "New Attribute"@en ;
+	.

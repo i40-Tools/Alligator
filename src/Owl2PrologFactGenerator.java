@@ -3,8 +3,42 @@ import java.io.FileWriter;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
+import java.net.URI;
+import java.util.Iterator;
+import java.util.Set;
 
-import org.apache.commons.lang.StringUtils;
+
+import org.apache.commons.lang3.StringUtils;
+import org.semanticweb.owlapi.apibinding.OWLManager;
+import org.semanticweb.owlapi.model.AddImport;
+import org.semanticweb.owlapi.model.AddOntologyAnnotation;
+import org.semanticweb.owlapi.model.IRI;
+import org.semanticweb.owlapi.model.OWLAnnotation;
+import org.semanticweb.owlapi.model.OWLAxiom;
+import org.semanticweb.owlapi.model.OWLClass;
+import org.semanticweb.owlapi.model.OWLImportsDeclaration;
+import org.semanticweb.owlapi.model.OWLNamedIndividual;
+import org.semanticweb.owlapi.model.OWLOntology;
+import org.semanticweb.owlapi.model.OWLOntologyCreationException;
+import org.semanticweb.owlapi.model.OWLOntologyManager;
+import org.semanticweb.owlapi.reasoner.NodeSet;
+import org.semanticweb.owlapi.reasoner.OWLReasoner;
+import org.semanticweb.owlapi.reasoner.OWLReasonerFactory;
+import org.semanticweb.owlapi.search.EntitySearcher;
+import org.semanticweb.owlapi.util.SimpleIRIMapper;
+import org.semanticweb.HermiT.Reasoner;
+import org.semanticweb.HermiT.Reasoner.ReasonerFactory;
+import org.coode.owlapi.manchesterowlsyntax.ManchesterOWLSyntaxEditorParser;
+import org.semanticweb.owlapi.expression.OWLEntityChecker;
+import org.semanticweb.owlapi.expression.ParserException;
+import org.semanticweb.owlapi.expression.ShortFormEntityChecker;
+import org.semanticweb.owlapi.model.OWLClassExpression;
+import org.semanticweb.owlapi.model.OWLDataFactory;
+import org.semanticweb.owlapi.model.OWLOntology;
+import org.semanticweb.owlapi.model.OWLOntologyManager;
+import org.semanticweb.owlapi.util.BidirectionalShortFormProvider;
+import org.semanticweb.owlapi.util.BidirectionalShortFormProviderAdapter;
+import org.semanticweb.owlapi.util.ShortFormProvider;
 
 import com.hp.hpl.jena.graph.Node;
 import com.hp.hpl.jena.graph.Node_URI;
@@ -16,68 +50,82 @@ import com.hp.hpl.jena.rdf.model.StmtIterator;
 import com.hp.hpl.jena.util.FileManager;
 
 public class Owl2PrologFactGenerator {
-
-
+	
+	private OWLOntology ont;
+	private OWLReasoner reasoner;
 	private String inputOwlFilename;
-	private String outputPrologFilename;
 
-	public void setInputOwlFilename(String inputOwlFilename) {
-		this.inputOwlFilename = inputOwlFilename;
+	/**
+	 * Read the ontology given a local path
+	 * @throws OWLOntologyCreationException
+	 */
+	public void readOntology(String localIRI) throws OWLOntologyCreationException{
+		String prefix = "file:";
+		this.inputOwlFilename = localIRI;
+		// windows path fixing
+		if (!localIRI.startsWith("/"))
+			prefix += "/";
+		URI basePhysicalURI = URI.create(prefix + localIRI.replace("\\", "/"));
+		OWLOntologyManager baseM = OWLManager.createOWLOntologyManager();
+		this.ont = baseM.loadOntologyFromOntologyDocument(IRI.create(basePhysicalURI));
+		reasoner = new Reasoner.ReasonerFactory().createReasoner(this.ont);
 	}
 
-	public void setOutputPrologFilename(String outputPrologFilename) {
-		this.outputPrologFilename = outputPrologFilename;
-	}
-
-	public void generate() throws Exception {
+	public void generateTBoxFacts(String outputPrologFilename) throws Exception {
 		PrintWriter prologWriter = 
 				new PrintWriter(new FileWriter(outputPrologFilename), true);
-		Model model = ModelFactory.createDefaultModel();
-		InputStream inputStream = FileManager.get().open(this.inputOwlFilename);
-		model.read(new InputStreamReader(inputStream), null, "TURTLE"); // parses an InputStream assuming RDF in Turtle format
-		
-		StmtIterator sit = model.listStatements();
-		while (sit.hasNext()) {
-			Statement st = sit.next();
-			Triple triple = st.asTriple();
-			String prologFact = getPrologFact(triple);
-			if (StringUtils.isNotEmpty(prologFact)) {
-				prologWriter.println(getPrologFact(triple));
-			}
-		}
-		model.close();
+		prologWriter.println(factsFromTBox());
 		prologWriter.flush();
 		prologWriter.close();
 	}
-
-	private String getPrologFact(Triple triple) {
+	
+	public void generateABoxFacts(String AboxFilePath) throws Exception {
+		PrintWriter prologWriter = 
+				new PrintWriter(new FileWriter(AboxFilePath), true);
+		for (OWLClass cls : ont.getClassesInSignature()) {
+			prologWriter.println(factsFromABox(cls));
+	    }
+		
+		prologWriter.flush();
+		prologWriter.close();
+	}
+	
+	public String factsFromTBox(){
 		StringBuilder buf = new StringBuilder();
-		Node subject = triple.getSubject();
-		Node object = triple.getObject();
-		if ((subject instanceof Node_URI) &&
-				(object instanceof Node_URI)) {
-			buf.append("isTriple(a").
-					append(triple.getSubject().getLocalName()).
-					append(",").
-					append(triple.getPredicate().getLocalName()).
-					append(",a").
-					append(triple.getObject().getLocalName()).
-					append(").");
+		for (OWLClass cls : ont.getClassesInSignature()) {
+			buf.append("clause1(type(").
+			append(cls.getIRI().getFragment()).
+			append(",").
+			append("Class),true).");
+			buf.append(System.getProperty("line.separator"));
+	    }
+		return buf.toString();
+	}
+	
+	/**
+	 * Gets the Individuals of all the classes in the ontology and generates the corresponding facts 
+	 * @return A buffer of Strings
+	 */
+	public String factsFromABox(OWLClass cls){
+		StringBuilder buf = new StringBuilder();
+	        NodeSet<OWLNamedIndividual> instances = reasoner.getInstances(cls, false);
+	        for (OWLNamedIndividual ind : instances.getFlattened()) {
+	            buf.append("clause1(type(").
+				append(ind.getIRI().getFragment()).
+				append(",").
+				append(cls.getIRI().getFragment()).
+				append("),true).");
+				buf.append(System.getProperty("line.separator"));
 		}
 		return buf.toString();
-	}	
-
-
-	public static void main(String[] args) {
-		Owl2PrologFactGenerator test = new Owl2PrologFactGenerator();
-		test.setInputOwlFilename("d:/Deutch/development/IntegratingI40Std/resources/aml.ttl");
-		test.setOutputPrologFilename("d:/Deutch/development/IntegratingI40Std/resources/aml.pl");
-		try {
-			test.generate();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+	}
+	
+	public OWLOntology getOnt() {
+		return ont;
 	}
 
+	public void setOnt(OWLOntology ont) {
+		this.ont = ont;
+	}	
 
 }
