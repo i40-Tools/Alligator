@@ -8,6 +8,8 @@ import java.util.Iterator;
 import java.util.Set;
 
 
+
+
 import org.apache.commons.lang3.StringUtils;
 import org.semanticweb.owlapi.apibinding.OWLManager;
 import org.semanticweb.owlapi.model.AddImport;
@@ -18,9 +20,11 @@ import org.semanticweb.owlapi.model.OWLAxiom;
 import org.semanticweb.owlapi.model.OWLClass;
 import org.semanticweb.owlapi.model.OWLImportsDeclaration;
 import org.semanticweb.owlapi.model.OWLNamedIndividual;
+import org.semanticweb.owlapi.model.OWLObjectProperty;
 import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.owlapi.model.OWLOntologyCreationException;
 import org.semanticweb.owlapi.model.OWLOntologyManager;
+import org.semanticweb.owlapi.model.OWLProperty;
 import org.semanticweb.owlapi.reasoner.NodeSet;
 import org.semanticweb.owlapi.reasoner.OWLReasoner;
 import org.semanticweb.owlapi.reasoner.OWLReasonerFactory;
@@ -74,6 +78,7 @@ public class Owl2PrologFactGenerator {
 	public void generateTBoxFacts(String outputPrologFilename) throws Exception {
 		PrintWriter prologWriter = 
 				new PrintWriter(new FileWriter(outputPrologFilename), true);
+		prologWriter.println(factsFromProperties());
 		prologWriter.println(factsFromTBox());
 		prologWriter.flush();
 		prologWriter.close();
@@ -85,13 +90,46 @@ public class Owl2PrologFactGenerator {
 		for (OWLClass cls : ont.getClassesInSignature()) {
 			prologWriter.println(factsFromABox(cls));
 	    }
-		
 		prologWriter.flush();
 		prologWriter.close();
 	}
 	
+	
+	/**
+	 * Write properties on top of the file
+	 * @return
+	 */
+	public String factsFromProperties(){
+		StringBuilder buf = new StringBuilder();
+		
+		for (OWLProperty objProp : ont.getObjectPropertiesInSignature()) {
+			buf.append(":-dynamic(" + objProp.getIRI().getFragment() +"/2).").
+			append(System.getProperty("line.separator"));
+	    }
+		
+		for (OWLProperty objProp : ont.getDataPropertiesInSignature()) {
+			buf.append(":-dynamic(" + objProp.getIRI().getFragment() +"/2).").
+			append(System.getProperty("line.separator"));
+	    }
+		
+		return buf.toString();
+	}
+	
+	/**
+	 * 
+	 * @return
+	 */
 	public String factsFromTBox(){
 		StringBuilder buf = new StringBuilder();
+		
+		for (OWLProperty objProp : ont.getObjectPropertiesInSignature()) {
+			buf.append("clause1(type(").
+			append(objProp.getIRI().getFragment()).
+			append(",").
+			append("ObjectProperty),true).");
+			buf.append(System.getProperty("line.separator"));
+	    }
+		
 		for (OWLClass cls : ont.getClassesInSignature()) {
 			buf.append("clause1(type(").
 			append(cls.getIRI().getFragment()).
@@ -99,6 +137,15 @@ public class Owl2PrologFactGenerator {
 			append("Class),true).");
 			buf.append(System.getProperty("line.separator"));
 	    }
+		
+		for (OWLProperty datatypeProp : ont.getDataPropertiesInSignature()) {
+			buf.append("clause1(type(").
+			append(datatypeProp.getIRI().getFragment()).
+			append(",").
+			append("DatatypeProperty),true).");
+			buf.append(System.getProperty("line.separator"));
+	    }
+		
 		return buf.toString();
 	}
 	
