@@ -56,12 +56,12 @@ clause1(eClassIRDI(eClassSpecification_2,"0173-1#BASIC_1_1#01-ABW077#009"),true)
 
 clause1(type(Attribute_2,Attribute),true).
 clause1(refSemantic(Attribute_2,"0173-1#02-BAE122#006"),true).
-clause1(name(Attribute_2,"Cooling type"@en),true).
+clause1(name(Attribute_2,"Cooling type"),true).
 clause1(type(Attribute_1,Attribute),true).
 clause1(refSemantic(Attribute_1,"0173-1#02-BAE069#007"),true).
-clause1(name(Attribute_1,"Construction form of DC motor"@en),true).
+clause1(name(Attribute_1,"Construction form of DC motor"),true).
 clause1(type(Attribute_3,Attribute),true).
 clause1(refSemantic(Attribute_3,"0173-1#02-BAE069#007"),true).
-clause1(name(Attribute_3,"Construction form of DC motor"@en),true).
+clause1(name(Attribute_3,"Construction form of DC motor"),true).
 
 

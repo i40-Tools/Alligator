@@ -186,13 +186,18 @@ public class Owl2PrologFactGenerator {
 			for (OWLDataProperty dp: ont.getDataPropertiesInSignature()) {
 				Set<OWLLiteral> dataPropSet = reasoner.getDataPropertyValues(ind, dp);
 				for (OWLLiteral value : dataPropSet){
-					//System.out.println(ind.getIRI().getFragment() + " " + dp.getIRI().getFragment() + " " + value);
 					buf.append("clause1("+ dp.getIRI().getFragment() +"(").
 					append(ind.getIRI().getFragment()).
-					append(",").
-					append(value).
-					append("),true).");
-					buf.append(System.getProperty("line.separator"));
+					append(",");
+					if(value.hasLang()){
+						//@todo Removing the @en from the last part of the string. This should be a different way to do it
+						String removeAdd = value.toString().substring(0, value.toString().length() - 3);
+						buf.append(removeAdd);
+					}else{
+						buf.append(value);
+					}
+					buf.append("),true).").
+					append(System.getProperty("line.separator"));
 				}
 			}
 		}
