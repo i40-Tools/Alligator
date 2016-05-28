@@ -8,8 +8,8 @@ public class Rules4AMLIntegration {
 		try {
 			String localIRI = "d:/Deutch/development/Rules4AMLIntegration/resources/aml.ttl";
 			test.readOntology(localIRI);
-			test.generateTBoxFacts("d:/Deutch/development/Rules4AMLIntegration/resources/aml.pl");
-			test.generateABoxFacts("d:/Deutch/development/Rules4AMLIntegration/resources/amlA.pl");
+			test.generateTBoxFacts("d:/Deutch/development/Rules4AMLIntegration/resources/IntentionalDB.pl");
+			test.generateABoxFacts("d:/Deutch/development/Rules4AMLIntegration/resources/ExtensionalDB.pl");
 			
 			
 			

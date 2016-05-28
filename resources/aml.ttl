@@ -279,6 +279,15 @@ aml:hasAttributeName
       rdfs:domain aml:Attribute ;
       rdfs:label "hasAttributeName"@en ;
       rdfs:range xsd:string .
+	  
+aml:refSemantic
+      a owl:DatatypeProperty, owl:FunctionalProperty ;
+	  rdfs:label "ref Semantic"@en ;
+	  rdfs:comment "Reference to the eClass IRDI identification"@en ;
+      rdfs:domain aml:Attribute ;
+	  rdfs:range xsd:string ;
+    .  
+      
 
 aml:hasAutomationMLVersion
       a owl:DatatypeProperty ;
@@ -607,16 +616,19 @@ aml:Attribute_1
       rdf:type aml:Attribute ;
       rdfs:label "Attribute 1"@en ;
       schema:name "Construction form of DC motor"@en ;
+	  aml:refSemantic "0173-1#02-BAE069#007";
 	.  
 	  
 aml:Attribute_2
       rdf:type aml:Attribute ;
       rdfs:label "Attribute 2"@en ;
       schema:name "Cooling type"@en ;
+	  aml:refSemantic "0173-1#02-BAE122#006";
 	.
 	
 aml:Attribute_3
       rdf:type aml:Attribute ;
       rdfs:label "Attribute 3"@en ;
       schema:name "Construction form of DC motor"@en ;
+	  aml:refSemantic "0173-1#02-BAE069#007";
 	.
