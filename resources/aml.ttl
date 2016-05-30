@@ -67,12 +67,13 @@ aml:ChangeMode
       rdfs:label "unit External Interface"@en ;
       owl:oneOf (aml:State aml:Create aml:Create aml:Change) .
 
-aml:Direction
+aml:direction
       a owl:DatatypeProperty ;
       rdfs:comment "Specifies the Direction of an Order. The permitted values are In, Out."@en ;
       rdfs:domain aml:Order ;
       rdfs:label "Direction"@en ;
-      rdfs:range xsd:string .
+      rdfs:range xsd:string ;
+	.  
 
 aml:ExternalInterface
       a owl:Class ;
@@ -83,12 +84,13 @@ aml:ExternalReference
       rdfs:comment "External Reference for a CAEX File"@en ;
       rdfs:label "External Reference"@en .
 
-aml:IEPartOf
+aml:iePartOf
       a owl:TransitiveProperty , owl:ObjectProperty ;
       rdfs:comment "Connects the Internal Element with other Internal Elements that are part of the given Internal Element"@en ;
       rdfs:domain aml:InternalElement ;
       rdfs:label "InternalElementPartOf"@en ;
-      rdfs:range aml:InternalElement .
+      rdfs:range aml:InternalElement ;
+	.
 
 aml:InstanceHierarchy
       a owl:Class ;
@@ -99,24 +101,26 @@ aml:InterfaceClass
       rdfs:comment "Defines the relations between AML Objects. Should be identified with its tag name"@en ;
       rdfs:label "Interface Class"@en .
 
-aml:InterfaceClassAttribute
+aml:interfaceClassAttribute
       a owl:DatatypeProperty ;
       rdfs:comment "Points to an Attribute for the Interface Class"@en ;
       rdfs:domain aml:InterfaceClass ;
       rdfs:label "InterfaceClassAttribute"@en ;
-      rdfs:range aml:Attribute .
+      rdfs:range aml:Attribute ;
+	.
 
 aml:InterfaceClassLib
       a owl:Class ;
       rdfs:label "Interface Class Lib"@en ;
       schema:name "MyInterfaces"@en .
 
-aml:InterfaceClassName
+aml:interfaceClassName
       a owl:DatatypeProperty ;
       rdfs:comment "Name of the Interface Class"@en ;
       rdfs:domain aml:InterfaceClass ;
       rdfs:label "InterfaceClassName"@en ;
-      rdfs:range xsd:string .
+      rdfs:range xsd:string ;
+	.  
 
 aml:InternalElement
       a owl:Class ;
@@ -153,11 +157,12 @@ aml:Project
       rdfs:label "Project"@en ;
       rdfs:rdfscomment "A Project related to the header information with the CAEX File"@en .
 
-aml:RefBaseSystemUnitPath
+aml:refBaseSystemUnitPath
       a owl:DatatypeProperty ;
       rdfs:domain aml:InternalElement ;
       rdfs:label "Ref Base System Unit Path"@en ;
-      rdfs:range xsd:string .
+      rdfs:range xsd:string ;
+	.  
 
 aml:RoleClass
       a owl:Class ;
@@ -188,18 +193,20 @@ aml:SystemUnitClassLib
       rdfs:label "System Unit ClassLib"@en ;
       rdfs:rdfscomment "Store vendor specific AML classes"@en .
 
-aml:SystemUnitClassName
+aml:systemUnitClassName
       a owl:FunctionalProperty , owl:DatatypeProperty ;
       rdfs:comment "Given Name of the System Unit Class"@en ;
       rdfs:domain aml:SystemUnitClass ;
       rdfs:label "SystemUnitClassName"@en ;
-      rdfs:range xsd:string .
+      rdfs:range xsd:string ;
+	.  
 
-aml:SystemUnitClassPartOf
+aml:systemUnitClassPartOf
       a owl:ObjectProperty ;
+	  rdfs:label "SystemUnitClassName"@en ;
       rdfs:comment "Connects the System Unit Class with another System Unit Class Elements"@en ;
       rdfs:domain aml:SystemUnitClass ;
-      rdfs:label "SystemUnitClassName"@en .
+	.  
 
 aml:eClassSpecification
       a owl:Class ;

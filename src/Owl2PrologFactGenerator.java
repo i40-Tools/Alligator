@@ -1,16 +1,13 @@
 import java.io.File;
 import java.io.FileWriter;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.URI;
 import java.util.Iterator;
+import java.util.Map;
 import java.util.Set;
-
-
-
-
-
 
 import org.apache.commons.lang3.StringUtils;
 import org.semanticweb.owlapi.apibinding.OWLManager;
@@ -37,6 +34,10 @@ import org.semanticweb.owlapi.util.SimpleIRIMapper;
 import org.semanticweb.HermiT.Reasoner;
 import org.semanticweb.HermiT.Reasoner.ReasonerFactory;
 import org.coode.owlapi.manchesterowlsyntax.ManchesterOWLSyntaxEditorParser;
+import org.cs3.prolog.connector.Connector;
+import org.cs3.prolog.connector.common.QueryUtils;
+import org.cs3.prolog.connector.process.PrologProcess;
+import org.cs3.prolog.connector.process.PrologProcessException;
 import org.semanticweb.owlapi.expression.OWLEntityChecker;
 import org.semanticweb.owlapi.expression.ParserException;
 import org.semanticweb.owlapi.expression.ShortFormEntityChecker;
@@ -47,6 +48,8 @@ import org.semanticweb.owlapi.model.OWLOntologyManager;
 import org.semanticweb.owlapi.util.BidirectionalShortFormProvider;
 import org.semanticweb.owlapi.util.BidirectionalShortFormProviderAdapter;
 import org.semanticweb.owlapi.util.ShortFormProvider;
+
+import util.StringUtil;
 
 import com.hp.hpl.jena.graph.Node;
 import com.hp.hpl.jena.graph.Node_URI;
@@ -107,12 +110,12 @@ public class Owl2PrologFactGenerator {
 		StringBuilder buf = new StringBuilder();
 
 		for (OWLProperty objProp : ont.getObjectPropertiesInSignature()) {
-			buf.append(":-dynamic(" + objProp.getIRI().getFragment() +"/2).").
+			buf.append(":-dynamic(" + StringUtil.lowerCaseFirstChar(objProp.getIRI().getFragment()) +"/2).").
 			append(System.getProperty("line.separator"));
 		}
 
-		for (OWLProperty objProp : ont.getDataPropertiesInSignature()) {
-			buf.append(":-dynamic(" + objProp.getIRI().getFragment() +"/2).").
+		for (OWLProperty dataProp : ont.getDataPropertiesInSignature()) {
+			buf.append(":-dynamic(" + StringUtil.lowerCaseFirstChar(dataProp.getIRI().getFragment()) +"/2).").
 			append(System.getProperty("line.separator"));
 		}
 
@@ -128,25 +131,25 @@ public class Owl2PrologFactGenerator {
 
 		for (OWLProperty objProp : ont.getObjectPropertiesInSignature()) {
 			buf.append("clause1(type(").
-			append(objProp.getIRI().getFragment()).
+			append(StringUtil.lowerCaseFirstChar(objProp.getIRI().getFragment())).
 			append(",").
-			append("ObjectProperty),true).");
+			append("objectproperty),true).");
 			buf.append(System.getProperty("line.separator"));
 		}
 
 		for (OWLClass cls : ont.getClassesInSignature()) {
 			buf.append("clause1(type(").
-			append(cls.getIRI().getFragment()).
+			append(StringUtil.lowerCaseFirstChar(cls.getIRI().getFragment())).
 			append(",").
-			append("Class),true).");
+			append("class),true).");
 			buf.append(System.getProperty("line.separator"));
 		}
 
 		for (OWLProperty datatypeProp : ont.getDataPropertiesInSignature()) {
 			buf.append("clause1(type(").
-			append(datatypeProp.getIRI().getFragment()).
+			append(StringUtil.lowerCaseFirstChar(datatypeProp.getIRI().getFragment())).
 			append(",").
-			append("DatatypeProperty),true).");
+			append("datatypeproperty),true).");
 			buf.append(System.getProperty("line.separator"));
 		}
 
@@ -162,9 +165,9 @@ public class Owl2PrologFactGenerator {
 		NodeSet<OWLNamedIndividual> instances = reasoner.getInstances(cls, false);
 		for (OWLNamedIndividual ind : instances.getFlattened()) {
 			buf.append("clause1(type(").
-			append(ind.getIRI().getFragment()).
+			append(StringUtil.lowerCaseFirstChar(ind.getIRI().getFragment())).
 			append(",").
-			append(cls.getIRI().getFragment()).
+			append(StringUtil.lowerCaseFirstChar(cls.getIRI().getFragment())).
 			append("),true).");
 			buf.append(System.getProperty("line.separator"));
 
@@ -174,9 +177,9 @@ public class Owl2PrologFactGenerator {
 				for (OWLNamedIndividual value : objPropSet.getFlattened()){
 					//System.out.println(ind.getIRI().getFragment() + " " + op.getIRI().getFragment() + " " + value.getIRI().getFragment());
 					buf.append("clause1("+ op.getIRI().getFragment() +"(").
-					append(ind.getIRI().getFragment()).
+					append(StringUtil.lowerCaseFirstChar(ind.getIRI().getFragment())).
 					append(",").
-					append(value.getIRI().getFragment()).
+					append(StringUtil.lowerCaseFirstChar(value.getIRI().getFragment())).
 					append("),true).");
 					buf.append(System.getProperty("line.separator"));
 				}
@@ -187,7 +190,7 @@ public class Owl2PrologFactGenerator {
 				Set<OWLLiteral> dataPropSet = reasoner.getDataPropertyValues(ind, dp);
 				for (OWLLiteral value : dataPropSet){
 					buf.append("clause1("+ dp.getIRI().getFragment() +"(").
-					append(ind.getIRI().getFragment()).
+					append(ind.getIRI().getFragment().toLowerCase()).
 					append(",");
 					if(value.hasLang()){
 						//@todo Removing the @en from the last part of the string. This should be a different way to do it
@@ -204,6 +207,27 @@ public class Owl2PrologFactGenerator {
 
 		return buf.toString();
 	}
+	
+	public void consultKB() throws IOException, PrologProcessException{
+		PrologProcess process = Connector.newPrologProcess();
+		String consultQuery = QueryUtils.bT("reconsult", "'d:/Deutch/development/Rules4AMLIntegration/resources/ExtensionalDB.pl'");
+        process.queryOnce(consultQuery);
+        // create query with the buildTerm method
+        // this is the same as "father_of(Father, peter)"
+        String query = QueryUtils.bT("father_of", "Father", "peter");
+        // get the first result of the query (ignore other results if there are any)
+        Map<String, Object> result = process.queryOnce(query);
+        if (result == null) {
+            // if the result is null, the query failed (no results)
+            System.out.println("peter has no father");
+        } else {
+            // if the query succeeds, the resulting map contains mappings
+            // from variable name to the binding
+            System.out.println(result.get("Father") + " is the father of peter");
+        }
+	}
+	
+	
 
 	public OWLOntology getOnt() {
 		return ont;

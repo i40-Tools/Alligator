@@ -17,7 +17,9 @@ public class ConnectorDemo {
  
             // fill the factbase
             fillFactbaseWithDemoData(process);
- 
+            
+            String consultQuery = QueryUtils.bT("reconsult", "'d:/Deutch/development/Rules4AMLIntegration/resources/father.pl'");
+            process.queryOnce(consultQuery);
             // create query with the buildTerm method
             // this is the same as "father_of(Father, peter)"
             String query = QueryUtils.bT("father_of", "Father", "peter");
@@ -55,8 +57,7 @@ public class ConnectorDemo {
         process.queryOnce("assertz(father_of(john, george))");*/
 		
         // or by consulting a file
-        String consultQuery = QueryUtils.bT("reconsult", "'d:/Deutch/development/Rules4AMLIntegration/resources/father.pl'");
-        process.queryOnce(consultQuery);
+        
     }
 
 }
