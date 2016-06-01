@@ -16,7 +16,7 @@ public class ConnectorDemo {
             PrologProcess process = Connector.newPrologProcess();
  
             // fill the factbase
-            fillFactbaseWithDemoData(process);
+            //fillFactbaseWithDemoData(process);
             
             String consultQuery = QueryUtils.bT("reconsult", "'d:/Deutch/development/Rules4AMLIntegration/resources/father.pl'");
             process.queryOnce(consultQuery);

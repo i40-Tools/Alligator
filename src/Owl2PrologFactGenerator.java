@@ -6,6 +6,7 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.URI;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -13,15 +14,21 @@ import org.apache.commons.lang3.StringUtils;
 import org.semanticweb.owlapi.apibinding.OWLManager;
 import org.semanticweb.owlapi.model.AddImport;
 import org.semanticweb.owlapi.model.AddOntologyAnnotation;
+import org.semanticweb.owlapi.model.AxiomType;
 import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.model.OWLAnnotation;
 import org.semanticweb.owlapi.model.OWLAxiom;
 import org.semanticweb.owlapi.model.OWLClass;
 import org.semanticweb.owlapi.model.OWLDataProperty;
+import org.semanticweb.owlapi.model.OWLDataPropertyDomainAxiom;
+import org.semanticweb.owlapi.model.OWLDataPropertyRangeAxiom;
 import org.semanticweb.owlapi.model.OWLImportsDeclaration;
 import org.semanticweb.owlapi.model.OWLLiteral;
 import org.semanticweb.owlapi.model.OWLNamedIndividual;
+import org.semanticweb.owlapi.model.OWLNamedObject;
 import org.semanticweb.owlapi.model.OWLObjectProperty;
+import org.semanticweb.owlapi.model.OWLObjectPropertyDomainAxiom;
+import org.semanticweb.owlapi.model.OWLObjectPropertyRangeAxiom;
 import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.owlapi.model.OWLOntologyCreationException;
 import org.semanticweb.owlapi.model.OWLOntologyManager;
@@ -60,6 +67,10 @@ import com.hp.hpl.jena.rdf.model.Statement;
 import com.hp.hpl.jena.rdf.model.StmtIterator;
 import com.hp.hpl.jena.util.FileManager;
 
+/**
+ * 
+ * Generates the Datalog facts from a given Ontology
+ */
 public class Owl2PrologFactGenerator {
 
 	private OWLOntology ont;
@@ -118,30 +129,30 @@ public class Owl2PrologFactGenerator {
 			buf.append(":-dynamic(" + StringUtil.lowerCaseFirstChar(dataProp.getIRI().getFragment()) +"/2).").
 			append(System.getProperty("line.separator"));
 		}
-
+		
 		return buf.toString();
 	}
 
 	/**
-	 * 
+	 * Generate facts from the TBOX. Classes, objects and datatype properties
 	 * @return
 	 */
 	public String factsFromTBox(){
 		StringBuilder buf = new StringBuilder();
+		
+		for (OWLClass cls : ont.getClassesInSignature()) {
+			buf.append("clause1(type(").
+			append(StringUtil.lowerCaseFirstChar(cls.getIRI().getFragment())).
+			append(",").
+			append("class),true).");
+			buf.append(System.getProperty("line.separator"));
+		}
 
 		for (OWLProperty objProp : ont.getObjectPropertiesInSignature()) {
 			buf.append("clause1(type(").
 			append(StringUtil.lowerCaseFirstChar(objProp.getIRI().getFragment())).
 			append(",").
 			append("objectproperty),true).");
-			buf.append(System.getProperty("line.separator"));
-		}
-
-		for (OWLClass cls : ont.getClassesInSignature()) {
-			buf.append("clause1(type(").
-			append(StringUtil.lowerCaseFirstChar(cls.getIRI().getFragment())).
-			append(",").
-			append("class),true).");
 			buf.append(System.getProperty("line.separator"));
 		}
 
@@ -208,23 +219,61 @@ public class Owl2PrologFactGenerator {
 		return buf.toString();
 	}
 	
+	/**
+	 * Get all the domain and range axioms of the ontology
+	 */
+	public void getDomainRangeAxioms(){
+		Set<OWLDataPropertyDomainAxiom> dataPropDomain = ont.getAxioms(AxiomType.DATA_PROPERTY_DOMAIN);
+		for (OWLDataPropertyDomainAxiom owlDataPropertyDomainAxiom : dataPropDomain) {
+			System.out.println(((OWLNamedObject) owlDataPropertyDomainAxiom.getDomain()).getIRI().getFragment() + " " + 
+					         ((OWLNamedObject) owlDataPropertyDomainAxiom.getProperty()).getIRI().getFragment());
+		}
+		
+		Set<OWLDataPropertyRangeAxiom> dataPropRange = ont.getAxioms(AxiomType.DATA_PROPERTY_RANGE);
+		for (OWLDataPropertyRangeAxiom dataPropRangeAxiom : dataPropRange) {
+			System.out.println(((OWLNamedObject) dataPropRangeAxiom.getRange()) + " " + 
+					         ((OWLNamedObject) dataPropRangeAxiom.getProperty()).getIRI().getFragment());
+		}
+		
+		Set<OWLObjectPropertyDomainAxiom> objPropDomain = ont.getAxioms(AxiomType.OBJECT_PROPERTY_DOMAIN);
+		for (OWLObjectPropertyDomainAxiom owlObjPropDomainAxiom : objPropDomain) {
+			System.out.println(((OWLNamedObject) owlObjPropDomainAxiom.getDomain()).getIRI().getFragment() + " " + 
+		     ((OWLNamedObject) owlObjPropDomainAxiom.getProperty()).getIRI().getFragment());
+		}
+		
+		Set<OWLObjectPropertyRangeAxiom> objPropRange = ont.getAxioms(AxiomType.OBJECT_PROPERTY_RANGE);
+		for (OWLObjectPropertyRangeAxiom ObjPropRangeAxiom : objPropRange) {
+			System.out.println(((OWLNamedObject) ObjPropRangeAxiom.getRange()).getIRI().getFragment() + " " + 
+		     ((OWLNamedObject) ObjPropRangeAxiom.getProperty()).getIRI().getFragment());
+		}
+	}
+	
 	public void consultKB() throws IOException, PrologProcessException{
-		PrologProcess process = Connector.newPrologProcess();
-		String consultQuery = QueryUtils.bT("reconsult", "'d:/Deutch/development/Rules4AMLIntegration/resources/ExtensionalDB.pl'");
-        process.queryOnce(consultQuery);
-        // create query with the buildTerm method
-        // this is the same as "father_of(Father, peter)"
-        String query = QueryUtils.bT("father_of", "Father", "peter");
-        // get the first result of the query (ignore other results if there are any)
-        Map<String, Object> result = process.queryOnce(query);
-        if (result == null) {
-            // if the result is null, the query failed (no results)
-            System.out.println("peter has no father");
-        } else {
-            // if the query succeeds, the resulting map contains mappings
-            // from variable name to the binding
-            System.out.println(result.get("Father") + " is the father of peter");
-        }
+		 PrologProcess process = Connector.newPrologProcess();
+         //String consultQuery = QueryUtils.bT("reconsult", "'d:/Deutch/development/Rules4AMLIntegration/resources/father.pl'");
+         String consultQuery = QueryUtils.bT("reconsult", "'d:/Deutch/development/Rules4AMLIntegration/resources/ExtensionalDB.pl'");
+         process.queryOnce(consultQuery);
+         // create query with the buildTerm method
+         // this is the same as "father_of(Father, peter)"
+         String query = QueryUtils.bT("father_of", "Father", "peter");
+         //String query = "clause1(type(A,roleClass),true).";
+         // get the first result of the query (ignore other results if there are any)
+         //Map<String, Object> result = process.queryOnce(query);
+         /*if (result == null) {
+             System.out.println("peter has no father");
+         } else {
+             System.out.println(result.get("Father") + " is the father of peter");
+         }*/
+
+         // get ALL results of the query as a list
+         // every element in this list is one result
+         // if the query fails, the list will be empty (but it won't be null)
+         List<Map<String, Object>> results = process.queryAll(query);
+         for (Map<String, Object> r : results) {
+             // iterate over every result
+        	 
+             System.out.println(r.get("Child") + " is a child of john");
+         }
 	}
 	
 	

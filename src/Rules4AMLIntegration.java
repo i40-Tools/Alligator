@@ -1,3 +1,6 @@
+import java.io.IOException;
+
+import org.cs3.prolog.connector.process.PrologProcessException;
 import org.semanticweb.owlapi.model.OWLOntologyCreationException;
 
 
@@ -11,24 +14,21 @@ public class Rules4AMLIntegration {
 			test.generateTBoxFacts("d:/Deutch/development/Rules4AMLIntegration/resources/IntentionalDB.pl");
 			test.generateABoxFacts("d:/Deutch/development/Rules4AMLIntegration/resources/ExtensionalDB.pl");
 			
-			
-			
+			test.getDomainRangeAxioms();
+			/*try {
+				//test.consultKB();
+			} catch (IOException e) {
+				e.printStackTrace();
+			} catch (PrologProcessException e) {
+				e.printStackTrace();
+			}*/
 			
 		} catch (OWLOntologyCreationException e1) {
-			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		
-		/*test.setInputOwlFilename("d:/Deutch/development/Rules4AMLIntegration/resources/aml.ttl");
-		test.setOutputPrologFilename("d:/Deutch/development/Rules4AMLIntegration/resources/aml.pl");
-		try {
-			test.generate();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}*/
 	}
 
 }
