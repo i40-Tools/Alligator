@@ -239,29 +239,14 @@ public class Owl2PrologFactGenerator {
 	
 	public void consultKB() throws IOException, PrologProcessException{
 		 PrologProcess process = Connector.newPrologProcess();
-         //String consultQuery = QueryUtils.bT("reconsult", "'d:/Deutch/development/Rules4AMLIntegration/resources/father.pl'");
-         String consultQuery = QueryUtils.bT("reconsult", "'d:/Deutch/development/Rules4AMLIntegration/resources/ExtensionalDB.pl'");
-         process.queryOnce(consultQuery);
-         // create query with the buildTerm method
-         // this is the same as "father_of(Father, peter)"
-         String query = QueryUtils.bT("father_of", "Father", "peter");
-         //String query = "clause1(type(A,roleClass),true).";
-         // get the first result of the query (ignore other results if there are any)
-         //Map<String, Object> result = process.queryOnce(query);
-         /*if (result == null) {
-             System.out.println("peter has no father");
+         String consultQuery = QueryUtils.bT("'d:/Deutch/development/Rules4AMLIntegration/resources/evalAML.pl'");
+         String query = QueryUtils.bT("sameAS", "A", "B");
+         process.queryAll(consultQuery,query);
+         Map<String, Object> result = process.queryOnce(query);
+         if (result == null) {
+             System.out.println("No same as");
          } else {
-             System.out.println(result.get("Father") + " is the father of peter");
-         }*/
-
-         // get ALL results of the query as a list
-         // every element in this list is one result
-         // if the query fails, the list will be empty (but it won't be null)
-         List<Map<String, Object>> results = process.queryAll(query);
-         for (Map<String, Object> r : results) {
-             // iterate over every result
-        	 
-             System.out.println(r.get("Child") + " is a child of john");
+             System.out.println(result.get("A") + " sameAs");
          }
 	}
 	
