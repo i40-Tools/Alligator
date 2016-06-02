@@ -20,11 +20,11 @@ eval:- write('Seleccione el tipo de operador'),
        write('2-Transformacion Magica de Path'),
        nl,
        get(Prog), 
-       ((Op = 49 -> consult("/Users/mevsBonn/Datalog/naive.pl")); 
-       ((Op = 50 -> consult("/Users/mevsBonn/Datalog/semi.pl"));
-                    consult("/Users/mevsBonn/Datalog/semi1.pl"))),
-       ((Prog = 49  -> consult("/Users/mevsBonn/Datalog/ejemplo.pl")) ;
-                       consult("/Users/mevsBonn/Datalog/ej_mst.pl")),
+       ((Op = 49 -> consult("d:/Deutch/development/Rules4AMLIntegration/resources/naive.pl")); 
+       ((Op = 50 -> consult("d:/Deutch/development/Rules4AMLIntegration/resources/semi.pl"));
+                    consult("d:/Deutch/development/Rules4AMLIntegration/resources/semi1.pl"))),
+       ((Prog = 49  -> consult("d:/Deutch/development/Rules4AMLIntegration/resources/ejemplo.pl")) ;
+                       consult("d:/Deutch/development/Rules4AMLIntegration/resources/ej_mst.pl")),
        tdb.
 
 

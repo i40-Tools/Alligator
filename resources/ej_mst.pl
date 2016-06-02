@@ -1,8 +1,9 @@
 
 %
 % Archivo: ej_mst.pl
-% Magic Sets Transformation from ejemplo.pl
+% Magic Sets Transformation de ejemplo.pl
 % Maria Esther Vidal y Sandra Zabala
+% Dic. 1994
 %
 
 

@@ -18,11 +18,11 @@ public class ConnectorDemo {
             // fill the factbase
             //fillFactbaseWithDemoData(process);
             
-            String consultQuery = QueryUtils.bT("reconsult", "'d:/Deutch/development/Rules4AMLIntegration/resources/father.pl'");
+            String consultQuery = QueryUtils.bT("reconsult", "'d:/Deutch/development/Rules4AMLIntegration/resources/evalAML.pl'");
             process.queryOnce(consultQuery);
             // create query with the buildTerm method
             // this is the same as "father_of(Father, peter)"
-            String query = QueryUtils.bT("father_of", "Father", "peter");
+            String query = QueryUtils.bT("sameAS", "X", "Y");
             // get the first result of the query (ignore other results if there are any)
             Map<String, Object> result = process.queryOnce(query);
             if (result == null) {

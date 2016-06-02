@@ -1,6 +1,7 @@
 %
 % ARCHIVO: ejemplo.pl
 % Maria Esther Vidal y Sandra Zabala
+% Dic. 1994
 %
 
 :-dynamic(arc/2).

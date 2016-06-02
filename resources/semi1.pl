@@ -34,7 +34,7 @@ valid_delta((A,B),I):- valid_delta(A,I) ; valid_delta(B,I).
 valid_delta(A,I):- (belongs(A,I);A).
 
 build_model:-belongs(H,I),assert(H),retract(belongs(H,I)),fail.
-build_model.
+build_model. 
 
 
 
