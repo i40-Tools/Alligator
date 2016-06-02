@@ -1,8 +1,4 @@
-package util;
 
-import org.semanticweb.owlapi.model.OWLClass;
-import org.semanticweb.owlapi.model.OWLEntity;
-import org.semanticweb.owlapi.model.OWLOntology;
 
 /**
  * This class is a support class for string util methods

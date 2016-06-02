@@ -1,7 +1,8 @@
+
+
 import java.io.InputStream;
 import java.util.List;
 import java.util.Map;
- 
 
 import org.cs3.prolog.connector.Connector;
 import org.cs3.prolog.connector.common.QueryUtils;
