@@ -18,3 +18,4 @@ clause1(refSem(h,d),true).
 clause1(hasAtt(c1,c),true).
 clause1(hasAtt(c2,a),true).
 
+ 

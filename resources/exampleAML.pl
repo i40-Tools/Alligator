@@ -9,15 +9,28 @@
 :-dynamic(hasRoleClass/2).
 :-dynamic(roleClassRefSem/2).
 :-dynamic(classificationClass/2).
+:-dynamic(sameClassification/2).
 :-dynamic(eClassVersion/2).
 :-dynamic(eClassIRDI/2).
+:-dynamic(sameEClassVersion/2).
 
 
 clause1(sameAs(X,Y),(refSemantic(X,Z),refSemantic(Y,Z))).
 
 clause1(sameAs(X,Y),(sameAs(X,Z),sameAs(Z,Y))).
 
-clause1(sameEClassSpec(X,Y),(classificationClass(X,Z),eClassVersion(X,Z),eClassIRDI(X,Z),classificationClass(Y,Z),eClassVersion(Y,Z),eClassIRDI(Y,Z))).
+
+clause1(sameClassification(X,Y),(classificationClass(X,Z),classificationClass(Y,Z))).
+
+clause1(sameClassification(X,Y),(sameClassification(X,Z),sameClassification(Z,Y))).
+
+
+clause1(sameEClassVersion(X,Y),(eClassVersion(X,Z),eClassVersion(Y,Z))).
+
+clause1(sameEClassVersion(X,Y),(sameEClassVersion(X,Z),sameEClassVersion(Z,Y))).
+
+
+clause1(sameEClassSpec(X,Y),(sameClassification(X,Y),sameEClassVersion(X,Y))).
 
 
 % CAEX FILE - RoleClassLIb

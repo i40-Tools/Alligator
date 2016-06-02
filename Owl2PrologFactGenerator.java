@@ -249,8 +249,6 @@ public class Owl2PrologFactGenerator {
              System.out.println(result.get("A") + " sameAs");
          }
 	}
-	
-	
 
 	public OWLOntology getOnt() {
 		return ont;
