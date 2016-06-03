@@ -8,9 +8,11 @@ This tool depends on the following software
 * Prolog 7.2.3
 * JDK 1.8
 * Prolog Connector 3.1.2
+* Hermit OWL Reasoner 
 
 Download Prolog: http://www.swi-prolog.org/download/stable
 Donwload Prolog Connector: https://sewiki.iai.uni-bonn.de/research/pdt/connector/library
+Donwload Hermit OWL Reasoner: http://www.hermit-reasoner.com/download.html
 
 ## IDE support 
 The quick and easy way to start compiling, running and coding **Rules4AMLIntegrator** we provide a java project in Eclipse and we a Prolog Connector. Thus, you need to install tools:
