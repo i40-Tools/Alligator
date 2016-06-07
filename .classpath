@@ -6,5 +6,6 @@
 	<classpathentry kind="lib" path="lib/HermiT.jar"/>
 	<classpathentry kind="lib" path="lib/org.semanticweb.HermiT.jar"/>
 	<classpathentry kind="lib" path="lib/owlapi-osgidistribution-4.1.0.jar"/>
+	<classpathentry kind="lib" path="D:/swipl/lib/jpl.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
