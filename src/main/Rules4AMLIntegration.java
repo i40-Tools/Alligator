@@ -10,6 +10,8 @@ public class Rules4AMLIntegration {
 
 	public static void main(String[] args) {
 		Owl2PrologFactGenerator test = new Owl2PrologFactGenerator();
+		DeductiveDB deductiveDB = new DeductiveDB();
+		deductiveDB.consultKB();
 		/*try {
 			String localIRI = "d:/Deutch/development/Rules4AMLIntegration/resources/aml.ttl";
 			test.readOntology(localIRI);
@@ -17,7 +19,6 @@ public class Rules4AMLIntegration {
 			test.generateABoxFacts("d:/Deutch/development/Rules4AMLIntegration/resources/ExtensionalDB.pl");
 			
 			test.getDomainRangeAxioms();*/
-		test.consultKB();
 			
 		/*} catch (OWLOntologyCreationException e1) {
 			e1.printStackTrace();

@@ -243,30 +243,6 @@ public class Owl2PrologFactGenerator {
 		}
 	}
 	
-	/**
-	 * Querying the knowledge base. 
-	 */
-	public void consultKB() {
-		String t7 = "consult('resources/semi1.pl')";
-		System.out.println(t7 + " " + (Query.hasSolution(t7) ? "succeeded" : "failed"));
-		
-		String t8 = "consult('resources/exampleAML.pl')";
-		System.out.println(t8 + " " + (Query.hasSolution(t8) ? "succeeded" : "failed"));
-		
-		String t9 = "tdb.";
-		System.out.println(t9 + " " + (Query.hasSolution(t9) ? "succeeded" : "failed"));
-		
-		String t10 = "sameAttribute(X,Y)";
-		System.out.println(t10 + " " + (Query.hasSolution(t10) ? "succeeded" : "failed"));
-		
-		Query q10 = new Query(t10);
-		System.out.println("all solutions of " + t10);
-		while (q10.hasMoreSolutions()) {
-			Map<String, Term> s10 = q10.nextSolution();
-			System.out.println("X = " + s10.get("X") + ", Y = " + s10.get("Y"));
-		}
-	}
-
 	public OWLOntology getOnt() {
 		return ont;
 	}
