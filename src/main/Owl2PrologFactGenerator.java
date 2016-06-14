@@ -256,7 +256,7 @@ public class Owl2PrologFactGenerator {
 		String t9 = "tdb.";
 		System.out.println(t9 + " " + (Query.hasSolution(t9) ? "succeeded" : "failed"));
 		
-		String t10 = "sameEClassSpec(X,Y)";
+		String t10 = "sameAttribute(X,Y)";
 		System.out.println(t10 + " " + (Query.hasSolution(t10) ? "succeeded" : "failed"));
 		
 		Query q10 = new Query(t10);
