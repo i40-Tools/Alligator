@@ -19,7 +19,7 @@
 :-dynamic(sameRoleClassLib/2).
 :-dynamic(sameCAEXFile/2).
 
-
+  
 % Attributes are the same if the have the same refSemantic 
 clause1(sameAttribute(X,Y),(refSemantic(X,Z),refSemantic(Y,Z))).
 clause1(sameAttribute(X,Y),(sameAttribute(X,Z),sameAttribute(Z,Y))).
