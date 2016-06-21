@@ -18,10 +18,10 @@
 :-dynamic(sameRoleClass/2).
 :-dynamic(sameRoleClassLib/2).
 :-dynamic(sameCAEXFile/2).
-:-dynamic(amlPredicates/1).
+:-dynamic(hasAttribute/2).
 
 
-  
+
 % Attributes are the same if the have the same refSemantic 
 clause1(sameAttribute(X,Y),(refSemantic(X,Z),refSemantic(Y,Z))).
 clause1(sameAttribute(X,Y),(sameAttribute(X,Z),sameAttribute(Z,Y))).
@@ -43,23 +43,23 @@ clause1(sameEClassSpec(X,Y),(sameClassification(X,Y),sameEClassVersion(X,Y),same
 clause1(sameEClassSpec(X,Y),(sameEClassSpec(X,Z),sameEClassSpec(Z,Y))).
 
 % Same Role Class if the eClass Specification is the same
-clause1(sameRoleClass(Z,T),(sameEClassSpec(X,Y),roleClassRefSem(Z,X),roleClassRefSem(T,Y))).
+%clause1(sameRoleClass(Z,T),(sameEClassSpec(X,Y),roleClassRefSem(Z,X),roleClassRefSem(T,Y))).
+
+% Testing
+clause1(sameRoleClass(Z,T),(sameAttribute(X,Y),hasAttribute(Z,X),hasAttribute(T,Y))).
 clause1(sameRoleClass(X,Y),(sameRoleClass(X,Z),sameRoleClass(Z,Y))).
 
 % Same Role Class Lib if the Role Classes are the same 
 clause1(sameRoleClassLib(Z,T),(sameRoleClass(X,Y),hasRoleClass(Z,X),hasRoleClass(T,Y))).
 clause1(sameRoleClassLib(X,Y),(sameRoleClassLib(X,Z),sameRoleClassLib(Z,Y))). 
 
-% Same CAEX File if the Role Classes Libs are the same 
+% Same Role Class Lib if the Role Classes are the same 
 clause1(sameCAEXFile(Z,T),(sameRoleClassLib(X,Y),hasRoleClassLib(Z,X),hasRoleClassLib(T,Y))).
 clause1(sameCAEXFile(X,Y),(sameCAEXFile(X,Z),sameCAEXFile(Z,Y))). 
 
 % CAEX FILE - RoleClassLIb
 clause1(hasRoleClassLib(cAEXFile_1,roleClassLib_1),true).
 clause1(hasRoleClassLib(cAEXFile_2,roleClassLib_2),true).
-
-
-
 
 % The one that is different
 clause1(hasRoleClassLib(cAEXFile_3,roleClassLib_3),true).
@@ -69,11 +69,11 @@ clause1(hasRoleClass(roleClassLib_1,roleClass_1),true).
 clause1(hasRoleClass(roleClassLib_2,roleClass_2),true).
 
 clause1(hasRoleClass(roleClassLib_3,roleClass_3),true).
-
+ 
 % Role Class - eClass Specification
 clause1(roleClassRefSem(roleClass_1,eclassspecification_1),true).
 clause1(roleClassRefSem(roleClass_2,eclassspecification_2),true).
-
+ 
 clause1(roleClassRefSem(roleClass_3,eclassspecification_3),true).
   
 % eClass specification for role Class 1
@@ -91,7 +91,6 @@ clause1(classificationClass(eclassspecification_3,"37022501"),true).
 clause1(eClassVersion(eclassspecification_3,"9.1"),true).
 clause1(eClassIRDI(eclassspecification_3,"0173-1#BASIC_1_1#01-ABW077#008"),true).
 
-% Relation of Role Class with Attributes
 clause1(hasAttribute(roleClass_1,attribute_1),true).
 clause1(hasAttribute(roleClass_2,attribute_3),true).
 
