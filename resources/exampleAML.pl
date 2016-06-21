@@ -18,6 +18,8 @@
 :-dynamic(sameRoleClass/2).
 :-dynamic(sameRoleClassLib/2).
 :-dynamic(sameCAEXFile/2).
+:-dynamic(amlPredicates/1).
+
 
   
 % Attributes are the same if the have the same refSemantic 
@@ -48,13 +50,16 @@ clause1(sameRoleClass(X,Y),(sameRoleClass(X,Z),sameRoleClass(Z,Y))).
 clause1(sameRoleClassLib(Z,T),(sameRoleClass(X,Y),hasRoleClass(Z,X),hasRoleClass(T,Y))).
 clause1(sameRoleClassLib(X,Y),(sameRoleClassLib(X,Z),sameRoleClassLib(Z,Y))). 
 
-% Same Role Class Lib if the Role Classes are the same 
+% Same CAEX File if the Role Classes Libs are the same 
 clause1(sameCAEXFile(Z,T),(sameRoleClassLib(X,Y),hasRoleClassLib(Z,X),hasRoleClassLib(T,Y))).
 clause1(sameCAEXFile(X,Y),(sameCAEXFile(X,Z),sameCAEXFile(Z,Y))). 
 
 % CAEX FILE - RoleClassLIb
 clause1(hasRoleClassLib(cAEXFile_1,roleClassLib_1),true).
 clause1(hasRoleClassLib(cAEXFile_2,roleClassLib_2),true).
+
+
+
 
 % The one that is different
 clause1(hasRoleClassLib(cAEXFile_3,roleClassLib_3),true).
@@ -85,6 +90,10 @@ clause1(eClassIRDI(eclassspecification_2,"0173-1#BASIC_1_1#01-ABW077#009"),true)
 clause1(classificationClass(eclassspecification_3,"37022501"),true).
 clause1(eClassVersion(eclassspecification_3,"9.1"),true).
 clause1(eClassIRDI(eclassspecification_3,"0173-1#BASIC_1_1#01-ABW077#008"),true).
+
+% Relation of Role Class with Attributes
+clause1(hasAttribute(roleClass_1,attribute_1),true).
+clause1(hasAttribute(roleClass_2,attribute_3),true).
 
 % Attributes   
 clause1(refSemantic(attribute_1,"0173-1#02-BAE069#007"),true).
