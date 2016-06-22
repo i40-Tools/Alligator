@@ -1,5 +1,5 @@
 % To write the rules into a file
-myWrite(FileName):-listAMLPredicates(P),Z=..[P,X,Y],Z=..[P,X,Y],X\==Y,writeln(FileName, Z), writeln(FileName), fail.
+myWrite(FileName):-listAMLPredicates(P),Z=..[P,X,Y],retract(Z),Z=..[P,X,Y],X\==Y,Z1=..[P,Y,X],retract(Z1),writeln(FileName, Z), writeln(FileName), fail.
 myWrite(_).
 
 listAMLPredicates(P):-amlPredicates(L),member(P,L).

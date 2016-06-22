@@ -19,7 +19,7 @@
 :-dynamic(sameRoleClassLib/2).
 :-dynamic(sameCAEXFile/2).
 :-dynamic(hasAttribute/2).
-
+:-dynamic(sameAttributeRoleClass/2).
 
 
 % Attributes are the same if the have the same refSemantic 
@@ -37,17 +37,17 @@ clause1(sameEClassVersion(X,Y),(sameEClassVersion(X,Z),sameEClassVersion(Z,Y))).
 % Same eClass IRDI
 clause1(sameEClassIRDI(X,Y),(eClassIRDI(X,Z),eClassIRDI(Y,Z))).
 clause1(sameEClassIRDI(X,Y),(sameEClassIRDI(X,Z),sameEClassIRDI(Z,Y))).
-
+ 
 % Same eClass Specification is the combination of eClass IRDI, eClass Classification and eClass Version
 clause1(sameEClassSpec(X,Y),(sameClassification(X,Y),sameEClassVersion(X,Y),sameEClassIRDI(X,Y))).
 clause1(sameEClassSpec(X,Y),(sameEClassSpec(X,Z),sameEClassSpec(Z,Y))).
 
 % Same Role Class if the eClass Specification is the same
-%clause1(sameRoleClass(Z,T),(sameEClassSpec(X,Y),roleClassRefSem(Z,X),roleClassRefSem(T,Y))).
+clause1(sameRoleClass(Z,T),(sameAttributeRoleClass(Z,T),sameEClassSpec(X,Y),roleClassRefSem(Z,X),roleClassRefSem(T,Y))).
+clause1(sameRoleClass(X,Y),(sameRoleClass(X,Z),sameRoleClass(Z,Y))).
 
 % Testing
-clause1(sameRoleClass(Z,T),(sameAttribute(X,Y),hasAttribute(Z,X),hasAttribute(T,Y))).
-clause1(sameRoleClass(X,Y),(sameRoleClass(X,Z),sameRoleClass(Z,Y))).
+clause1(sameAttributeRoleClass(Z,T),(sameAttribute(X,Y),hasAttribute(Z,X),hasAttribute(T,Y))).
 
 % Same Role Class Lib if the Role Classes are the same 
 clause1(sameRoleClassLib(Z,T),(sameRoleClass(X,Y),hasRoleClass(Z,X),hasRoleClass(T,Y))).
@@ -92,7 +92,7 @@ clause1(eClassVersion(eclassspecification_3,"9.1"),true).
 clause1(eClassIRDI(eclassspecification_3,"0173-1#BASIC_1_1#01-ABW077#008"),true).
 
 clause1(hasAttribute(roleClass_1,attribute_1),true).
-clause1(hasAttribute(roleClass_2,attribute_3),true).
+clause1(hasAttribute(roleClass_2,attribute_3),true). 
 
 % Attributes   
 clause1(refSemantic(attribute_1,"0173-1#02-BAE069#007"),true).
