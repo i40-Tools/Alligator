@@ -2,6 +2,8 @@
 % File: exampleAML.pl
 %
 
+:- module(rule_module, [clause1/2]).
+
 :-dynamic(refSemantic/2).
 :-dynamic(sameAs/2).
 :-dynamic(sameEClassSpec/2).
@@ -20,11 +22,19 @@
 :-dynamic(sameCAEXFile/2).
 :-dynamic(hasAttribute/2).
 :-dynamic(sameAttributeRoleClass/2).
+:-dynamic(listAMLPredicates/1).
+:-dynamic(listAMLPredicates/0).
+
+clause1(H,B) :- rule_module:clause(H,B).
 
 
+sameAttribute(X,Y) :- refSemantic(X,Z),refSemantic(Y,Z).
+sameAttribute(X,Y) :- sameAttribute(X,Z),sameAttribute(Z,Y).
+
+ 
 % Attributes are the same if the have the same refSemantic 
-clause1(sameAttribute(X,Y),(refSemantic(X,Z),refSemantic(Y,Z))).
-clause1(sameAttribute(X,Y),(sameAttribute(X,Z),sameAttribute(Z,Y))).
+%clause1(sameAttribute(X,Y),(refSemantic(X,Z),refSemantic(Y,Z))).
+%clause1(sameAttribute(X,Y),(sameAttribute(X,Z),sameAttribute(Z,Y))).
 
 % same eClass Classification 
 clause1(sameClassification(X,Y),(classificationClass(X,Z),classificationClass(Y,Z))).

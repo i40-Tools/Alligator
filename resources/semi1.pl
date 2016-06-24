@@ -6,10 +6,16 @@
 
 :-dynamic(belongs/2).
 
+get_rule(H,B) :-
+	current_predicate(rule_module:H), 
+	H=Functor/Arity, 
+	functor(Head,Functor,Arity),
+	clause(rule_module:Head,B).
+
 
 tdb:- tdb(0),build_model.
 
-tdb(I):- clause1(H,B), valid(B,I), 
+tdb(I):- get_rule(H,B), valid(B,I), 
 	 (\+(belongs(H,_)) ->  
                    I1 is I+1,  
                    assert(belongs(H,I1)), 
@@ -37,10 +43,35 @@ build_model:-belongs(H,I),assert(H),retract(belongs(H,I)),fail.
 build_model.
 
 
+% Don't forget to declare H dynamic!!!
+build_model(H) :- 
+	retractall(H),
+%	% Rename the predicate
+%	H =.. [Functor|Arguments],
+%	atom_concat(Functor,'_generated',NewFunctor),
+%	Hnew =.. [NewFunctor|Arguments],
+	% Compute results and assert them with the new name:
+	call(H), 
+		assert_unique(generated_model:H),
+	fail.
+build_model(_) :- writeln('Finished building model').
 
+	
+p(X,Y) :- a(X),b(Y).
 
+a(1).
+a(2).
+b(a).
+b(b).
 
+:- dynamic generated_model:p/2.
 
+assert_unique(Module:Head) :- 
+    ( not(call(Module:Head)) 
+      -> assert(Module:Head)
+      ;  true
+    ).
+% 
 
 
 

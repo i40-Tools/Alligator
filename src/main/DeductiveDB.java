@@ -70,7 +70,19 @@ public class DeductiveDB {
         for(Term key: keys){
             System.out.println("Value of "+key+" is: "+sol.get(key));
         }
-		
+        
+        String evalAML = "consult('resources/evalAML.pl')";
+        System.out.println(evalAML + " " + (Query.hasSolution(evalAML) ? "succeeded" : "failed"));
+        
+        String t1 = "consult('resources/writeRules.pl')";
+        System.out.println(t1 + " " + (Query.hasSolution(t1) ? "succeeded" : "failed"));
+        
+       
+        String aa = "writePredicates.";
+		System.out.println(aa + " " + (Query.hasSolution(aa) ? "succeeded" : "failed"));
+        
 	}
+	
+
 
 }
