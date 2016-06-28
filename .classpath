@@ -3,16 +3,9 @@
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.8"/>
 	<classpathentry kind="lib" path="D:/swipl/lib/jpl.jar"/>
-	<classpathentry kind="lib" path="C:/Users/Irlan/.m2/repository/net/sourceforge/owlapi/owlapi-distribution/4.0.2/owlapi-distribution-4.0.2.jar">
-		<attributes>
-			<attribute name="maven.pomderived" value="true"/>
-			<attribute name="maven.groupId" value="net.sourceforge.owlapi"/>
-			<attribute name="maven.artifactId" value="owlapi-distribution"/>
-			<attribute name="maven.version" value="4.0.2"/>
-			<attribute name="maven.scope" value="compile"/>
-		</attributes>
-	</classpathentry>
 	<classpathentry kind="lib" path="/DBOntoClassificationu/Libraries/Hermit/HermiT.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/Jena"/>
+	<classpathentry kind="lib" path="E:/Softwares/Semantic Web/OWL API/owlapi-bin.jar"/>
+	<classpathentry kind="lib" path="E:/Softwares/Semantic Web/OWL API/owlapi-osgidistribution-4.0.2.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
