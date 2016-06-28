@@ -4,6 +4,8 @@ import java.io.IOException;
 
 import org.semanticweb.owlapi.model.OWLOntologyCreationException;
 
+import util.ConfigManager;
+
 
 public class Rules4AMLIntegration {
 
@@ -11,12 +13,15 @@ public class Rules4AMLIntegration {
 		Owl2PrologFactGenerator test = new Owl2PrologFactGenerator();
 		//DeductiveDB deductiveDB = new DeductiveDB();
 		//deductiveDB.consultKB();
+		
+		ConfigManager conf = new ConfigManager();
+		conf.loadConfig();
+		
 		try {
-			String localIRI = "d:/Deutch/development/Rules4AMLIntegration/resources/aml.ttl";
+			String localIRI = conf.getOntoURIPath();
 			test.readOntology(localIRI);
-			test.generateTBoxFacts("d:/Deutch/development/Rules4AMLIntegration/resources/IntentionalDB.pl");
-			test.generateABoxFacts("d:/Deutch/development/Rules4AMLIntegration/resources/ExtensionalDB.pl");
-			
+			test.generateTBoxFacts(conf.getFilePath() + "IntentionalDB.pl");
+			test.generateABoxFacts(conf.getFilePath() + "ExtensionalDB.pl");
 			
 		} catch (OWLOntologyCreationException e1) {
 			e1.printStackTrace();

@@ -94,11 +94,23 @@ public class ConfigManager {
 	 * Get the general file path where all the files are located
 	 * @return
 	 */
-	public String getFilePath() {
+	public static String getFilePath() {
 		String filePath = loadConfig().getProperty(
 				          URI_NAMESPACE + "path");
 		return filePath;
 	}
+	
+	/**
+	 * Get the general file path where all the files are located
+	 * @return
+	 */
+	public static String getOntoURIPath() {
+		String filePath = loadConfig().getProperty(
+				          URI_NAMESPACE + "URI");
+		return filePath;
+	}
+	
+	
 
 	/**
 	 * @todo remove. Just for testing
@@ -107,7 +119,7 @@ public class ConfigManager {
 	public static void main(String[] args) {
  	    ConfigManager con = new ConfigManager();
 		con.loadConfig();
-		System.out.println(con.getFilePath() + "aaaa");
+		System.out.println(con.getOntoURIPath() + " aaaa");
 	}
    
 }
