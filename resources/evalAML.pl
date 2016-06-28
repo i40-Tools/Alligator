@@ -8,5 +8,3 @@
  open('d:/Deutch/development/Rules4AMLIntegration/resources/output.txt',write,FileName),
  consult("d:/Deutch/development/Rules4AMLIntegration/resources/writeRules.pl"),
  myWrite(FileName),close(FileName).
- 
-                 

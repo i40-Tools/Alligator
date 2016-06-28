@@ -46,10 +46,6 @@ import org.semanticweb.owlapi.util.SimpleIRIMapper;
 import org.semanticweb.HermiT.Reasoner;
 import org.semanticweb.HermiT.Reasoner.ReasonerFactory;
 import org.coode.owlapi.manchesterowlsyntax.ManchesterOWLSyntaxEditorParser;
-import org.cs3.prolog.connector.Connector;
-import org.cs3.prolog.connector.common.QueryUtils;
-import org.cs3.prolog.connector.process.PrologProcess;
-import org.cs3.prolog.connector.process.PrologProcessException;
 import org.jpl7.Query;
 import org.jpl7.Term;
 import org.semanticweb.owlapi.expression.OWLEntityChecker;
@@ -124,8 +120,10 @@ public class Owl2PrologFactGenerator {
 		}
 
 		for (OWLProperty dataProp : ont.getDataPropertiesInSignature()) {
-			buf.append(":-dynamic(" + StringUtil.lowerCaseFirstChar(dataProp.getIRI().getFragment()) +"/2).").
-			append(System.getProperty("line.separator"));
+			if(dataProp.getIRI().getFragment()!=null){
+				buf.append(":-dynamic(" + StringUtil.lowerCaseFirstChar(dataProp.getIRI().getFragment()) +"/2).").
+				append(System.getProperty("line.separator"));
+			}
 		}
 		
 		return buf.toString();
@@ -155,11 +153,13 @@ public class Owl2PrologFactGenerator {
 		}
 
 		for (OWLProperty datatypeProp : ont.getDataPropertiesInSignature()) {
-			buf.append("clause1(type(").
-			append(StringUtil.lowerCaseFirstChar(datatypeProp.getIRI().getFragment())).
-			append(",").
-			append("datatypeproperty),true).");
-			buf.append(System.getProperty("line.separator"));
+			buf.append("clause1(type(");
+			if(datatypeProp.getIRI().getFragment()!=null){
+				buf.append(StringUtil.lowerCaseFirstChar(datatypeProp.getIRI().getFragment())).
+				append(",").
+				append("datatypeproperty),true).");
+				buf.append(System.getProperty("line.separator"));
+			}
 		}
 
 		return buf.toString();
@@ -219,6 +219,7 @@ public class Owl2PrologFactGenerator {
 	
 	/**
 	 * Get all the domain and range axioms of the ontology
+	 * @todo
 	 */
 	public void getDomainRangeAxioms(){
 		Set<OWLDataPropertyDomainAxiom> dataPropDomain = ont.getAxioms(AxiomType.DATA_PROPERTY_DOMAIN);
