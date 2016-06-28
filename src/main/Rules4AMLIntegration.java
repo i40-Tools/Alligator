@@ -23,6 +23,9 @@ public class Rules4AMLIntegration {
 			test.generateTBoxFacts(conf.getFilePath() + "IntentionalDB.pl");
 			test.generateABoxFacts(conf.getFilePath() + "ExtensionalDB.pl");
 			
+			Files2Facts a = new Files2Facts();
+			a.readFiles(conf.getFilePath());
+			
 		} catch (OWLOntologyCreationException e1) {
 			e1.printStackTrace();
 		} catch (Exception e) {
