@@ -2,109 +2,120 @@
 % File: exampleAML.pl
 %
 
-:- module(rule_module, [clause1/2]).
+:- module(rule_module, []).
 
-:-dynamic(refSemantic/2).
-:-dynamic(sameAs/2).
-:-dynamic(sameEClassSpec/2).
-:-dynamic(hasRoleClassLib/2).
-:-dynamic(hasRoleClass/2).
-:-dynamic(roleClassRefSem/2).
-:-dynamic(classificationClass/2).
-:-dynamic(sameClassification/2).
-:-dynamic(eClassVersion/2).
-:-dynamic(eClassIRDI/2).
-:-dynamic(sameEClassVersion/2).
-:-dynamic(sameEClassIRDI/2).
-:-dynamic(sameAttribute/2).
-:-dynamic(sameRoleClass/2).
-:-dynamic(sameRoleClassLib/2).
-:-dynamic(sameCAEXFile/2).
-:-dynamic(hasAttribute/2).
-:-dynamic(sameAttributeRoleClass/2).
-:-dynamic(listAMLPredicates/1).
-:-dynamic(listAMLPredicates/0).
-
-clause1(H,B) :- rule_module:clause(H,B).
+%:-dynamic(refSemantic/2).
+%:-dynamic(sameAs/2).
+%:-dynamic(sameEClassSpec/2).
+%:-dynamic(hasRoleClassLib/2).
+%:-dynamic(hasRoleClass/2).
+%:-dynamic(roleClassRefSem/2).
+%:-dynamic(classificationClass/2).
+%:-dynamic(sameClassification/2).
+%:-dynamic(eClassVersion/2).
+%:-dynamic(eClassIRDI/2).
+%:-dynamic(sameEClassVersion/2).
+%:-dynamic(sameEClassIRDI/2).
+%:-dynamic(sameAttribute/2).
+%:-dynamic(sameRoleClass/2).
+%:-dynamic(sameRoleClassLib/2).
+%:-dynamic(sameCAEXFile/2).
+%:-dynamic(hasAttribute/2).
+%:-dynamic(sameAttributeRoleClass/2).
 
 
-sameAttribute(X,Y) :- refSemantic(X,Z),refSemantic(Y,Z).
+%amlPredicate('sameCAEXFile').
+%amlPredicate('sameRoleClassLib').
+%amlPredicate('sameRoleClass').
+%amlPredicate('sameEClassSpec').
+%amlPredicate('sameClassification').
+%amlPredicate('sameEClassVersion').
+
+
+
+%H,B) :- rule_module:clause(H,B).
+
+
+sameAttribute(X,Y) :- refSemantic(X,Z), refSemantic(Y,Z).
 sameAttribute(X,Y) :- sameAttribute(X,Z),sameAttribute(Z,Y).
 
  
 % Attributes are the same if the have the same refSemantic 
-%clause1(sameAttribute(X,Y),(refSemantic(X,Z),refSemantic(Y,Z))).
-%clause1(sameAttribute(X,Y),(sameAttribute(X,Z),sameAttribute(Z,Y))).
+%sameAttribute(X,Y) :- refSemantic(X,Z),refSemantic(Y,Z).
+%sameAttribute(X,Y) :- sameAttribute(X,Z),sameAttribute(Z,Y).
 
 % same eClass Classification 
-clause1(sameClassification(X,Y),(classificationClass(X,Z),classificationClass(Y,Z))).
-clause1(sameClassification(X,Y),(sameClassification(X,Z),sameClassification(Z,Y))).
+sameClassification(X,Y) :- classificationClass(X,Z),classificationClass(Y,Z).
+sameClassification(X,Y) :- sameClassification(X,Z),sameClassification(Z,Y).
 
 % Same eClass Version
-clause1(sameEClassVersion(X,Y),(eClassVersion(X,Z),eClassVersion(Y,Z))).
-clause1(sameEClassVersion(X,Y),(sameEClassVersion(X,Z),sameEClassVersion(Z,Y))).
+sameEClassVersion(X,Y) :- eClassVersion(X,Z),eClassVersion(Y,Z).
+sameEClassVersion(X,Y) :- sameEClassVersion(X,Z),sameEClassVersion(Z,Y).
 
 % Same eClass IRDI
-clause1(sameEClassIRDI(X,Y),(eClassIRDI(X,Z),eClassIRDI(Y,Z))).
-clause1(sameEClassIRDI(X,Y),(sameEClassIRDI(X,Z),sameEClassIRDI(Z,Y))).
+sameEClassIRDI(X,Y) :- eClassIRDI(X,Z),eClassIRDI(Y,Z).
+sameEClassIRDI(X,Y) :- sameEClassIRDI(X,Z),sameEClassIRDI(Z,Y).
  
 % Same eClass Specification is the combination of eClass IRDI, eClass Classification and eClass Version
-clause1(sameEClassSpec(X,Y),(sameClassification(X,Y),sameEClassVersion(X,Y),sameEClassIRDI(X,Y))).
-clause1(sameEClassSpec(X,Y),(sameEClassSpec(X,Z),sameEClassSpec(Z,Y))).
+sameEClassSpec(X,Y) :- sameClassification(X,Y),sameEClassVersion(X,Y),sameEClassIRDI(X,Y).
+sameEClassSpec(X,Y) :- sameEClassSpec(X,Z),sameEClassSpec(Z,Y).
 
 % Same Role Class if the eClass Specification is the same
-clause1(sameRoleClass(Z,T),(sameAttributeRoleClass(Z,T),sameEClassSpec(X,Y),roleClassRefSem(Z,X),roleClassRefSem(T,Y))).
-clause1(sameRoleClass(X,Y),(sameRoleClass(X,Z),sameRoleClass(Z,Y))).
+sameRoleClass(Z,T) :- sameAttributeRoleClass(Z,T),sameEClassSpec(X,Y),roleClassRefSem(Z,X),roleClassRefSem(T,Y).
+sameRoleClass(X,Y) :- sameRoleClass(X,Z),sameRoleClass(Z,Y).
 
 % Testing
-clause1(sameAttributeRoleClass(Z,T),(sameAttribute(X,Y),hasAttribute(Z,X),hasAttribute(T,Y))).
+sameAttributeRoleClass(Z,T) :- sameAttribute(X,Y),hasAttribute(Z,X),hasAttribute(T,Y).
 
 % Same Role Class Lib if the Role Classes are the same 
-clause1(sameRoleClassLib(Z,T),(sameRoleClass(X,Y),hasRoleClass(Z,X),hasRoleClass(T,Y))).
-clause1(sameRoleClassLib(X,Y),(sameRoleClassLib(X,Z),sameRoleClassLib(Z,Y))). 
+sameRoleClassLib(Z,T) :- sameRoleClass(X,Y),hasRoleClass(Z,X),hasRoleClass(T,Y).
+sameRoleClassLib(X,Y) :- sameRoleClassLib(X,Z),sameRoleClassLib(Z,Y). 
 
 % Same Role Class Lib if the Role Classes are the same 
-clause1(sameCAEXFile(Z,T),(sameRoleClassLib(X,Y),hasRoleClassLib(Z,X),hasRoleClassLib(T,Y))).
-clause1(sameCAEXFile(X,Y),(sameCAEXFile(X,Z),sameCAEXFile(Z,Y))). 
+sameCAEXFile(Z,T) :- sameRoleClassLib(X,Y),hasRoleClassLib(Z,X),hasRoleClassLib(T,Y).
+sameCAEXFile(X,Y) :- sameCAEXFile(X,Z),sameCAEXFile(Z,Y). 
+
+
+
 
 % CAEX FILE - RoleClassLIb
-clause1(hasRoleClassLib(cAEXFile_1,roleClassLib_1),true).
-clause1(hasRoleClassLib(cAEXFile_2,roleClassLib_2),true).
+hasRoleClassLib(cAEXFile_1,roleClassLib_1).
+hasRoleClassLib(cAEXFile_2,roleClassLib_2).
 
 % The one that is different
-clause1(hasRoleClassLib(cAEXFile_3,roleClassLib_3),true).
+hasRoleClassLib(cAEXFile_3,roleClassLib_3).
  
 % RoleClassLIb - Role Class
-clause1(hasRoleClass(roleClassLib_1,roleClass_1),true).
-clause1(hasRoleClass(roleClassLib_2,roleClass_2),true).
+hasRoleClass(roleClassLib_1,roleClass_1).
+hasRoleClass(roleClassLib_2,roleClass_2).
 
-clause1(hasRoleClass(roleClassLib_3,roleClass_3),true).
+hasRoleClass(roleClassLib_3,roleClass_3).
  
 % Role Class - eClass Specification
-clause1(roleClassRefSem(roleClass_1,eclassspecification_1),true).
-clause1(roleClassRefSem(roleClass_2,eclassspecification_2),true).
+roleClassRefSem(roleClass_1,eclassspecification_1).
+roleClassRefSem(roleClass_2,eclassspecification_2).
  
-clause1(roleClassRefSem(roleClass_3,eclassspecification_3),true).
+roleClassRefSem(roleClass_3,eclassspecification_3).
   
 % eClass specification for role Class 1
-clause1(classificationClass(eclassspecification_1,"27022501"),true).
-clause1(eClassVersion(eclassspecification_1,"9.0"),true).
-clause1(eClassIRDI(eclassspecification_1,"0173-1#BASIC_1_1#01-ABW077#009"),true).
+classificationClass(eclassspecification_1,"27022501").
+eClassVersion(eclassspecification_1,"9.0").
+eClassIRDI(eclassspecification_1,"0173-1#BASIC_1_1#01-ABW077#009").
 
 % eClass specification for role Class 2
-clause1(classificationClass(eclassspecification_2,"27022501"),true).
-clause1(eClassVersion(eclassspecification_2,"9.0"),true).
-clause1(eClassIRDI(eclassspecification_2,"0173-1#BASIC_1_1#01-ABW077#009"),true).
+classificationClass(eclassspecification_2,"27022501").
+eClassVersion(eclassspecification_2,"9.0").
+eClassIRDI(eclassspecification_2,"0173-1#BASIC_1_1#01-ABW077#009").
 
 % eClass specification for role Class 2
-clause1(classificationClass(eclassspecification_3,"37022501"),true).
-clause1(eClassVersion(eclassspecification_3,"9.1"),true).
-clause1(eClassIRDI(eclassspecification_3,"0173-1#BASIC_1_1#01-ABW077#008"),true).
+classificationClass(eclassspecification_3,"37022501").
+eClassVersion(eclassspecification_3,"9.1").
+eClassIRDI(eclassspecification_3,"0173-1#BASIC_1_1#01-ABW077#008").
 
-clause1(hasAttribute(roleClass_1,attribute_1),true).
-clause1(hasAttribute(roleClass_2,attribute_3),true). 
+hasAttribute(roleClass_1,attribute_1).
+hasAttribute(roleClass_2,attribute_3).  
 
 % Attributes   
-clause1(refSemantic(attribute_1,"0173-1#02-BAE069#007"),true).
-clause1(refSemantic(attribute_2,"0173-1#02-BAE122#006"),true).
-clause1(refSemantic(attribute_3,"0173-1#02-BAE069#007"),true).  
+refSemantic(attribute_1,"0173-1#02-BAE069#007").
+refSemantic(attribute_2,"0173-1#02-BAE122#006").
+refSemantic(attribute_3,"0173-1#02-BAE069#007").  

@@ -6,11 +6,14 @@
 
 :-dynamic(belongs/2).
 
-get_rule(H,B) :-
-	current_predicate(rule_module:H), 
+get_rule(H,B) :- 
+	get_rule(rule_module,H,B).  % shortcut when you have just 1 rule module	
+
+get_rule(Module,H,B) :-
+	current_predicate(Module:H), 
 	H=Functor/Arity, 
 	functor(Head,Functor,Arity),
-	clause(rule_module:Head,B).
+	clause(Module:Head,B).
 
 
 tdb:- tdb(0),build_model.
@@ -43,18 +46,26 @@ build_model:-belongs(H,I),assert(H),retract(belongs(H,I)),fail.
 build_model.
 
 
+buil_full_model :-
+	amlPredicate(Name/Arity),
+	  functor(Call,Name,Arity),
+	  build_model(Call),
+	fail.
+buil_full_model :- 
+	writeln('Finished building model').
+
 % Don't forget to declare H dynamic!!!
 build_model(H) :- 
-	retractall(H),
+	retractall(generated_model:H),
 %	% Rename the predicate
 %	H =.. [Functor|Arguments],
 %	atom_concat(Functor,'_generated',NewFunctor),
 %	Hnew =.. [NewFunctor|Arguments],
 	% Compute results and assert them with the new name:
-	call(H), 
+	call(rule_module:H), 
 		assert_unique(generated_model:H),
 	fail.
-build_model(_) :- writeln('Finished building model').
+
 
 	
 p(X,Y) :- a(X),b(Y).
