@@ -7,5 +7,14 @@
 	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/Jena"/>
 	<classpathentry kind="lib" path="E:/Softwares/Semantic Web/OWL API/owlapi-bin.jar"/>
 	<classpathentry kind="lib" path="E:/Softwares/Semantic Web/OWL API/owlapi-osgidistribution-4.0.2.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Irlan/.m2/repository/commons-io/commons-io/2.4/commons-io-2.4.jar">
+		<attributes>
+			<attribute name="maven.pomderived" value="true"/>
+			<attribute name="maven.groupId" value="commons-io"/>
+			<attribute name="maven.artifactId" value="commons-io"/>
+			<attribute name="maven.version" value="2.4"/>
+			<attribute name="maven.scope" value="compile"/>
+		</attributes>
+	</classpathentry>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

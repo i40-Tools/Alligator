@@ -30,7 +30,7 @@ import org.apache.commons.io.FilenameUtils;
  * 28.06.2016
  */
 public class Files2Facts {
-	private RDFNode literal;
+	private RDFNode object;
 	private RDFNode predicate;
 	private RDFNode subject;
 	private static ArrayList<RDFNode> literals, predicates;
@@ -70,24 +70,29 @@ public class Files2Facts {
 			Statement stmt = iterator.nextStatement();
 			subject = stmt.getSubject();
 			predicate = stmt.getPredicate();
-			literal = stmt.getObject();
+			object = stmt.getObject();
 			
-			//System.out.println(subject);
-			
-			if (literal.isURIResource()) {
-				literal = model.getResource(literal.as(Resource.class).getURI());
-			}
-			System.out.println(literal);
-
 			buf.append("clause1(").
-			append(subject).
+			append(predicate.asNode().getLocalName()).
 			append("(").
-			append(predicate).
-			append(",").
-			append(literal).
-			append("),true).");
+			append(subject.asNode().getLocalName()).
+			append(",");
+			
+			if (object.isURIResource()) {
+				object = model.getResource(object.as(Resource.class).getURI());
+				buf.append(object.asNode().getLocalName());
+				//System.out.println(object);
+			}else{
+				if(object.isLiteral()){
+					buf.append("'" + object.asLiteral().getLexicalForm() + "'");
+				}else{
+					buf.append(object);
+				}
+				//System.out.println(object.asLiteral().getLexicalForm() + " NOT URI Resource");
+			}
+			
+			buf.append("),true).");
 			buf.append(System.getProperty("line.separator"));
-			//System.out.println(subject + "" + predicate + "" + "" + literal);
 		}
 		return buf.toString();
 	}
@@ -97,10 +102,9 @@ public class Files2Facts {
 	 * @param AboxFilePath
 	 * @throws Exception
 	 */
-	public void generateFiles(File rdfAMLFilePath) throws Exception {
+	public void generatePrologFile(File rdfAMLFilePath) throws Exception {
 		String newName = FilenameUtils.getBaseName(rdfAMLFilePath.getName()) + ".pl";
 		String completePath = rdfAMLFilePath.getParentFile() + "\\" + newName;
-		System.out.println(completePath);
 		PrintWriter prologWriter = 
 				new PrintWriter(new FileWriter(completePath), true);
 		prologWriter.println(factsFromFiles(rdfAMLFilePath));
@@ -108,9 +112,14 @@ public class Files2Facts {
 		prologWriter.close();
 	}
 
-	public void test() throws Exception{
+	
+	/**
+	 * Generate all the files of a given folder
+	 * @throws Exception
+	 */
+	public void generateFiles() throws Exception{
 		for (File file : files) {
-			generateFiles(file);
+			generatePrologFile(file);
 		}
 	}
 
