@@ -81,14 +81,12 @@ public class Files2Facts {
 			if (object.isURIResource()) {
 				object = model.getResource(object.as(Resource.class).getURI());
 				buf.append(object.asNode().getLocalName());
-				//System.out.println(object);
 			}else{
 				if(object.isLiteral()){
 					buf.append("'" + object.asLiteral().getLexicalForm() + "'");
 				}else{
 					buf.append(object);
 				}
-				//System.out.println(object.asLiteral().getLexicalForm() + " NOT URI Resource");
 			}
 			
 			buf.append("),true).");
@@ -98,8 +96,7 @@ public class Files2Facts {
 	}
 
 	/**
-	 * 
-	 * @param AboxFilePath
+	 * @param rdfAMLFilePath
 	 * @throws Exception
 	 */
 	public void generatePrologFile(File rdfAMLFilePath) throws Exception {
@@ -108,6 +105,22 @@ public class Files2Facts {
 		PrintWriter prologWriter = 
 				new PrintWriter(new FileWriter(completePath), true);
 		prologWriter.println(factsFromFiles(rdfAMLFilePath));
+		prologWriter.flush();
+		prologWriter.close();
+	}
+	
+	/**
+	 * @param rdfAMLFilePath
+	 * @throws Exception
+	 */
+	public void generateExtensionalDB(String path) throws Exception {
+		StringBuilder buf = new StringBuilder();
+		for (File file : files) {
+			buf.append(factsFromFiles(file));
+		}
+		PrintWriter prologWriter = 
+				new PrintWriter(new FileWriter(path + "edb.pl"), true);
+		prologWriter.println(buf);
 		prologWriter.flush();
 		prologWriter.close();
 	}

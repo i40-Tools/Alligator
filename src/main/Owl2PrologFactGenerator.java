@@ -87,7 +87,7 @@ public class Owl2PrologFactGenerator {
 		reasoner = new Reasoner.ReasonerFactory().createReasoner(this.ont);
 	}
 
-	public void generateTBoxFacts(String outputPrologFilename) throws Exception {
+	public void generateIntentionalDB(String outputPrologFilename) throws Exception {
 		PrintWriter prologWriter = 
 				new PrintWriter(new FileWriter(outputPrologFilename), true);
 		prologWriter.println(factsFromProperties());

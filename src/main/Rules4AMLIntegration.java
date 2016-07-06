@@ -18,18 +18,19 @@ public class Rules4AMLIntegration {
 		conf.loadConfig();
 		
 		try {
-			// Generating rules from the Ontology
+			// Generating Intentional DB from the Ontology
 			String localIRI = conf.getOntoURIPath();
 			test.readOntology(localIRI);
-			test.generateTBoxFacts(conf.getFilePath() + "IntentionalDB.pl");
+			test.generateIntentionalDB(conf.getFilePath() + "IntentionalDB.pl");
 			
-			// Generating facts from the Ontology
+			// Generating Extentional DB from the Ontology, if the
 			test.generateABoxFacts(conf.getFilePath() + "ExtensionalDB.pl");
 			
 			// Generating facts from the AML files, they are converted into RDF 
 			Files2Facts filesAMLInRDF = new Files2Facts();
 			filesAMLInRDF.readFiles(conf.getFilePath());
 			filesAMLInRDF.generateFiles();
+			filesAMLInRDF.generateExtensionalDB(conf.getFilePath());
 			
 		} catch (OWLOntologyCreationException e1) {
 			e1.printStackTrace();
