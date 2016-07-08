@@ -25,8 +25,8 @@
 :-dynamic(hasAttributeName/2).
 :-dynamic(hasAttributeValue/2).
 :-dynamic(type/2).
-:-dynamic(classificationClassAtt/1).
-:-dynamic(versionClassAtt/1).
+:-dynamic(classificationClassAtt/2).
+:-dynamic(versionClassAtt/2).
 
 
 % Attributes are the same if the have the same refSemantic 
@@ -67,9 +67,25 @@ clause1(sameRoleClassLib(X,Y),(sameRoleClassLib(X,Z),sameRoleClassLib(Z,Y))).
 clause1(sameCAEXFile(Z,T),(sameRoleClassLib(X,Y),hasRoleClassLib(Z,X),hasRoleClassLib(T,Y))).
 clause1(sameCAEXFile(X,Y),(sameCAEXFile(X,Z),sameCAEXFile(Z,Y))). 
 
-clause1(classificationClassAtt(X),(hasAttributeName(X,'eClassClassificationClass'),type(X,attribute))).
+% Attributes related to eClass
+clause1(classificationClassAtt(X,Y),(hasAttributeName(X,'eClassClassificationClass'),
+                                     hasAttributeName(Y,'eClassClassificationClass'),
+                                     hasAttributeValue(X,Z),
+                                     hasAttributeValue(Y,Z))
+                                     ).
+                                     
+clause1(versionClassAtt(X,Y),(hasAttributeName(X,'eClassVersion'),
+                                     hasAttributeName(Y,'eClassVersion'),
+                                     hasAttributeValue(X,Z),
+                                     hasAttributeValue(Y,Z))
+                                     ).                                     
 
-clause1(versionClassAtt(X),(hasAttributeName(X,'eClassVersion'),type(X,attribute))).
+%clause1(sameRoleClassA(Z,T),(classificationClassAtt(X),
+ %                            classificationClassAtt(Y),
+   %                          classificationClassAtt(Z),
+    %                         classificationClassAtt(K),
+   %                          hasRoleClassLib(Z,X),
+    %                         hasRoleClassLib(T,Y))).
 
 % CAEX FILE - RoleClassLIb
 %clause1(hasRoleClassLib(cAEXFile_1,roleClassLib_1),true).
@@ -96,9 +112,9 @@ clause1(roleClassRefSem(roleClass_1,eclassspecification_1),true).
 %clause1(eClassIRDI(eclassspecification_1,"0173-1#BASIC_1_1#01-ABW077#009"),true).
 
 % eClass specification for role Class 2
-clause1(classificationClass(eclassspecification_2,"27022501"),true).
-clause1(eClassVersion(eclassspecification_2,"9.0"),true).
-clause1(eClassIRDI(eclassspecification_2,"0173-1#BASIC_1_1#01-ABW077#009"),true).
+%clause1(classificationClass(eclassspecification_2,"27022501"),true).
+%clause1(eClassVersion(eclassspecification_2,"9.0"),true).
+%clause1(eClassIRDI(eclassspecification_2,"0173-1#BASIC_1_1#01-ABW077#009"),true).
 
 % eClass specification for role Class 2
 clause1(classificationClass(eclassspecification_3,"37022501"),true).
@@ -117,6 +133,10 @@ clause1(hasRefSemantic(attribute_2,refSemantic2),true).
 clause1(hasCorrespondingAttributePath(refSemantic1,'ECLASS:0173-1#02-BAE122#007'),true).
 clause1(hasCorrespondingAttributePath(refSemantic2,'ECLASS:0173-1#02-BAE122#007'),true).
 
+clause1(hasAttributeValue(attribute1,'27022501'),true).
+clause1(hasAttributeName(attribute1,'eClassClassificationClass'),true).
+clause1(type(attribute1,attribute),true).
+
 clause1(hasAttributeValue(attribute2,'27022501'),true).
 clause1(hasAttributeName(attribute2,'eClassClassificationClass'),true).
 clause1(type(attribute2,attribute),true).
@@ -124,3 +144,21 @@ clause1(type(attribute2,attribute),true).
 clause1(hasAttributeName(attribute1,'eClassVersion'),true).
 clause1(hasAttributeValue(attribute1,'9.0'),true).
 clause1(type(attribute1,attribute),true).
+
+clause1(hasAttributeValue(attribute1,'9.0'),true).
+clause1(hasAttributeName(attribute1,'eClassVersion'),true).
+clause1(type(attribute1,attribute),true).
+
+clause1(hasAttribute(roleClass2,attribute6),true).
+clause1(hasAttribute(roleClass2,attribute5),true).
+clause1(hasAttribute(roleClass2,attribute4),true).
+clause1(hasAttribute(roleClass2,attribute3),true).
+clause1(hasAttribute(roleClass2,attribute2),true).
+clause1(hasAttribute(roleClass2,attribute1),true).
+
+clause1(hasAttribute(roleClass2,attribute6),true).
+clause1(hasAttribute(roleClass2,attribute5),true).
+clause1(hasAttribute(roleClass2,attribute4),true).
+clause1(hasAttribute(roleClass2,attribute3),true).
+clause1(hasAttribute(roleClass2,attribute2),true).
+clause1(hasAttribute(roleClass2,attribute1),true).
