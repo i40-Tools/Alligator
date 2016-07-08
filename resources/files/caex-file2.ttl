@@ -35,14 +35,14 @@ aml:Attribute_2
       rdf:type aml:Attribute ;
       rdfs:label "Attribute 2"@en ;
       schema:name "Cooling type"@en ;
-	  aml:refSemantic "0173-1#02-BAE122#006";
+	  aml:refSemantic "0173-1#02-BAE069#007";
 	.
 	
 aml:Attribute_3
       rdf:type aml:Attribute ;
       rdfs:label "Attribute 3"@en ;
       schema:name "Construction form of DC motor"@en ;
-	  aml:refSemantic "0173-1#02-BAE069#007";
+	  aml:refSemantic "0173-1#02-BAE069#006";
 	.	
 	
 aml:eClassSpecification_2

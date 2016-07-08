@@ -3,7 +3,6 @@
 %
 
 :-dynamic(refSemantic/2).
-:-dynamic(sameAs/2).
 :-dynamic(sameEClassSpec/2).
 :-dynamic(hasRoleClassLib/2).
 :-dynamic(hasRoleClass/2).
@@ -16,15 +15,26 @@
 :-dynamic(sameEClassIRDI/2).
 :-dynamic(sameAttribute/2).
 :-dynamic(sameRoleClass/2).
-:-dynamic(sameRoleClassLib/2).
+:-dynamic(sameRoleClassLib/2). 
 :-dynamic(sameCAEXFile/2).
 :-dynamic(hasAttribute/2).
 :-dynamic(sameAttributeRoleClass/2).
+:-dynamic(hasCorrespondingAttributePath/2).
+:-dynamic(sameRefSemantic/2).
+:-dynamic(hasRefSemantic/2).
+:-dynamic(hasAttributeName/2).
+:-dynamic(hasAttributeValue/2).
+:-dynamic(type/2).
+:-dynamic(classificationClassAtt/1).
+:-dynamic(versionClassAtt/1).
 
 
 % Attributes are the same if the have the same refSemantic 
-clause1(sameAttribute(X,Y),(refSemantic(X,Z),refSemantic(Y,Z))).
+clause1(sameAttribute(X,Y),(sameRefSemantic(X,Z),sameRefSemantic(Y,Z))).
 clause1(sameAttribute(X,Y),(sameAttribute(X,Z),sameAttribute(Z,Y))).
+
+clause1(sameRefSemantic(X,Y),(hasCorrespondingAttributePath(X,Z),hasCorrespondingAttributePath(Y,Z))).
+clause1(sameRefSemantic(X,Y),(sameRefSemantic(X,Z),sameRefSemantic(Z,Y))).
 
 % same eClass Classification 
 clause1(sameClassification(X,Y),(classificationClass(X,Z),classificationClass(Y,Z))).
@@ -57,29 +67,33 @@ clause1(sameRoleClassLib(X,Y),(sameRoleClassLib(X,Z),sameRoleClassLib(Z,Y))).
 clause1(sameCAEXFile(Z,T),(sameRoleClassLib(X,Y),hasRoleClassLib(Z,X),hasRoleClassLib(T,Y))).
 clause1(sameCAEXFile(X,Y),(sameCAEXFile(X,Z),sameCAEXFile(Z,Y))). 
 
+clause1(classificationClassAtt(X),(hasAttributeName(X,'eClassClassificationClass'),type(X,attribute))).
+
+clause1(versionClassAtt(X),(hasAttributeName(X,'eClassVersion'),type(X,attribute))).
+
 % CAEX FILE - RoleClassLIb
-clause1(hasRoleClassLib(cAEXFile_1,roleClassLib_1),true).
-clause1(hasRoleClassLib(cAEXFile_2,roleClassLib_2),true).
+%clause1(hasRoleClassLib(cAEXFile_1,roleClassLib_1),true).
+%clause1(hasRoleClassLib(cAEXFile_2,roleClassLib_2),true).
 
 % The one that is different
-clause1(hasRoleClassLib(cAEXFile_3,roleClassLib_3),true).
+%clause1(hasRoleClassLib(cAEXFile_3,roleClassLib_3),true).
  
 % RoleClassLIb - Role Class
-clause1(hasRoleClass(roleClassLib_1,roleClass_1),true).
-clause1(hasRoleClass(roleClassLib_2,roleClass_2),true).
+%clause1(hasRoleClass(roleClassLib_1,roleClass_1),true).
+%clause1(hasRoleClass(roleClassLib_2,roleClass_2),true).
 
-clause1(hasRoleClass(roleClassLib_3,roleClass_3),true).
+%clause1(hasRoleClass(roleClassLib_3,roleClass_3),true).
  
 % Role Class - eClass Specification
 clause1(roleClassRefSem(roleClass_1,eclassspecification_1),true).
-clause1(roleClassRefSem(roleClass_2,eclassspecification_2),true).
+%clause1(roleClassRefSem(roleClass_2,eclassspecification_2),true).
  
-clause1(roleClassRefSem(roleClass_3,eclassspecification_3),true).
+%clause1(roleClassRefSem(roleClass_3,eclassspecification_3),true).
   
 % eClass specification for role Class 1
-clause1(classificationClass(eclassspecification_1,"27022501"),true).
-clause1(eClassVersion(eclassspecification_1,"9.0"),true).
-clause1(eClassIRDI(eclassspecification_1,"0173-1#BASIC_1_1#01-ABW077#009"),true).
+%clause1(classificationClass(eclassspecification_1,"27022501"),true). 
+%clause1(eClassVersion(eclassspecification_1,"9.0"),true).
+%clause1(eClassIRDI(eclassspecification_1,"0173-1#BASIC_1_1#01-ABW077#009"),true).
 
 % eClass specification for role Class 2
 clause1(classificationClass(eclassspecification_2,"27022501"),true).
@@ -92,9 +106,21 @@ clause1(eClassVersion(eclassspecification_3,"9.1"),true).
 clause1(eClassIRDI(eclassspecification_3,"0173-1#BASIC_1_1#01-ABW077#008"),true).
 
 clause1(hasAttribute(roleClass_1,attribute_1),true).
+
+clause1(hasAttribute(roleClass_1,attribute_1),true).
 clause1(hasAttribute(roleClass_2,attribute_3),true). 
 
 % Attributes   
-clause1(refSemantic(attribute_1,"0173-1#02-BAE069#007"),true).
-clause1(refSemantic(attribute_2,"0173-1#02-BAE122#006"),true).
-clause1(refSemantic(attribute_3,"0173-1#02-BAE069#007"),true).  
+clause1(hasRefSemantic(attribute_1,refSemantic1),true).
+clause1(hasRefSemantic(attribute_2,refSemantic2),true).
+
+clause1(hasCorrespondingAttributePath(refSemantic1,'ECLASS:0173-1#02-BAE122#007'),true).
+clause1(hasCorrespondingAttributePath(refSemantic2,'ECLASS:0173-1#02-BAE122#007'),true).
+
+clause1(hasAttributeValue(attribute2,'27022501'),true).
+clause1(hasAttributeName(attribute2,'eClassClassificationClass'),true).
+clause1(type(attribute2,attribute),true).
+
+clause1(hasAttributeName(attribute1,'eClassVersion'),true).
+clause1(hasAttributeValue(attribute1,'9.0'),true).
+clause1(type(attribute1,attribute),true).

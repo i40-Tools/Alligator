@@ -13,6 +13,7 @@ import javax.security.auth.Subject;
 import org.semanticweb.owlapi.model.OWLClass;
 
 import util.ConfigManager;
+import util.StringUtil;
 
 import com.hp.hpl.jena.rdf.model.Model;
 import com.hp.hpl.jena.rdf.model.ModelFactory;
@@ -72,15 +73,18 @@ public class Files2Facts {
 			predicate = stmt.getPredicate();
 			object = stmt.getObject();
 			
+			String subjectStr = StringUtil.removeLastMinus(subject.asNode().getLocalName());
+			
 			buf.append("clause1(").
 			append(predicate.asNode().getLocalName()).
 			append("(").
-			append(subject.asNode().getLocalName()).
+			append(StringUtil.lowerCaseFirstChar(subjectStr)).
 			append(",");
 			
 			if (object.isURIResource()) {
 				object = model.getResource(object.as(Resource.class).getURI());
-				buf.append(object.asNode().getLocalName());
+				String objectStr = object.asNode().getLocalName();
+				buf.append(StringUtil.lowerCaseFirstChar(StringUtil.removeLastMinus(objectStr)));
 			}else{
 				if(object.isLiteral()){
 					buf.append("'" + object.asLiteral().getLexicalForm() + "'");

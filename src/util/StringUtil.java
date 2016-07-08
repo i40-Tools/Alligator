@@ -20,4 +20,8 @@ public class StringUtil {
 		return str.substring(0, 1).toLowerCase() + str.substring(1); 
 	}
 	
+	public static String removeLastMinus(String str){
+		return str.substring(str.lastIndexOf("-") + 1);
+	}
+	
 }

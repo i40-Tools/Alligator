@@ -44,6 +44,6 @@ aml:eClassSpecification_1
 aml:Attribute_1
       rdf:type aml:Attribute ;
       rdfs:label "Attribute 1"@en ;
-      schema:name "Construction form of DC motor"@en ;
+      schema:name "Cooling type"@en ;
 	  aml:refSemantic "0173-1#02-BAE069#007";
 	.  
