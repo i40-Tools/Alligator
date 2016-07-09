@@ -87,86 +87,14 @@ clause1(eClassIRDIAtt(X,Y),(hasAttributeName(X,'eClassIRDI'),
                               hasAttributeValue(Y,Z))
                               ).                                     
 
-clause1(sameRoleClass(Z,T),( eClassVersionAtt(X,Y),
+clause1(sameRoleClass(Z,T),( eClassClassificationAtt(X,Y),
                              eClassVersionAtt(B,C),
+                             eClassIRDIAtt(D,E),
                              hasAttribute(Z,X),
                              hasAttribute(Z,B),
+                             hasAttribute(Z,D),
                              hasAttribute(T,Y),
-                             hasAttribute(T,C))).
+                             hasAttribute(T,C),
+                             hasAttribute(T,E)
+                             )).
 
-% CAEX FILE - RoleClassLIb
-%clause1(hasRoleClassLib(cAEXFile_1,roleClassLib_1),true).
-%clause1(hasRoleClassLib(cAEXFile_2,roleClassLib_2),true).
-
-% The one that is different
-%clause1(hasRoleClassLib(cAEXFile_3,roleClassLib_3),true).
- 
-% RoleClassLIb - Role Class
-%clause1(hasRoleClass(roleClassLib_1,roleClass_1),true).
-%clause1(hasRoleClass(roleClassLib_2,roleClass_2),true).
-
-%clause1(hasRoleClass(roleClassLib_3,roleClass_3),true).
- 
-% Role Class - eClass Specification
-clause1(roleClassRefSem(roleClass_1,eclassspecification_1),true).
-%clause1(roleClassRefSem(roleClass_2,eclassspecification_2),true).
- 
-%clause1(roleClassRefSem(roleClass_3,eclassspecification_3),true).
-  
-% eClass specification for role Class 1
-%clause1(classificationClass(eclassspecification_1,"27022501"),true). 
-%clause1(eClassVersion(eclassspecification_1,"9.0"),true).
-%clause1(eClassIRDI(eclassspecification_1,"0173-1#BASIC_1_1#01-ABW077#009"),true).
-
-% eClass specification for role Class 2
-%clause1(classificationClass(eclassspecification_2,"27022501"),true).
-%clause1(eClassVersion(eclassspecification_2,"9.0"),true).
-%clause1(eClassIRDI(eclassspecification_2,"0173-1#BASIC_1_1#01-ABW077#009"),true).
-
-% eClass specification for role Class 2
-clause1(classificationClass(eclassspecification_3,"37022501"),true).
-clause1(eClassVersion(eclassspecification_3,"9.1"),true).
-clause1(eClassIRDI(eclassspecification_3,"0173-1#BASIC_1_1#01-ABW077#008"),true).
-
-clause1(hasAttribute(roleClass_1,attribute_1),true).
-
-clause1(hasAttribute(roleClass_1,attribute_1),true).
-clause1(hasAttribute(roleClass_2,attribute_3),true). 
-
-% Attributes   
-clause1(hasRefSemantic(attribute_1,refSemantic1),true).
-clause1(hasRefSemantic(attribute_2,refSemantic2),true).
-
-clause1(hasCorrespondingAttributePath(refSemantic1,'ECLASS:0173-1#02-BAE122#007'),true).
-clause1(hasCorrespondingAttributePath(refSemantic2,'ECLASS:0173-1#02-BAE122#007'),true).
-
-clause1(hasAttributeValue(attribute1,'27022501'),true).
-clause1(hasAttributeName(attribute1,'eClassClassificationClass'),true).
-clause1(type(attribute1,attribute),true).
-
-clause1(hasAttributeValue(attribute2,'27022501'),true).
-clause1(hasAttributeName(attribute2,'eClassClassificationClass'),true).
-clause1(type(attribute2,attribute),true).
-
-clause1(hasAttributeName(attribute3,'eClassVersion'),true).
-clause1(hasAttributeValue(attribute3,'9.0'),true).
-clause1(type(attribute3,attribute),true).
-
-clause1(hasAttributeValue(attribute4,'9.0'),true).
-clause1(hasAttributeName(attribute4,'eClassVersion'),true).
-clause1(type(attribute4,attribute),true).
-
-clause1(hasAttributeValue(attribute5,'0173-1---BASIC_1_1#01-ABW077#009'),true).
-clause1(hasAttributeName(attribute5,'eClassIRDI'),true).
-clause1(type(attribute5,attribute),true).
-
-clause1(hasAttributeValue(attribute6,'0173-1---BASIC_1_1#01-ABW077#009'),true).
-clause1(hasAttributeName(attribute6,'eClassIRDI'),true).
-clause1(type(attribute6,attribute),true).
-
-clause1(hasAttribute(roleClass1,attribute1),true).
-clause1(hasAttribute(roleClass1,attribute3),true).
-clause1(hasAttribute(roleClass2,attribute2),true).
-clause1(hasAttribute(roleClass2,attribute4),true).
-clause1(hasAttribute(roleClass1,attribute5),true).
-clause1(hasAttribute(roleClass2,attribute6),true).

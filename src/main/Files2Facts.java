@@ -60,7 +60,7 @@ public class Files2Facts {
 		}
 	}
 
-	public String factsFromFiles(File file) throws Exception{
+	public String factsFromFiles(File file, String test) throws Exception{
 		StringBuilder buf = new StringBuilder();
 		InputStream inputStream = FileManager.get().open(file.getAbsolutePath());
 		model.read(new InputStreamReader(inputStream), null, "TURTLE"); // parses an InputStream assuming RDF in Turtle format
@@ -78,13 +78,13 @@ public class Files2Facts {
 			buf.append("clause1(").
 			append(predicate.asNode().getLocalName()).
 			append("(").
-			append(StringUtil.lowerCaseFirstChar(subjectStr)).
+			append(StringUtil.lowerCaseFirstChar(subjectStr + test)).
 			append(",");
 			
 			if (object.isURIResource()) {
 				object = model.getResource(object.as(Resource.class).getURI());
 				String objectStr = object.asNode().getLocalName();
-				buf.append(StringUtil.lowerCaseFirstChar(StringUtil.removeLastMinus(objectStr)));
+				buf.append(StringUtil.lowerCaseFirstChar(StringUtil.removeLastMinus(objectStr) + test));
 			}else{
 				if(object.isLiteral()){
 					buf.append("'" + object.asLiteral().getLexicalForm() + "'");
@@ -108,7 +108,7 @@ public class Files2Facts {
 		String completePath = rdfAMLFilePath.getParentFile() + "\\" + newName;
 		PrintWriter prologWriter = 
 				new PrintWriter(new FileWriter(completePath), true);
-		prologWriter.println(factsFromFiles(rdfAMLFilePath));
+		prologWriter.println(factsFromFiles(rdfAMLFilePath,""));
 		prologWriter.flush();
 		prologWriter.close();
 	}
@@ -119,8 +119,9 @@ public class Files2Facts {
 	 */
 	public void generateExtensionalDB(String path) throws Exception {
 		StringBuilder buf = new StringBuilder();
+		int i = 1;
 		for (File file : files) {
-			buf.append(factsFromFiles(file));
+			buf.append(factsFromFiles(file,"_"+i++));
 		}
 		PrintWriter prologWriter = 
 				new PrintWriter(new FileWriter(path + "edb.pl"), true);
