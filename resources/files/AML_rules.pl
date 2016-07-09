@@ -25,8 +25,9 @@
 :-dynamic(hasAttributeName/2).
 :-dynamic(hasAttributeValue/2).
 :-dynamic(type/2).
-:-dynamic(classificationClassAtt/2).
-:-dynamic(versionClassAtt/2).
+:-dynamic(eClassClassificationAtt/2).
+:-dynamic(eClassVersionAtt/2).
+:-dynamic(eClassIRDIAtt/2).
 
 
 % Attributes are the same if the have the same refSemantic 
@@ -53,8 +54,8 @@ clause1(sameEClassSpec(X,Y),(sameClassification(X,Y),sameEClassVersion(X,Y),same
 clause1(sameEClassSpec(X,Y),(sameEClassSpec(X,Z),sameEClassSpec(Z,Y))).
 
 % Same Role Class if the eClass Specification is the same
-clause1(sameRoleClass(Z,T),(sameAttributeRoleClass(Z,T),sameEClassSpec(X,Y),roleClassRefSem(Z,X),roleClassRefSem(T,Y))).
-clause1(sameRoleClass(X,Y),(sameRoleClass(X,Z),sameRoleClass(Z,Y))).
+%clause1(sameRoleClass(Z,T),(sameAttributeRoleClass(Z,T),sameEClassSpec(X,Y),roleClassRefSem(Z,X),roleClassRefSem(T,Y))).
+%clause1(sameRoleClass(X,Y),(sameRoleClass(X,Z),sameRoleClass(Z,Y))).
 
 % Testing
 clause1(sameAttributeRoleClass(Z,T),(sameAttribute(X,Y),hasAttribute(Z,X),hasAttribute(T,Y))).
@@ -68,24 +69,30 @@ clause1(sameCAEXFile(Z,T),(sameRoleClassLib(X,Y),hasRoleClassLib(Z,X),hasRoleCla
 clause1(sameCAEXFile(X,Y),(sameCAEXFile(X,Z),sameCAEXFile(Z,Y))). 
 
 % Attributes related to eClass
-clause1(classificationClassAtt(X,Y),(hasAttributeName(X,'eClassClassificationClass'),
+clause1(eClassClassificationAtt(X,Y),(hasAttributeName(X,'eClassClassificationClass'),
                                      hasAttributeName(Y,'eClassClassificationClass'),
                                      hasAttributeValue(X,Z),
                                      hasAttributeValue(Y,Z))
                                      ).
                                      
-clause1(versionClassAtt(X,Y),(hasAttributeName(X,'eClassVersion'),
-                                     hasAttributeName(Y,'eClassVersion'),
-                                     hasAttributeValue(X,Z),
-                                     hasAttributeValue(Y,Z))
-                                     ).                                     
+clause1(eClassVersionAtt(X,Y),(hasAttributeName(X,'eClassVersion'),
+                              hasAttributeName(Y,'eClassVersion'),
+                              hasAttributeValue(X,Z),
+                              hasAttributeValue(Y,Z))
+                              ).                                     
 
-%clause1(sameRoleClassA(Z,T),(classificationClassAtt(X),
- %                            classificationClassAtt(Y),
-   %                          classificationClassAtt(Z),
-    %                         classificationClassAtt(K),
-   %                          hasRoleClassLib(Z,X),
-    %                         hasRoleClassLib(T,Y))).
+clause1(eClassIRDIAtt(X,Y),(hasAttributeName(X,'eClassIRDI'),
+                              hasAttributeName(Y,'eClassIRDI'),
+                              hasAttributeValue(X,Z),
+                              hasAttributeValue(Y,Z))
+                              ).                                     
+
+clause1(sameRoleClass(Z,T),( eClassVersionAtt(X,Y),
+                             eClassVersionAtt(B,C),
+                             hasAttribute(Z,X),
+                             hasAttribute(Z,B),
+                             hasAttribute(T,Y),
+                             hasAttribute(T,C))).
 
 % CAEX FILE - RoleClassLIb
 %clause1(hasRoleClassLib(cAEXFile_1,roleClassLib_1),true).
@@ -141,24 +148,25 @@ clause1(hasAttributeValue(attribute2,'27022501'),true).
 clause1(hasAttributeName(attribute2,'eClassClassificationClass'),true).
 clause1(type(attribute2,attribute),true).
 
-clause1(hasAttributeName(attribute1,'eClassVersion'),true).
-clause1(hasAttributeValue(attribute1,'9.0'),true).
-clause1(type(attribute1,attribute),true).
+clause1(hasAttributeName(attribute3,'eClassVersion'),true).
+clause1(hasAttributeValue(attribute3,'9.0'),true).
+clause1(type(attribute3,attribute),true).
 
-clause1(hasAttributeValue(attribute1,'9.0'),true).
-clause1(hasAttributeName(attribute1,'eClassVersion'),true).
-clause1(type(attribute1,attribute),true).
+clause1(hasAttributeValue(attribute4,'9.0'),true).
+clause1(hasAttributeName(attribute4,'eClassVersion'),true).
+clause1(type(attribute4,attribute),true).
 
-clause1(hasAttribute(roleClass2,attribute6),true).
-clause1(hasAttribute(roleClass2,attribute5),true).
-clause1(hasAttribute(roleClass2,attribute4),true).
-clause1(hasAttribute(roleClass2,attribute3),true).
+clause1(hasAttributeValue(attribute5,'0173-1---BASIC_1_1#01-ABW077#009'),true).
+clause1(hasAttributeName(attribute5,'eClassIRDI'),true).
+clause1(type(attribute5,attribute),true).
+
+clause1(hasAttributeValue(attribute6,'0173-1---BASIC_1_1#01-ABW077#009'),true).
+clause1(hasAttributeName(attribute6,'eClassIRDI'),true).
+clause1(type(attribute6,attribute),true).
+
+clause1(hasAttribute(roleClass1,attribute1),true).
+clause1(hasAttribute(roleClass1,attribute3),true).
 clause1(hasAttribute(roleClass2,attribute2),true).
-clause1(hasAttribute(roleClass2,attribute1),true).
-
-clause1(hasAttribute(roleClass2,attribute6),true).
-clause1(hasAttribute(roleClass2,attribute5),true).
 clause1(hasAttribute(roleClass2,attribute4),true).
-clause1(hasAttribute(roleClass2,attribute3),true).
-clause1(hasAttribute(roleClass2,attribute2),true).
-clause1(hasAttribute(roleClass2,attribute1),true).
+clause1(hasAttribute(roleClass1,attribute5),true).
+clause1(hasAttribute(roleClass2,attribute6),true).
