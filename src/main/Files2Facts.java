@@ -84,7 +84,12 @@ public class Files2Facts {
 			if (object.isURIResource()) {
 				object = model.getResource(object.as(Resource.class).getURI());
 				String objectStr = object.asNode().getLocalName();
-				buf.append(StringUtil.lowerCaseFirstChar(StringUtil.removeLastMinus(objectStr) + test));
+				if(predicate.asNode().getLocalName().toString().equals("type")){
+					buf.append(StringUtil.lowerCaseFirstChar(StringUtil.removeLastMinus(objectStr)));
+				}else{
+					buf.append(StringUtil.lowerCaseFirstChar(StringUtil.removeLastMinus(objectStr) + test));
+				}
+
 			}else{
 				if(object.isLiteral()){
 					buf.append("'" + object.asLiteral().getLexicalForm() + "'");

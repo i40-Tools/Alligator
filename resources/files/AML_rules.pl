@@ -28,6 +28,7 @@
 :-dynamic(eClassClassificationAtt/2).
 :-dynamic(eClassVersionAtt/2).
 :-dynamic(eClassIRDIAtt/2).
+:-dynamic(sameInterfaceClass/2).
 
 
 % Attributes are the same if the have the same refSemantic 
@@ -65,8 +66,8 @@ clause1(sameRoleClassLib(Z,T),(sameRoleClass(X,Y),hasRoleClass(Z,X),hasRoleClass
 clause1(sameRoleClassLib(X,Y),(sameRoleClassLib(X,Z),sameRoleClassLib(Z,Y))). 
 
 % Same Role Class Lib if the Role Classes are the same 
-clause1(sameCAEXFile(Z,T),(sameRoleClassLib(X,Y),hasRoleClassLib(Z,X),hasRoleClassLib(T,Y))).
-clause1(sameCAEXFile(X,Y),(sameCAEXFile(X,Z),sameCAEXFile(Z,Y))). 
+%clause1(sameCAEXFile(Z,T),(sameRoleClassLib(X,Y),hasRoleClassLib(Z,X),hasRoleClassLib(T,Y))).
+%clause1(sameCAEXFile(X,Y),(sameCAEXFile(X,Z),sameCAEXFile(Z,Y))). 
 
 % Attributes related to eClass
 clause1(eClassClassificationAtt(X,Y),(hasAttributeName(X,'eClassClassificationClass'),
@@ -97,4 +98,15 @@ clause1(sameRoleClass(Z,T),( eClassClassificationAtt(X,Y),
                              hasAttribute(T,C),
                              hasAttribute(T,E)
                              )).
-
+                             
+clause1(sameInterfaceClass(Z,T),( eClassClassificationAtt(X,Y),
+                             eClassVersionAtt(B,C),
+                             eClassIRDIAtt(D,E),
+                             hasAttribute(Z,X),
+                             hasAttribute(Z,B),
+                             hasAttribute(Z,D),
+                             hasAttribute(T,Y),
+                             hasAttribute(T,C),
+                             hasAttribute(T,E)
+                             )).                             
+ 

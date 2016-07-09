@@ -17,4 +17,4 @@
  open('d:/Deutch/development/Rules4AMLIntegration/resources/files/output.txt',write,FileName),
  consult("d:/Deutch/development/Rules4AMLIntegration/resources/files/writeRules.pl"),
  myWrite(FileName),close(FileName).      
-                                   
+                                       
