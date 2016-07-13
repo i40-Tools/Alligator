@@ -21,7 +21,17 @@ public class StringUtil {
 	}
 	
 	public static String removeLastMinus(String str){
-		return str.substring(str.lastIndexOf("-") + 1);
+		return str.replaceAll("-","");
+	}
+	
+	/**
+	 * 
+	 * @param str
+	 * @param character
+	 * @return
+	 */
+	public static String replaceChar(String str,String character){
+		return str.replaceAll("\\",character);
 	}
 	
 }

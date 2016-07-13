@@ -30,19 +30,19 @@
 :-dynamic(eClassIRDIAtt/2).
 :-dynamic(sameInterfaceClass/2).
 :-dynamic(type/2).
-
+:-dynamic(sameEClassificationRoleClass/2).
+:-dynamic(sameRoleClassLib/2).
+:-dynamic(sameSystemUnitClass/2).
+:-dynamic(sibling/2).
 
 % Attributes are the same if the have the same refSemantic 
-clause1(sameAttribute(X,Y),(sameRefSemantic(X,Z),sameRefSemantic(Y,Z))).
-clause1(sameAttribute(X,Y),(sameAttribute(X,Z),sameAttribute(Z,Y))).
+clause1(sameAttribute(X,Y),( hasRefSemantic(X,T),hasRefSemantic(Y,Z),sameRefSemantic(T,Z) )).
+                            
+%clause1(sameAttribute(X,Y),(sameAttribute(X,Z),sameAttribute(Z,Y))).
 
 clause1(sameRefSemantic(X,Y),(hasCorrespondingAttributePath(X,Z),hasCorrespondingAttributePath(Y,Z))).
 clause1(sameRefSemantic(X,Y),(sameRefSemantic(X,Z),sameRefSemantic(Z,Y))).
 
-% Same eClass IRDI
-clause1(sameEClassIRDI(X,Y),(eClassIRDI(X,Z),eClassIRDI(Y,Z))).
-clause1(sameEClassIRDI(X,Y),(sameEClassIRDI(X,Z),sameEClassIRDI(Z,Y))).
- 
 % Testing
 clause1(sameAttributeRoleClass(Z,T),(sameAttribute(X,Y),hasAttribute(Z,X),hasAttribute(T,Y))).
 
@@ -60,16 +60,19 @@ clause1(eClassClassificationAtt(X,Y),(hasAttributeName(X,'eClassClassificationCl
 clause1(eClassVersionAtt(X,Y),(hasAttributeName(X,'eClassVersion'),
                                hasAttributeName(Y,'eClassVersion'),
                                hasAttributeValue(X,Z),
-                               hasAttributeValue(Y,Z))
-                              ).                                     
+                               hasAttributeValue(Y,Z),
+                               sibling(X,T1),
+                               sibling(Y,T2),
+                               eClassIRDIAtt(T1,T2)
+                               )).                                     
 
-clause1(eClassIRDIAtt(X,Y),(hasAttributeName(X,'eClassIRDI'),
+clause1(eClassIRDIAtt(X,Y),(  hasAttributeName(X,'eClassIRDI'),
                               hasAttributeName(Y,'eClassIRDI'),
                               hasAttributeValue(X,Z),
                               hasAttributeValue(Y,Z))
                               ).                                     
 
-clause1(sameRoleClass(Z,T),( 
+clause1(sameRoleClass(Z,T),(  
                              type(Z,roleClass),
                              type(T,roleClass),
                              eClassClassificationAtt(X,Y),
@@ -82,6 +85,13 @@ clause1(sameRoleClass(Z,T),(
                              hasAttribute(T,C),
                              hasAttribute(T,E)
                              )).
+                             
+clause1(sameEClassificationRoleClass(Z,T),(  
+                             type(Z,roleClass),
+                             type(T,roleClass),
+                             hasAttributeName(Z,'eClassClassSpecification'),
+                             hasAttributeName(T,'eClassClassSpecification')
+                             )).                             
                              
 clause1(sameInterfaceClass(Z,T),(
                              type(Z,interfaceClass),
@@ -96,4 +106,27 @@ clause1(sameInterfaceClass(Z,T),(
                              hasAttribute(T,C),
                              hasAttribute(T,E)
                              )).                             
- 
+
+clause1(sameRoleClassLib(X,Y),(
+                             sameEClassificationRoleClass(Z,T),
+                             hasRoleClass(X,Z),
+                             hasRoleClass(Y,T)
+                             )). 
+                             
+clause1(sameSystemUnitClass(Z,T),(
+                             type(Z,systemUnitClass),
+                             type(T,systemUnitClass), 
+                             eClassClassificationAtt(X,Y),
+                             eClassVersionAtt(B,C),
+                             eClassIRDIAtt(D,E),
+                             hasAttribute(Z,X),
+                             hasAttribute(Z,B),
+                             hasAttribute(Z,D),
+                             hasAttribute(T,Y),
+                             hasAttribute(T,C),
+                             hasAttribute(T,E)
+                             )).  
+
+clause1(sibling(X,Y),(hasAttribute(Z,X),hasAttribute(Z,Y))).
+
+                             
