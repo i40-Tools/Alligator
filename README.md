@@ -1,4 +1,4 @@
-# Rules4AMLIntegration
+# Alligator: A Deductive Approach for the Integration of Industry 4.0 Standards
 
 This project contains the rules to integrate two AML files using a cannonical model and rules written in ProLog - **Rules4AMLIntegrator**.
 
