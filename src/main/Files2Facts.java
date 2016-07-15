@@ -151,10 +151,10 @@ public class Files2Facts {
    }
 	
 	public void callMergeFiles() {
-		String sourceFile1Path = "d:/deutch/development/rules4amlintegration/resources/files/plfile0.pl";
-		String sourceFile2Path = "d:/deutch/development/rules4amlintegration/resources/files/plfile1.pl";
+		String sourceFile1Path = "d:/deutch/development/Alligator/resources/files/plfile0.pl";
+		String sourceFile2Path = "d:/deutch/development/Alligator/resources/files/plfile1.pl";
  
-		String mergedFilePath = "d:/deutch/development/rules4amlintegration/resources/files/edb.pl";
+		String mergedFilePath = "d:/deutch/development/Alligator/resources/files/edb.pl";
  
 		File[] files = new File[2];
 		files[0] = new File(sourceFile1Path);

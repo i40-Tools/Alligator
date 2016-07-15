@@ -12,8 +12,8 @@
 
 aml:conf 
      rdfs:label "General Configuration"@en ;
-     uri:path "D:/Deutch/development/Rules4AMLIntegration/resources/files/" ;
-     uri:URI "D:/Deutch/development/Rules4AMLIntegration/resources/aml.ttl" ;
+     uri:path "D:/Deutch/development/Alligator/resources/files/" ;
+     uri:URI "D:/Deutch/development/Alligator/resources/aml.ttl" ;
 	.
 
 

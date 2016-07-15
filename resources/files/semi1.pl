@@ -5,7 +5,7 @@
 %
 
 :-dynamic(belongs/2).
-
+ 
 
 tdb:- tdb(0),build_model.
 

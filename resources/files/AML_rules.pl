@@ -37,18 +37,11 @@
 
 % Attributes are the same if the have the same refSemantic 
 clause1(sameAttribute(X,Y),( hasRefSemantic(X,T),hasRefSemantic(Y,Z),sameRefSemantic(T,Z) )).
-                            
-%clause1(sameAttribute(X,Y),(sameAttribute(X,Z),sameAttribute(Z,Y))).
-
 clause1(sameRefSemantic(X,Y),(hasCorrespondingAttributePath(X,Z),hasCorrespondingAttributePath(Y,Z))).
 clause1(sameRefSemantic(X,Y),(sameRefSemantic(X,Z),sameRefSemantic(Z,Y))).
 
 % Testing
 clause1(sameAttributeRoleClass(Z,T),(sameAttribute(X,Y),hasAttribute(Z,X),hasAttribute(T,Y))).
-
-% Same Role Class Lib if the Role Classes are the same 
-clause1(sameRoleClassLib(Z,T),(sameRoleClass(X,Y),hasRoleClass(Z,X),hasRoleClass(T,Y))).
-clause1(sameRoleClassLib(X,Y),(sameRoleClassLib(X,Z),sameRoleClassLib(Z,Y))). 
 
 % Attributes related to eClass
 clause1(eClassClassificationAtt(X,Y),(hasAttributeName(X,'eClassClassificationClass'),
