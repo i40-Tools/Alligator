@@ -6,14 +6,14 @@
  'eClassClassificationAtt','eClassVersionAtt','eClassIRDIAtt','sameAttribute' 
  ] 
  )),    
- consult('d:/Deutch/development/Rules4AMLIntegration/resources/files/semi1.pl'),
- consult('d:/Deutch/development/Rules4AMLIntegration/resources/files/AML_rules.pl'),
- consult('d:/Deutch/development/Rules4AMLIntegration/resources/files/edb.pl'),
+ consult('C:/Users/omar/Desktop/Alligator/resources/files/semi1.pl'),
+ consult('C:/Users/omar/Desktop/Alligator/resources/files/AML_rules.pl'),
+ consult('C:/HeterogeneityExampleData/AutomationML/M2-Granularity/Testbeds-2/edb.pl'),
  %consult('d:/Deutch/development/Rules4AMLIntegration/resources/files/TestData.pl'),
  tdb.       
                   
  writePredicates:-
- open('d:/Deutch/development/Rules4AMLIntegration/resources/files/output.txt',write,FileName),
- consult("d:/Deutch/development/Rules4AMLIntegration/resources/files/writeRules.pl"),
+ open('C:/output.txt',write,FileName),
+ consult("C:/Users/omar/Desktop/Alligator/resources/files/writeRules.pl"),
  myWrite(FileName),close(FileName).             
                                                                              

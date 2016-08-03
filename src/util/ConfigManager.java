@@ -10,15 +10,17 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Properties;
 
-import com.hp.hpl.jena.rdf.model.Model;
-import com.hp.hpl.jena.rdf.model.ModelFactory;
-import com.hp.hpl.jena.rdf.model.RDFNode;
-import com.hp.hpl.jena.rdf.model.Statement;
-import com.hp.hpl.jena.rdf.model.StmtIterator;
-import com.hp.hpl.jena.util.FileManager;
+import org.apache.jena.rdf.model.Model;
+import org.apache.jena.rdf.model.ModelFactory;
+import org.apache.jena.rdf.model.RDFNode;
+import org.apache.jena.rdf.model.Statement;
+import org.apache.jena.rdf.model.StmtIterator;
+import org.apache.jena.util.FileManager;
 
 /**
- * The aim of this class is to load the RDF configuration file to this program containing all the input data
+ * The aim of this class is to load the RDF configuration file to this program
+ * containing all the input data
+ * 
  * @class ConfigManager
  * @Version = 1.0
  * @Date 4/21/2016
@@ -33,7 +35,7 @@ public class ConfigManager {
 	private static RDFNode predicate;
 	private static ArrayList<RDFNode> literals, predicates;
 	private static Model model;
-	
+
 	public final static String HET_NAMESPACE = "http://vocab.cs.uni-bonn.de/het#";
 	public final static String URI_NAMESPACE = "http://uri4uri.net/vocab.html/#";
 
@@ -60,7 +62,14 @@ public class ConfigManager {
 
 		model = ModelFactory.createDefaultModel();
 		InputStream inputStream = FileManager.get().open(configFile.getPath());
-		model.read(new InputStreamReader(inputStream), null, "TURTLE"); // parses an InputStream assuming RDF in Turtle format
+		model.read(new InputStreamReader(inputStream), null, "TURTLE"); // parses
+																		// an
+																		// InputStream
+																		// assuming
+																		// RDF
+																		// in
+																		// Turtle
+																		// format
 
 		literals = new ArrayList<RDFNode>();
 		predicates = new ArrayList<RDFNode>();
@@ -89,37 +98,25 @@ public class ConfigManager {
 
 		return prop;
 	}
-	
+
 	/**
 	 * Get the general file path where all the files are located
+	 * 
 	 * @return
 	 */
 	public static String getFilePath() {
-		String filePath = loadConfig().getProperty(
-				          URI_NAMESPACE + "path");
+		String filePath = loadConfig().getProperty(URI_NAMESPACE + "path");
 		return filePath;
 	}
-	
+
 	/**
 	 * Get the general file path where all the files are located
+	 * 
 	 * @return
 	 */
 	public static String getOntoURIPath() {
-		String filePath = loadConfig().getProperty(
-				          URI_NAMESPACE + "URI");
+		String filePath = loadConfig().getProperty(URI_NAMESPACE + "URI");
 		return filePath;
 	}
-	
-	
 
-	/**
-	 * @todo remove. Just for testing
-	 * @param args
-	 */
-	public static void main(String[] args) {
- 	    ConfigManager con = new ConfigManager();
-		con.loadConfig();
-		System.out.println(con.getOntoURIPath() + " aaaa");
-	}
-   
 }

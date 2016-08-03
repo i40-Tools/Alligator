@@ -1,20 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
 	<classpathentry kind="src" path="src"/>
-	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.8"/>
-	<classpathentry kind="lib" path="D:/swipl/lib/jpl.jar"/>
-	<classpathentry kind="lib" path="/DBOntoClassificationu/Libraries/Hermit/HermiT.jar"/>
-	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/Jena"/>
-	<classpathentry kind="lib" path="E:/Softwares/Semantic Web/OWL API/owlapi-bin.jar"/>
-	<classpathentry kind="lib" path="E:/Softwares/Semantic Web/OWL API/owlapi-osgidistribution-4.0.2.jar"/>
-	<classpathentry kind="lib" path="C:/Users/Irlan/.m2/repository/commons-io/commons-io/2.4/commons-io-2.4.jar">
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.6">
 		<attributes>
 			<attribute name="maven.pomderived" value="true"/>
-			<attribute name="maven.groupId" value="commons-io"/>
-			<attribute name="maven.artifactId" value="commons-io"/>
-			<attribute name="maven.version" value="2.4"/>
-			<attribute name="maven.scope" value="compile"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="output" path="bin"/>
+	<classpathentry kind="lib" path="lib/org.cs3.prolog.connector_3.1.2.201504300958.jar"/>
+	<classpathentry kind="lib" path="lib/org.semanticweb.HermiT.jar"/>
+	<classpathentry kind="lib" path="lib/HermiT.jar"/>
+	<classpathentry kind="lib" path="lib/owlapi-osgidistribution-4.1.0.jar"/>
+	<classpathentry kind="con" path="org.eclipse.m2e.MAVEN2_CLASSPATH_CONTAINER">
+		<attributes>
+			<attribute name="maven.pomderived" value="true"/>
+			<attribute name="org.eclipse.jst.component.dependency" value="/WEB-INF/lib"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="C:/Program Files/swipl/lib/jpl.jar"/>
+	<classpathentry kind="output" path="target/classes"/>
 </classpath>
