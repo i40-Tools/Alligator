@@ -15,6 +15,8 @@ import com.hp.hpl.jena.rdf.model.Statement;
 import com.hp.hpl.jena.rdf.model.StmtIterator;
 import com.hp.hpl.jena.util.FileManager;
 
+import uni.bonn.krextor.Krextor;
+import util.ConfigManager;
 import util.StringUtil;
 
 /**
@@ -29,18 +31,41 @@ public class Files2Facts {
 	private ArrayList<File> files;
 
 	/**
+	 * converts the file to turtle format based on Krexter
+	 * 
+	 * @param input
+	 * @param output
+	 */
+	public void convertRdf() {
+		int i = 0;
+		for (File file : files) {
+			Krextor krextor = new Krextor();
+			krextor.convertRdf(file.getAbsolutePath(), "aml", "turtle",
+					ConfigManager.getFilePath() + "plfile" + i + ".ttl");
+			i++;
+		}
+	}
+
+	/**
 	 * Read the rdf files of a given path
 	 * 
 	 * @param path
 	 * @throws Exception
 	 */
-	public void readFiles(String path) throws Exception {
+	public void readFiles(String path, String type) throws Exception {
 		files = new ArrayList<File>();
 		File originalFilesFolder = new File(path);
 		if (originalFilesFolder.isDirectory()) {
 			for (File amlFile : originalFilesFolder.listFiles()) {
-				if (amlFile.isFile() && (amlFile.getName().endsWith(".ttl"))) {
-					files.add(amlFile);
+				if (amlFile.isFile() && (amlFile.getName().endsWith(type))) {
+					if (amlFile.getName().endsWith(".aml")) {
+						String name = amlFile.getName().replace(".aml", "");
+						if (name.endsWith("0") || name.endsWith("1")) {
+							files.add(amlFile);
+						}
+					} else {
+						files.add(amlFile);
+					}
 				}
 			}
 		} else {

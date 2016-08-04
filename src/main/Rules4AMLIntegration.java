@@ -17,7 +17,10 @@ public class Rules4AMLIntegration {
 		// Generating facts from the AML files, they are converted into RDF
 		Files2Facts filesAMLInRDF = new Files2Facts();
 		try {
-			filesAMLInRDF.readFiles(ConfigManager.getFilePath());
+
+			filesAMLInRDF.readFiles(ConfigManager.getFilePath(), ".aml");
+			filesAMLInRDF.convertRdf();
+			filesAMLInRDF.readFiles(ConfigManager.getFilePath(), ".ttl");
 			filesAMLInRDF.generateExtensionalDB(ConfigManager.getFilePath());
 			DeductiveDB deductiveDB = new DeductiveDB();
 			deductiveDB.consultKB();

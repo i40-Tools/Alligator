@@ -105,7 +105,14 @@
 	    <artifactId>owlapi-osgidistribution</artifactId>
 	    <version>4.0.2</version>
 	  </dependency>
-		
+		<!-- https://mvnrepository.com/artifact/net.sf.saxon/Saxon-HE -->
+		<!-- https://mvnrepository.com/artifact/net.sf.saxon/saxon -->
+<!-- https://mvnrepository.com/artifact/net.sf.saxon/saxon -->
+<!-- https://mvnrepository.com/artifact/net.sf.saxon/saxon -->
+<!-- https://mvnrepository.com/artifact/net.sf.saxon/saxon-dom -->
+<!-- https://mvnrepository.com/artifact/net.sf.saxon/saxon -->
+
+
 	
     </dependencies>
 
