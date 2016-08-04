@@ -2,6 +2,7 @@
 package main;
 
 import java.io.File;
+import java.io.FileWriter;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
@@ -60,6 +61,7 @@ public class Files2Facts {
 
 		// parses in turtle format
 		model.read(new InputStreamReader(inputStream), null, "TURTLE");
+
 		StmtIterator iterator = model.listStatements();
 
 		while (iterator.hasNext()) {
@@ -92,7 +94,6 @@ public class Files2Facts {
 			buf.append(System.getProperty("line.separator"));
 		}
 		return buf.toString();
-
 	}
 
 	/**
@@ -106,9 +107,16 @@ public class Files2Facts {
 		for (File file : files) {
 			buf.append(factsFromFiles(file, i++));
 		}
-		PrintWriter prologWriter = new PrintWriter(new File(path + "edb.pl"));
+		PrintWriter prologWriter = new PrintWriter(new FileWriter(path + "edb.pl"), true);
 		prologWriter.println(buf);
+		prologWriter.flush();
 		prologWriter.close();
 	}
+
+	/**
+	 * Generate all the files of a given folder
+	 * 
+	 * @throws Exception
+	 */
 
 }

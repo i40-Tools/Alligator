@@ -4,13 +4,10 @@ import util.ConfigManager;
 
 public class Rules4AMLIntegration {
 
-	public static void main(String[] args) throws Exception {
+	public static void main(String[] args) {
+
 		// Owl2PrologFactGenerator test = new Owl2PrologFactGenerator();
-
-		ConfigManager.loadConfig();
-
 		// Generating Intentional DB from the Ontology
-		// String localIRI = conf.getOntoURIPath();
 		// test.readOntology(localIRI);
 		// test.generateIntentionalDB(conf.getFilePath() + "IntentionalDB.pl");
 
