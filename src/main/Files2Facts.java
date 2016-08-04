@@ -2,7 +2,6 @@
 package main;
 
 import java.io.File;
-import java.io.FileWriter;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
@@ -103,13 +102,11 @@ public class Files2Facts {
 	public void generateExtensionalDB(String path) throws Exception {
 		int i = 1;
 		StringBuilder buf = new StringBuilder();
-		;
 		for (File file : files) {
 			buf.append(factsFromFiles(file, i++));
 		}
-		PrintWriter prologWriter = new PrintWriter(new FileWriter(path + "edb.pl"), true);
+		PrintWriter prologWriter = new PrintWriter(new File(path + "edb.pl"));
 		prologWriter.println(buf);
-		prologWriter.flush();
 		prologWriter.close();
 	}
 
