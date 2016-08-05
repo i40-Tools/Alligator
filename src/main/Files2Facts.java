@@ -2,6 +2,7 @@
 package main;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
@@ -121,7 +122,8 @@ public class Files2Facts {
 	}
 
 	/**
-	 * @param rdfAMLFilePath
+	 * Generate all the files of a given folder
+	 * 
 	 * @throws Exception
 	 */
 	public void generateExtensionalDB(String path) throws Exception {
@@ -136,9 +138,21 @@ public class Files2Facts {
 	}
 
 	/**
-	 * Generate all the files of a given folder
+	 * Creates temporary files which holds the path for edb.pl and output.txt
+	 * These files are necessary for evalAML.pl so that the path is automitacly
+	 * set from configuration.ttl
 	 * 
-	 * @throws Exception
+	 * @throws FileNotFoundException
 	 */
+	public void prologFilePath() throws FileNotFoundException {
+		PrintWriter prologWriter = new PrintWriter(
+				new File(System.getProperty("user.dir") + "/resources/files/edb.txt"));
+		prologWriter.println("'" + ConfigManager.getFilePath() + "edb.pl" + "'.");
+		prologWriter.close();
+
+		prologWriter = new PrintWriter(new File(System.getProperty("user.dir") + "/resources/files/output.txt"));
+		prologWriter.println("'" + ConfigManager.getFilePath() + "output.txt" + "'.");
+		prologWriter.close();
+	}
 
 }

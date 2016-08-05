@@ -18,13 +18,13 @@ public class Rules4AMLIntegration {
 		Files2Facts filesAMLInRDF = new Files2Facts();
 		try {
 
+			filesAMLInRDF.prologFilePath();
 			filesAMLInRDF.readFiles(ConfigManager.getFilePath(), ".aml");
 			filesAMLInRDF.convertRdf();
 			filesAMLInRDF.readFiles(ConfigManager.getFilePath(), ".ttl");
 			filesAMLInRDF.generateExtensionalDB(ConfigManager.getFilePath());
 			DeductiveDB deductiveDB = new DeductiveDB();
 			deductiveDB.consultKB();
-
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
