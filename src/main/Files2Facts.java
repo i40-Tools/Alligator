@@ -75,6 +75,15 @@ public class Files2Facts {
 		}
 	}
 
+	/**
+	 * Reads the turtle format rdf files and extract the contents for data log
+	 * conversion.
+	 * 
+	 * @param file
+	 * @param number
+	 * @return
+	 * @throws Exception
+	 */
 	public String factsFromFiles(File file, int number) throws Exception {
 
 		StringBuilder buf = new StringBuilder();
