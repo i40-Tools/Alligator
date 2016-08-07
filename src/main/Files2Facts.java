@@ -153,6 +153,7 @@ public class Files2Facts {
 		prologWriter = new PrintWriter(new File(System.getProperty("user.dir") + "/resources/files/output.txt"));
 		prologWriter.println("'" + ConfigManager.getFilePath() + "output.txt" + "'.");
 		prologWriter.close();
+
 	}
 
 }

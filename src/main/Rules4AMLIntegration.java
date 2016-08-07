@@ -4,7 +4,7 @@ import util.ConfigManager;
 
 public class Rules4AMLIntegration {
 
-	public static void main(String[] args) {
+	public static void main(String[] args) throws Throwable {
 
 		// Owl2PrologFactGenerator test = new Owl2PrologFactGenerator();
 		// Generating Intentional DB from the Ontology

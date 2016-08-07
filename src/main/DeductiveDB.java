@@ -1,6 +1,17 @@
 package main;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.PrintWriter;
+import java.util.ArrayList;
+import java.util.Map;
+
 import org.jpl7.Query;
+import org.jpl7.Term;
+
+import util.ConfigManager;
 
 /**
  * 
@@ -9,82 +20,149 @@ import org.jpl7.Query;
  */
 public class DeductiveDB {
 
+	private String extractedAttr;
+	private String orignalText;
+	private ArrayList<String> baseClass;
+	private ArrayList<String> attrName;
+
 	/**
 	 * Querying the knowledge base.
+	 * 
+	 * @throws Throwable
 	 */
-	public void consultKB() {
+	public void consultKB() throws Throwable {
 
 		// Queries prolog
 
+		// setting working directory
+		String path = System.getProperty("user.dir");
+		File myUri = new File(path);
+		path = myUri.toURI().toString().replace("file:/", "");
+		Query.hasSolution("working_directory(_," + "'" + path + "')");
+
+		// Queries evalAMl.pl
 		String evalAML = "consult('resources/files/evalAML.pl')";
 		System.out.println(evalAML + " " + (Query.hasSolution(evalAML) ? "succeeded" : "failed"));
 
+		// Queries eval.
 		String eval = "eval";
 		System.out.println(eval + " " + (Query.hasSolution(eval) ? "succeeded" : "failed"));
 
+		// Queries writePredicates.
 		String writeFiles = "writePredicates";
 		System.out.println(writeFiles + " " + (Query.hasSolution(writeFiles) ? "succeeded" : "failed"));
 
-		// String t7 = "consult('resources/files/semi1.pl')";
-		// System.out.println(t7 + " " + (Query.hasSolution(t7) ? "succeeded" :
-		// "failed"));
-		//
-		// String t8 =
-		// "consult('C:/HeterogeneityExampleData/AutomationML/M2-Granularity/Testbeds-1/edb.pl')";
-		// System.out.println(t8 + " " + (Query.hasSolution(t8) ? "succeeded" :
-		// "failed"));
-		//
-		// String t9 = "tdb.";
-		// System.out.println(t9 + " " + (Query.hasSolution(t9) ? "succeeded" :
-		// "failed"));
-		//
-		// String stringFileQuery = "sameCAEXFile(X,Y)";
-		// System.out.println(stringFileQuery + " " +
-		// (Query.hasSolution(stringFileQuery) ? "succeeded" : "failed"));
-		// Query fileQuery = new Query(stringFileQuery);
-		// Map<String, Term> s10;
-		// System.out.println("all solutions of " + stringFileQuery);
-		//
-		// Map<Term, Term> sol = new Hashtable<Term, Term>();
-		//
-		// boolean toAdd = true;
-		// while (fileQuery.hasMoreSolutions()) {
-		// s10 = fileQuery.nextSolution();
-		// if (s10.get("X").equals(s10.get("Y"))) {
-		// } else {
-		// Term t1 = (Term) s10.get("X");
-		// Term t2 = (Term) s10.get("Y");
-		// if (sol.containsKey(t1)) {
-		// // System.out.println("T1 Key"); toAdd =false;
-		// }
-		// if (sol.containsValue(t1)) {
-		// // System.out.println("T1 VALUE"); toAdd = false;
-		// }
-		// if (sol.containsKey(t2)) { //
-		// System.out.println("T2 Key");
-		// toAdd = false;
-		// }
-		// if (sol.containsValue(t2)) {
-		// // System.out.println("T2 VALUE"); toAdd =false;
-		// }
-		//
-		// if (toAdd)
-		// sol.put(t1, t2);
-		// }
-		// }
-		//
-		// Set<Term> keys = sol.keySet();
-		// for (Term key : keys) {
-		// System.out.println("Value of " + key + " is: " + sol.get(key));
-		// }
+		// formats the output.txt in java objects
+		readOutput();
 
-		// String t1 = "consult('resources/files/writeRules.pl')";
-		// System.out.println(t1 + " " + (Query.hasSolution(t1) ? "succeeded" :
-		// "failed"));
+		String attributes[] = extractedAttr.split(",");
 
-		// String aa = "writePredicates.";
-		// System.out.println(aa + " " + (Query.hasSolution(aa) ? "succeeded" :
-		// "failed"));
+		attrName = new ArrayList<String>();
+
+		// loops through all atributes
+		int j = 0;
+
+		while (j < attributes.length) {
+
+			// performs query to get the attribute name
+			Map<String, Term>[] results = Query.allSolutions("hasAttributeName(" + attributes[j] + ",Y)");
+			for (int i = 0; i < results.length; i++) {
+				// stores in array
+				attrName.add(results[i].get("Y").toString());
+
+				// updates output.txt
+				orignalText = orignalText.replaceAll(attributes[j], results[i].get("Y").toString());
+
+			}
+			j++;
+		}
+
+		// writes the attributes names in the output.txt
+		PrintWriter prologWriter = new PrintWriter(new File(ConfigManager.getFilePath() + "/output.txt"));
+		prologWriter.println(orignalText);
+		prologWriter.close();
+
+	}
+
+	/**
+	 * Reads the output.txt for mapping the attributes to names or values so
+	 * that integration can be performed. Mapping is important to identify the
+	 * attributes in AML files. This extracts the attributes from datalog format
+	 * to java string objects so that query can be made on them.
+	 * 
+	 * @param extractedAttr
+	 * @param orignalText
+	 * @throws Exception
+	 */
+	void readOutput() throws Exception {
+		BufferedReader br = new BufferedReader(new FileReader(ConfigManager.getFilePath() + "/output.txt"));
+		try {
+			StringBuilder sb = new StringBuilder();
+			StringBuilder orignal = new StringBuilder();
+			String line = br.readLine();
+
+			while (line != null) {
+				orignal.append(line);
+				orignal.append(System.lineSeparator());
+
+				int a = line.indexOf('(');
+				int b = line.indexOf(')');
+				line = line.substring(a + 1, b);
+				sb.append(line + ",");
+				line = br.readLine();
+			}
+			extractedAttr = sb.toString();
+			orignalText = orignal.toString();
+		} finally {
+			br.close();
+		}
+
+	}
+
+	/**
+	 * (Work in progress) This function adds a new output.txt for integration
+	 * which mentions the attribute names and the classes it belongs to. This is
+	 * required for identification of attributes if there are multiple
+	 * attributes with same name. This helps in integration process.
+	 * 
+	 * @param attributes
+	 * @throws FileNotFoundException
+	 */
+
+	void addBaseClass(String attributes[]) throws FileNotFoundException {
+		int j = 0;
+		baseClass = new ArrayList<String>();
+		while (j < attributes.length) {
+
+			if (Query.hasSolution("hasAttribute(Y," + attributes[j] + ")")) {
+				Map<String, Term>[] results2 = Query.allSolutions("hasAttribute(Y," + attributes[j] + ")");
+
+				for (int i = 0; i < results2.length; i++) {
+					Map<String, Term>[] results3 = Query
+							.allSolutions("hasAttributeName(" + results2[i].get("Y").toString() + ",Y)");
+					for (int k = 0; k < results3.length; k++) {
+						baseClass.add(results3[k].get("Y").toString());
+					}
+				}
+			} else {
+				baseClass.add(attributes[j]);
+			}
+
+			j++;
+		}
+
+		StringBuilder sb = new StringBuilder();
+
+		for (int i = 0; i < baseClass.size(); i++) {
+
+			if (!sb.toString().contains(baseClass.get(i) + "," + attrName.get(i))) {
+				sb.append(baseClass.get(i) + "," + attrName.get(i));
+				sb.append(System.lineSeparator());
+			}
+		}
+		PrintWriter prologWriter = new PrintWriter(new File(ConfigManager.getFilePath() + "/output2.txt"));
+		prologWriter.println(sb.toString());
+		prologWriter.close();
 
 	}
 
