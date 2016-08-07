@@ -4,13 +4,10 @@ import util.ConfigManager;
 
 public class Rules4AMLIntegration {
 
-	public static void main(String[] args) throws Exception {
+	public static void main(String[] args) {
+
 		// Owl2PrologFactGenerator test = new Owl2PrologFactGenerator();
-
-		ConfigManager.loadConfig();
-
 		// Generating Intentional DB from the Ontology
-		// String localIRI = conf.getOntoURIPath();
 		// test.readOntology(localIRI);
 		// test.generateIntentionalDB(conf.getFilePath() + "IntentionalDB.pl");
 
@@ -20,11 +17,14 @@ public class Rules4AMLIntegration {
 		// Generating facts from the AML files, they are converted into RDF
 		Files2Facts filesAMLInRDF = new Files2Facts();
 		try {
-			filesAMLInRDF.readFiles(ConfigManager.getFilePath());
+
+			filesAMLInRDF.prologFilePath();
+			filesAMLInRDF.readFiles(ConfigManager.getFilePath(), ".aml");
+			filesAMLInRDF.convertRdf();
+			filesAMLInRDF.readFiles(ConfigManager.getFilePath(), ".ttl");
 			filesAMLInRDF.generateExtensionalDB(ConfigManager.getFilePath());
 			DeductiveDB deductiveDB = new DeductiveDB();
 			deductiveDB.consultKB();
-
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

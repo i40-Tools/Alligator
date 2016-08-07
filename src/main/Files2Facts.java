@@ -2,6 +2,7 @@
 package main;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
@@ -15,6 +16,8 @@ import com.hp.hpl.jena.rdf.model.Statement;
 import com.hp.hpl.jena.rdf.model.StmtIterator;
 import com.hp.hpl.jena.util.FileManager;
 
+import uni.bonn.krextor.Krextor;
+import util.ConfigManager;
 import util.StringUtil;
 
 /**
@@ -29,18 +32,41 @@ public class Files2Facts {
 	private ArrayList<File> files;
 
 	/**
+	 * converts the file to turtle format based on Krexter
+	 * 
+	 * @param input
+	 * @param output
+	 */
+	public void convertRdf() {
+		int i = 0;
+		for (File file : files) {
+			Krextor krextor = new Krextor();
+			krextor.convertRdf(file.getAbsolutePath(), "aml", "turtle",
+					ConfigManager.getFilePath() + "plfile" + i + ".ttl");
+			i++;
+		}
+	}
+
+	/**
 	 * Read the rdf files of a given path
 	 * 
 	 * @param path
 	 * @throws Exception
 	 */
-	public void readFiles(String path) throws Exception {
+	public void readFiles(String path, String type) throws Exception {
 		files = new ArrayList<File>();
 		File originalFilesFolder = new File(path);
 		if (originalFilesFolder.isDirectory()) {
 			for (File amlFile : originalFilesFolder.listFiles()) {
-				if (amlFile.isFile() && (amlFile.getName().endsWith(".ttl"))) {
-					files.add(amlFile);
+				if (amlFile.isFile() && (amlFile.getName().endsWith(type))) {
+					if (amlFile.getName().endsWith(".aml")) {
+						String name = amlFile.getName().replace(".aml", "");
+						if (name.endsWith("0") || name.endsWith("1")) {
+							files.add(amlFile);
+						}
+					} else {
+						files.add(amlFile);
+					}
 				}
 			}
 		} else {
@@ -60,6 +86,7 @@ public class Files2Facts {
 
 		// parses in turtle format
 		model.read(new InputStreamReader(inputStream), null, "TURTLE");
+
 		StmtIterator iterator = model.listStatements();
 
 		while (iterator.hasNext()) {
@@ -92,22 +119,39 @@ public class Files2Facts {
 			buf.append(System.getProperty("line.separator"));
 		}
 		return buf.toString();
-
 	}
 
 	/**
-	 * @param rdfAMLFilePath
+	 * Generate all the files of a given folder
+	 * 
 	 * @throws Exception
 	 */
 	public void generateExtensionalDB(String path) throws Exception {
 		int i = 1;
 		StringBuilder buf = new StringBuilder();
-		;
 		for (File file : files) {
 			buf.append(factsFromFiles(file, i++));
 		}
 		PrintWriter prologWriter = new PrintWriter(new File(path + "edb.pl"));
 		prologWriter.println(buf);
+		prologWriter.close();
+	}
+
+	/**
+	 * Creates temporary files which holds the path for edb.pl and output.txt
+	 * These files are necessary for evalAML.pl so that the path is automitacly
+	 * set from configuration.ttl
+	 * 
+	 * @throws FileNotFoundException
+	 */
+	public void prologFilePath() throws FileNotFoundException {
+		PrintWriter prologWriter = new PrintWriter(
+				new File(System.getProperty("user.dir") + "/resources/files/edb.txt"));
+		prologWriter.println("'" + ConfigManager.getFilePath() + "edb.pl" + "'.");
+		prologWriter.close();
+
+		prologWriter = new PrintWriter(new File(System.getProperty("user.dir") + "/resources/files/output.txt"));
+		prologWriter.println("'" + ConfigManager.getFilePath() + "output.txt" + "'.");
 		prologWriter.close();
 	}
 

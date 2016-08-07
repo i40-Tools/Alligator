@@ -14,6 +14,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 
+
     <dependencies>
     <!-- https://mvnrepository.com/artifact/net.sourceforge.owlapi/owlapi-distribution -->
 <dependency>
@@ -43,9 +44,13 @@
     <artifactId>owlapi-distribution</artifactId>
     <version>5.0.2</version>
 </dependency>
-<!-- https://mvnrepository.com/artifact/com.hp.hpl.jena/jena -->
-<!-- https://mvnrepository.com/artifact/org.apache.jena/jena-arq -->
-
+        
+        <dependency>
+            <groupId>javax</groupId>
+            <artifactId>javaee-web-api</artifactId>
+            <version>6.0</version>
+            <scope>provided</scope>
+        </dependency>
 
 <!-- https://mvnrepository.com/artifact/commons-io/commons-io -->
 <dependency>
@@ -62,6 +67,24 @@
         </dependency>
         
         
+<!-- https://mvnrepository.com/artifact/com.hp.hpl.jena/jena -->
+<dependency>
+    <groupId>com.hp.hpl.jena</groupId>
+    <artifactId>jena</artifactId>
+    <version>2.6.4</version>
+</dependency>
+        
+        <dependency>
+            <groupId>org.apache.jena</groupId>
+            <artifactId>jena-core</artifactId>
+            <version>3.0.0</version>
+        </dependency>
+        
+        <dependency>
+            <groupId>org.apache.jena</groupId>
+            <artifactId>jena-arq</artifactId>
+            <version>3.0.0</version>
+        </dependency>
         
         <dependency>
             <groupId>net.rootdev</groupId>
@@ -82,7 +105,14 @@
 	    <artifactId>owlapi-osgidistribution</artifactId>
 	    <version>4.0.2</version>
 	  </dependency>
-		
+		<!-- https://mvnrepository.com/artifact/net.sf.saxon/Saxon-HE -->
+		<!-- https://mvnrepository.com/artifact/net.sf.saxon/saxon -->
+<!-- https://mvnrepository.com/artifact/net.sf.saxon/saxon -->
+<!-- https://mvnrepository.com/artifact/net.sf.saxon/saxon -->
+<!-- https://mvnrepository.com/artifact/net.sf.saxon/saxon-dom -->
+<!-- https://mvnrepository.com/artifact/net.sf.saxon/saxon -->
+
+
 	
     </dependencies>
 

@@ -121,5 +121,3 @@ clause1(sameSystemUnitClass(Z,T),(
                              )).  
 
 clause1(sibling(X,Y),(hasAttribute(Z,X),hasAttribute(Z,Y))).
-
-                             
