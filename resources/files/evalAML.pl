@@ -5,7 +5,6 @@
          read(Str,N), 
          close(Str).
  eval:- 
-
 	working_directory(DIR, DIR),
     atom_concat(DIR, 'resources/files/AML_rules.pl', AML_RULE),
     atom_concat(DIR, 'resources/files/semi1.pl', SEMI1),
