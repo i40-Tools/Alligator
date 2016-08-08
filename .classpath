@@ -1,23 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
 	<classpathentry kind="src" path="src"/>
-	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.6">
+	<classpathentry exported="true" kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.6">
 		<attributes>
 			<attribute name="maven.pomderived" value="true"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="lib/org.cs3.prolog.connector_3.1.2.201504300958.jar"/>
-	<classpathentry kind="lib" path="lib/saxon9-dom.jar"/>
-	<classpathentry kind="lib" path="lib/saxon9-9.1.0.6.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/org.cs3.prolog.connector_3.1.2.201504300958.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/saxon9-dom.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/saxon9-9.1.0.6.jar"/>
 	<classpathentry kind="lib" path="lib/krextor.jar"/>
-	<classpathentry kind="con" path="org.eclipse.m2e.MAVEN2_CLASSPATH_CONTAINER">
+	<classpathentry exported="true" kind="con" path="org.eclipse.m2e.MAVEN2_CLASSPATH_CONTAINER">
 		<attributes>
 			<attribute name="maven.pomderived" value="true"/>
 			<attribute name="org.eclipse.jst.component.dependency" value="/WEB-INF/lib"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="C:/Program Files/swipl/lib/jpl.jar"/>
-	<classpathentry kind="lib" path="C:/Users/omar/.m2/repository/com/io7m/xom/xom/1.2.10/xom-1.2.10.jar">
+	<classpathentry exported="true" kind="lib" path="C:/Program Files/swipl/lib/jpl.jar"/>
+	<classpathentry exported="true" kind="lib" path="C:/Users/omar/.m2/repository/com/io7m/xom/xom/1.2.10/xom-1.2.10.jar">
 		<attributes>
 			<attribute name="maven.pomderived" value="true"/>
 			<attribute name="maven.groupId" value="com.io7m.xom"/>
@@ -26,6 +26,5 @@
 			<attribute name="maven.scope" value="compile"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="src" path="/Krextor"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>
