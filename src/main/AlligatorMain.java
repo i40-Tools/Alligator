@@ -2,7 +2,13 @@ package main;
 
 import util.ConfigManager;
 
-public class Rules4AMLIntegration {
+/**
+ * 
+ * Main class of the Alligator project
+ * @author Irlan
+ * @author Omar
+ */
+public class AlligatorMain {
 
 	public static void main(String[] args) throws Throwable {
 
