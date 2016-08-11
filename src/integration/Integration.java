@@ -23,6 +23,10 @@ import org.xml.sax.InputSource;
 import main.DeductiveDB;
 import util.ConfigManager;
 
+/**
+ * 
+ * Integrates Two AML files based on Prolog Rules.
+ */
 public class Integration {
 
 	public ArrayList<Node> integrationNodes;
@@ -162,6 +166,46 @@ public class Integration {
 		xformer.transform(new DOMSource(integration),
 				new StreamResult(new File(ConfigManager.getFilePath() + "/integration.aml")));
 
+		// checkNodeByValue(seed, integration);
+
+	}
+
+	/***
+	 * Work in Progress
+	 * 
+	 * @param seed
+	 * @param integration
+	 * @throws XPathExpressionException
+	 */
+
+	void checkNodeByValue(Document seed, Document integration) throws XPathExpressionException {
+
+		NodeList integ = (NodeList) xpath.evaluate("//text()[normalize-space(.) = '']", seed, XPathConstants.NODESET);
+		for (int z = 0; z < integ.getLength(); z++) {
+			integ.item(z).getParentNode().removeChild(integ.item(z));
+
+		}
+
+		NodeList integr = (NodeList) xpath.evaluate("//text()", seed, XPathConstants.NODESET);
+		for (int z = 0; z < integr.getLength(); z++) {
+			System.out.println(integr.item(z).getNodeValue().trim().toString());
+
+			NodeList integra = (NodeList) xpath.evaluate("//*[text()=\"" + integr.item(z).getNodeValue() + "\"]", seed,
+					XPathConstants.NODESET);
+			for (int z1 = 0; z1 < integra.getLength(); z1++) {
+				System.out.println(integra.item(z1).getParentNode().getNodeName());
+
+				NodeList integraValue = (NodeList) xpath.evaluate(
+						"//" + integra.item(z1).getParentNode().getNodeName() + "/@*", seed, XPathConstants.NODESET);
+
+				for (int z11 = 0; z11 < integraValue.getLength(); z11++) {
+					System.out.println(integraValue.item(z11).getTextContent());
+				}
+
+			}
+
+		}
+
 	}
 
 	/**
@@ -279,26 +323,6 @@ public class Integration {
 		}
 
 		return true;
-	}
-
-	public static void main(String[] args) throws Throwable {
-
-		Integration integ = new Integration();
-		integ.integrate();
-		// for (int j = 0; j < DeductiveDB.attrName.size(); j++) {
-		// Object result = (Object) xpath.evaluate("//*[@*=\"" +
-		// DeductiveDB.attrName.get(j).replace("'", "") + "\"]",
-		// seed, XPathConstants.NODESET);
-		// NodeList nodeList = (NodeList) result;
-		// if (nodeList.getLength() > 0) {
-		// for (int i = 0; i < nodeList.getLength(); i++) {
-		// org.w3c.dom.Node node = nodeList.item(i);
-		// // System.out.println(node.getNodeName());
-		// // System.out.println(DeductiveDB.attrName.get(j));
-		//
-		// }
-		// }
-		// }
 	}
 
 }
