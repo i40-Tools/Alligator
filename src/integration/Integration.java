@@ -26,7 +26,7 @@ public class Integration {
 
 		Files2Facts filesAMLInRDF = new Files2Facts();
 
-		// reads one of AML file contents
+		// gets heterogeneity files in array.
 		ArrayList<File> file = filesAMLInRDF.readFiles(ConfigManager.getFilePath(), ".aml");
 
 		String contents = FileUtils.readFileToString(new File(file.get(0).getPath()), "UTF-8");
