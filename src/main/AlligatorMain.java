@@ -1,10 +1,12 @@
 package main;
 
+import integration.Integration;
 import util.ConfigManager;
 
 /**
  * 
  * Main class of the Alligator project
+ * 
  * @author Irlan
  * @author Omar
  */
@@ -23,6 +25,9 @@ public class AlligatorMain {
 			filesAMLInRDF.generateExtensionalDB(ConfigManager.getFilePath());
 			DeductiveDB deductiveDB = new DeductiveDB();
 			deductiveDB.consultKB();
+			Integration integ = new Integration();
+			integ.integrate();
+
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

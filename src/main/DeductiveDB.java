@@ -22,8 +22,8 @@ public class DeductiveDB {
 
 	private String extractedAttr;
 	private String orignalText;
-	private ArrayList<String> baseClass;
-	private ArrayList<String> attrName;
+	public static ArrayList<String> baseClass;
+	public static ArrayList<String> attrName;
 
 	/**
 	 * Querying the knowledge base.
@@ -82,6 +82,7 @@ public class DeductiveDB {
 		prologWriter.println(orignalText);
 		prologWriter.close();
 
+		addBaseClass(attributes);
 	}
 
 	/**
