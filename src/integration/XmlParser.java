@@ -31,10 +31,6 @@ import util.ConfigManager;
  * @author omar
  *
  */
-/**
- * @author omar
- *
- */
 public class XmlParser {
 
 	private static XPathFactory xpf;
@@ -357,26 +353,26 @@ public class XmlParser {
 
 	void checkNodeByValue(Document seed, Document integration) throws XPathExpressionException {
 
-		NodeList integ = (NodeList) xpath.evaluate("//text()[normalize-space(.) = '']", seed, XPathConstants.NODESET);
-		for (int z = 0; z < integ.getLength(); z++) {
-			integ.item(z).getParentNode().removeChild(integ.item(z));
+		NodeList nodesWithSpaces = (NodeList) xpath.evaluate("//text()[normalize-space(.) = '']", seed, XPathConstants.NODESET);
+		for (int z = 0; z < nodesWithSpaces.getLength(); z++) {
+			nodesWithSpaces.item(z).getParentNode().removeChild(nodesWithSpaces.item(z));
 
 		}
 
-		NodeList integr = (NodeList) xpath.evaluate("//text()", seed, XPathConstants.NODESET);
-		for (int z = 0; z < integr.getLength(); z++) {
-			System.out.println(integr.item(z).getNodeValue().trim().toString());
+		NodeList integrationElements = (NodeList) xpath.evaluate("//text()", seed, XPathConstants.NODESET);
+		for (int z = 0; z < integrationElements.getLength(); z++) {
+			System.out.println(integrationElements.item(z).getNodeValue().trim().toString());
 
-			NodeList integra = (NodeList) xpath.evaluate("//*[text()=\"" + integr.item(z).getNodeValue() + "\"]", seed,
+			NodeList integrationNodes = (NodeList) xpath.evaluate("//*[text()=\"" + integrationElements.item(z).getNodeValue() + "\"]", seed,
 					XPathConstants.NODESET);
-			for (int z1 = 0; z1 < integra.getLength(); z1++) {
-				System.out.println(integra.item(z1).getParentNode().getNodeName());
+			for (int z1 = 0; z1 < integrationNodes.getLength(); z1++) {
+				System.out.println(integrationNodes.item(z1).getParentNode().getNodeName());
 
-				NodeList integraValue = (NodeList) xpath.evaluate(
-						"//" + integra.item(z1).getParentNode().getNodeName() + "/@*", seed, XPathConstants.NODESET);
+				NodeList nodesValues = (NodeList) xpath.evaluate(
+						"//" + integrationNodes.item(z1).getParentNode().getNodeName() + "/@*", seed, XPathConstants.NODESET);
 
-				for (int z11 = 0; z11 < integraValue.getLength(); z11++) {
-					System.out.println(integraValue.item(z11).getTextContent());
+				for (int z11 = 0; z11 < nodesValues.getLength(); z11++) {
+					System.out.println(nodesValues.item(z11).getTextContent());
 				}
 
 			}
