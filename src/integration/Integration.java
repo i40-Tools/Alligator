@@ -2,10 +2,12 @@ package integration;
 
 import java.io.File;
 import java.io.PrintWriter;
+import java.util.ArrayList;
 
 import org.apache.commons.io.FileUtils;
 import org.w3c.dom.Document;
 
+import main.Files2Facts;
 import util.ConfigManager;
 
 /**
@@ -22,9 +24,12 @@ public class Integration {
 	public void integrate() throws Throwable {
 		XmlParser xml = new XmlParser();
 
+		Files2Facts filesAMLInRDF = new Files2Facts();
+
 		// reads one of AML file contents
-		String contents = FileUtils.readFileToString(new File(ConfigManager.getFilePath() + "/seed-Granularity-1.aml"),
-				"UTF-8");
+		ArrayList<File> file = filesAMLInRDF.readFiles(ConfigManager.getFilePath(), ".aml");
+
+		String contents = FileUtils.readFileToString(new File(file.get(0).getPath()), "UTF-8");
 
 		// One of the AML file will have its contents copied as it is.
 		PrintWriter prologWriter = new PrintWriter(new File(ConfigManager.getFilePath() + "/integration.aml"));
@@ -33,7 +38,7 @@ public class Integration {
 
 		// initializing documents.
 
-		Document seed = xml.initInput(ConfigManager.getFilePath() + "/seed-Granularity-0.aml");
+		Document seed = xml.initInput(file.get(1).getPath());
 		Document integration = xml.initInput(ConfigManager.getFilePath() + "/integration.aml");
 
 		xml.getAllNodes(seed, integration);

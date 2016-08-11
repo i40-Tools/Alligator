@@ -51,9 +51,10 @@ public class Files2Facts {
 	 * Read the rdf files of a given path
 	 * 
 	 * @param path
+	 * @return
 	 * @throws Exception
 	 */
-	public void readFiles(String path, String type) throws Exception {
+	public ArrayList<File> readFiles(String path, String type) throws Exception {
 		files = new ArrayList<File>();
 		File originalFilesFolder = new File(path);
 		if (originalFilesFolder.isDirectory()) {
@@ -73,6 +74,7 @@ public class Files2Facts {
 			System.out.println("Error in the directory that you provided");
 			System.exit(0);
 		}
+		return files;
 	}
 
 	/**
