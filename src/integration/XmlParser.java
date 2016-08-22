@@ -139,7 +139,11 @@ public class XmlParser {
 
 		// loops through all its element.
 		for (int k = 0; k < DeductiveDB.attrName.size(); k++) {
-			if (seedNodes.get(i).getTextContent().equals(DeductiveDB.attrName.get(k))) {
+
+			if (seedNodes.get(i).getNodeName().equals(DeductiveDB.attrName.get(k))) {
+				// flag=1;
+
+			} else if (seedNodes.get(i).getTextContent().equals(DeductiveDB.attrName.get(k))) {
 				// if match is found
 				flag = 1;
 			}
@@ -195,6 +199,43 @@ public class XmlParser {
 	}
 
 	/**
+	 * We are interested if its not in output.txt . We need to add non matching
+	 * elements to the integration file. All matching elements were already
+	 * included when we copied one of the seed files. This comparison is for
+	 * node Values.
+	 * 
+	 * @param i
+	 * @param seed
+	 * @param integration
+	 * @return
+	 */
+
+	int compareNonConflictsValues(int i, Document seed, Document integration) {
+
+		int check = 0;
+
+		// for every node in Integration File compare the seed nodes.
+		for (int j = 0; j < integrationNodes.size(); j++) {
+
+			// compares the attribute Node with Node name
+			if (seedNodes.get(i).getNodeName().equals(integrationNodes.get(j).getNodeName())) {
+
+				// compares its Node and Parent node for semantic
+				// equality.
+				if (checkParent(seedNodes.get(i), integrationNodes.get(j))) {
+
+					// if all test passes we can say its already in
+					// the integration document. we can ignore it.
+					check = 1;
+				}
+			}
+		}
+
+		return check;
+
+	}
+
+	/**
 	 * For the current node that is identified as non conflicting element and
 	 * which is not found in integration.aml , we must add it . We add it
 	 * throught migration of the node.
@@ -234,6 +275,44 @@ public class XmlParser {
 
 		}
 
+	}
+
+	/**
+	 * For the current node that is identified as non conflicting element and
+	 * which is not found in integration.aml , we must add it . We add it
+	 * throught migration of the node.
+	 * 
+	 * @param i
+	 * @param seed
+	 * @param integration
+	 * @throws XPathExpressionException
+	 * @throws DOMException
+	 */
+	void addNonConflictsValues(int i, Document seed, Document integration)
+			throws XPathExpressionException, DOMException {
+
+		// we get the Node which is not
+		// found. i represent that node.
+
+		Node node = getSeedNodes().get(i);
+		// we find its parent node so we can append it under it.
+
+		// matches the parent in the integration document.
+		NodeList integ = (NodeList) xpath.evaluate("//" + node.getParentNode().getNodeName(), integration,
+				XPathConstants.NODESET);
+
+		// now we have the parent name and the nodes to be
+		// added.we export it to integration.aml file.
+
+		// to transfer node from one document to another it
+		// must adopt that node.
+		for (int z = 0; z < integ.getLength(); z++) {
+
+			integ.item(z).getOwnerDocument().adoptNode(node);
+
+			// now we can add under the parent.
+			integ.item(z).appendChild(node);
+		}
 	}
 
 	/**
@@ -344,43 +423,28 @@ public class XmlParser {
 	}
 
 	/***
-	 * Work in Progress
+	 * This updates seed and integration array with Elemen Values,
+	 * <WriterName> Value </> This value is required for integration of such
+	 * nodes.
 	 * 
 	 * @param seed
 	 * @param integration
 	 * @throws XPathExpressionException
 	 */
 
-	void checkNodeByValue(Document seed, Document integration) throws XPathExpressionException {
-
-		NodeList nodesWithSpaces = (NodeList) xpath.evaluate("//text()[normalize-space(.) = '']", seed,
-				XPathConstants.NODESET);
-		for (int z = 0; z < nodesWithSpaces.getLength(); z++) {
-			nodesWithSpaces.item(z).getParentNode().removeChild(nodesWithSpaces.item(z));
-
-		}
+	void setNodeValues(Document seed, Document integration) throws XPathExpressionException {
+		seedNodes = new ArrayList<>();
 
 		NodeList integrationElements = (NodeList) xpath.evaluate("//text()", seed, XPathConstants.NODESET);
 		for (int z = 0; z < integrationElements.getLength(); z++) {
-			System.out.println(integrationElements.item(z).getNodeValue().trim().toString());
 
-			NodeList integrationNodes = (NodeList) xpath.evaluate(
-					"//*[text()=\"" + integrationElements.item(z).getNodeValue() + "\"]", seed, XPathConstants.NODESET);
-			for (int z1 = 0; z1 < integrationNodes.getLength(); z1++) {
-				System.out.println(integrationNodes.item(z1).getParentNode().getNodeName());
-
-				NodeList nodesValues = (NodeList) xpath.evaluate(
-						"//" + integrationNodes.item(z1).getParentNode().getNodeName() + "/@*", seed,
-						XPathConstants.NODESET);
-
-				for (int z11 = 0; z11 < nodesValues.getLength(); z11++) {
-					System.out.println(nodesValues.item(z11).getTextContent());
-				}
-
+			if (!integrationElements.item(z).getNodeValue().toString().trim().equals("")) {
+				seedNodes.add(integrationElements.item(z).getParentNode());
 			}
-
+			integrationNodes = new ArrayList<>();
+			NodeList nodes2 = (NodeList) xpath.evaluate("//*", integration, XPathConstants.NODESET);
+			setNodes(nodes2, 2);
 		}
-
 	}
 
 }
