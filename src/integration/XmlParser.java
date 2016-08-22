@@ -345,7 +345,7 @@ public class XmlParser {
 
 	/***
 	 * Work in Progress
-	 *
+	 * 
 	 * @param seed
 	 * @param integration
 	 * @throws XPathExpressionException
@@ -353,7 +353,8 @@ public class XmlParser {
 
 	void checkNodeByValue(Document seed, Document integration) throws XPathExpressionException {
 
-		NodeList nodesWithSpaces = (NodeList) xpath.evaluate("//text()[normalize-space(.) = '']", seed, XPathConstants.NODESET);
+		NodeList nodesWithSpaces = (NodeList) xpath.evaluate("//text()[normalize-space(.) = '']", seed,
+				XPathConstants.NODESET);
 		for (int z = 0; z < nodesWithSpaces.getLength(); z++) {
 			nodesWithSpaces.item(z).getParentNode().removeChild(nodesWithSpaces.item(z));
 
@@ -363,13 +364,14 @@ public class XmlParser {
 		for (int z = 0; z < integrationElements.getLength(); z++) {
 			System.out.println(integrationElements.item(z).getNodeValue().trim().toString());
 
-			NodeList integrationNodes = (NodeList) xpath.evaluate("//*[text()=\"" + integrationElements.item(z).getNodeValue() + "\"]", seed,
-					XPathConstants.NODESET);
+			NodeList integrationNodes = (NodeList) xpath.evaluate(
+					"//*[text()=\"" + integrationElements.item(z).getNodeValue() + "\"]", seed, XPathConstants.NODESET);
 			for (int z1 = 0; z1 < integrationNodes.getLength(); z1++) {
 				System.out.println(integrationNodes.item(z1).getParentNode().getNodeName());
 
 				NodeList nodesValues = (NodeList) xpath.evaluate(
-						"//" + integrationNodes.item(z1).getParentNode().getNodeName() + "/@*", seed, XPathConstants.NODESET);
+						"//" + integrationNodes.item(z1).getParentNode().getNodeName() + "/@*", seed,
+						XPathConstants.NODESET);
 
 				for (int z11 = 0; z11 < nodesValues.getLength(); z11++) {
 					System.out.println(nodesValues.item(z11).getTextContent());
