@@ -44,15 +44,18 @@ public class Integration {
 
 		String contents = FileUtils.readFileToString(new File(file.get(1).getPath()), "UTF-8");
 
+		new File(ConfigManager.getFilePath() + "integration/").mkdir();
+
 		// One of the AML file will have its contents copied as it is.
-		PrintWriter prologWriter = new PrintWriter(new File(ConfigManager.getFilePath() + "/integration.aml"));
+		PrintWriter prologWriter = new PrintWriter(
+				new File(ConfigManager.getFilePath() + "integration/integration.aml"));
 		prologWriter.println(contents);
 		prologWriter.close();
 
 		// initializing documents.
 
 		Document seed = xml.initInput(file.get(0).getPath());
-		Document integration = xml.initInput(ConfigManager.getFilePath() + "/integration.aml");
+		Document integration = xml.initInput(ConfigManager.getFilePath() + "integration/integration.aml");
 
 		processNodesArributes(seed, integration);
 		processNodesValues(seed, integration);

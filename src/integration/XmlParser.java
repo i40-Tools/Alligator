@@ -251,10 +251,9 @@ public class XmlParser {
 		// found. i represent that node.
 
 		NodeList list = getAttributeNode(seedNodes.get(i).getTextContent(), seed);
-
+		// System.out.println(seedNodes.get(i).getNodeName());
 		// we find its parent node so we can append it under it.
 		for (int m = 0; m < list.getLength(); m++) {
-
 			// matches the parent in the integration document.
 			NodeList integ = (NodeList) xpath.evaluate("//" + list.item(m).getParentNode().getNodeName(), integration,
 					XPathConstants.NODESET);
@@ -378,6 +377,9 @@ public class XmlParser {
 
 		Object result = (Object) xpath.evaluate("//*[@*=\"" + value + "\"]", seed, XPathConstants.NODESET);
 		NodeList nodeList = (NodeList) result;
+		if (nodeList.getLength() != 0) {
+			// System.out.println(nodeList.item(0).getNodeName());
+		}
 		return nodeList;
 
 	}
@@ -418,7 +420,7 @@ public class XmlParser {
 		// finally we update our integration.aml file.
 		Transformer xformer = TransformerFactory.newInstance().newTransformer();
 		xformer.transform(new DOMSource(integration),
-				new StreamResult(new File(ConfigManager.getFilePath() + "/integration.aml")));
+				new StreamResult(new File(ConfigManager.getFilePath() + "integration/integration.aml")));
 
 	}
 
