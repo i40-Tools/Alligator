@@ -95,7 +95,7 @@ public class DeductiveDB {
 	 * @param orignalText
 	 * @throws Exception
 	 */
-	void readOutput() throws Exception {
+	public void readOutput() throws Exception {
 		BufferedReader br = new BufferedReader(new FileReader(ConfigManager.getFilePath() + "/output.txt"));
 		try {
 			StringBuilder sb = new StringBuilder();

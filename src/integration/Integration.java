@@ -75,7 +75,7 @@ public class Integration {
 	 * @throws TransformerFactoryConfigurationError
 	 * @throws TransformerException
 	 */
-	void processNodesArributes(Document seed, Document integration)
+	public void processNodesArributes(Document seed, Document integration)
 			throws XPathExpressionException, DOMException, TransformerFactoryConfigurationError, TransformerException {
 
 		xml.getAllNodes(seed, integration);
