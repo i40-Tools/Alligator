@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Map;
@@ -26,31 +27,34 @@ public class DeductiveDB {
 	public static ArrayList<String> attrName;
 
 	/**
+	 * Setting working directory
+	 */
+	public void readWorkingDirectory(){
+		String path = System.getProperty("user.dir");
+		File myUri = new File(path);
+		path = myUri.toURI().toString().replace("file:/", "");
+		Query.hasSolution("working_directory(_," + "'" + path + "')");
+	}
+
+	public void executeKB(){
+		// Queries evalAMl.pl
+		String evalAML = "consult('resources/files/evalAML.pl')";
+		System.out.println(evalAML + " " + (Query.hasSolution(evalAML) ? "succeeded" : "failed"));
+
+		// Queries eval
+		System.out.println("eval" + " " + (Query.hasSolution("eval") ? "succeeded" : "failed"));
+
+		// Queries writePredicates.
+		String writeFiles = "writePredicates";
+		Query.hasSolution(writeFiles);
+	}
+
+	/**
 	 * Querying the knowledge base.
 	 * 
 	 * @throws Throwable
 	 */
 	public void consultKB() throws Throwable {
-
-		// Queries prolog
-
-		// setting working directory
-		String path = System.getProperty("user.dir");
-		File myUri = new File(path);
-		path = myUri.toURI().toString().replace("file:/", "");
-		Query.hasSolution("working_directory(_," + "'" + path + "')");
-
-		// Queries evalAMl.pl
-		String evalAML = "consult('resources/files/evalAML.pl')";
-		System.out.println(evalAML + " " + (Query.hasSolution(evalAML) ? "succeeded" : "failed"));
-
-		// Queries eval.
-		String eval = "eval";
-		System.out.println(eval + " " + (Query.hasSolution(eval) ? "succeeded" : "failed"));
-
-		// Queries writePredicates.
-		String writeFiles = "writePredicates";
-		System.out.println(writeFiles + " " + (Query.hasSolution(writeFiles) ? "succeeded" : "failed"));
 
 		String attributes[] = extractedAttr.split(",");
 
@@ -90,31 +94,28 @@ public class DeductiveDB {
 	 * 
 	 * @param extractedAttr
 	 * @param originalText
+	 * @throws IOException 
 	 * @throws Exception
 	 */
-	public void readOutput() throws Exception {
+	public void readOutput() throws IOException {
 		BufferedReader br = new BufferedReader(new FileReader(ConfigManager.getFilePath() + "/output.txt"));
-		try {
-			StringBuilder sb = new StringBuilder();
-			StringBuilder orignal = new StringBuilder();
-			String line = br.readLine();
+		StringBuilder sb = new StringBuilder();
+		StringBuilder orignal = new StringBuilder();
+		String line = br.readLine();
 
-			while (line != null) {
-				orignal.append(line);
-				orignal.append(System.lineSeparator());
+		while (line != null) {
+			orignal.append(line);
+			orignal.append(System.lineSeparator());
 
-				int a = line.indexOf('(');
-				int b = line.indexOf(')');
-				line = line.substring(a + 1, b);
-				sb.append(line + ",");
-				line = br.readLine();
-			}
-			extractedAttr = sb.toString();
-			originalText = orignal.toString();
-		} finally {
-			br.close();
+			int a = line.indexOf('(');
+			int b = line.indexOf(')');
+			line = line.substring(a + 1, b);
+			sb.append(line + ",");
+			line = br.readLine();
 		}
-
+		extractedAttr = sb.toString();
+		originalText = orignal.toString();
+		br.close();
 	}
 
 	/**

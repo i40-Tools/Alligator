@@ -23,7 +23,11 @@ public class AlligatorMain {
 			filesAMLInRDF.convertRdf();
 			filesAMLInRDF.readFiles(ConfigManager.getFilePath(), ".ttl");
 			filesAMLInRDF.generateExtensionalDB(ConfigManager.getFilePath());
+			
 			DeductiveDB deductiveDB = new DeductiveDB();
+			// formats the output.txt in java objects
+			deductiveDB.readWorkingDirectory();
+			deductiveDB.executeKB();
 			// formats the output.txt in java objects
 			deductiveDB.readOutput();
 			deductiveDB.consultKB();
