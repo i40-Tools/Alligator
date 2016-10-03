@@ -21,7 +21,7 @@ import util.ConfigManager;
 public class DeductiveDB {
 
 	private String extractedAttr;
-	private String orignalText;
+	private String originalText;
 	public static ArrayList<String> baseClass;
 	public static ArrayList<String> attrName;
 
@@ -52,9 +52,6 @@ public class DeductiveDB {
 		String writeFiles = "writePredicates";
 		System.out.println(writeFiles + " " + (Query.hasSolution(writeFiles) ? "succeeded" : "failed"));
 
-		// formats the output.txt in java objects
-		readOutput();
-
 		String attributes[] = extractedAttr.split(",");
 
 		attrName = new ArrayList<String>();
@@ -71,7 +68,7 @@ public class DeductiveDB {
 				attrName.add(results[i].get("Y").toString());
 
 				// updates output.txt
-				orignalText = orignalText.replaceAll(attributes[j], results[i].get("Y").toString());
+				originalText = originalText.replaceAll(attributes[j], results[i].get("Y").toString());
 
 			}
 			j++;
@@ -79,7 +76,7 @@ public class DeductiveDB {
 
 		// writes the attributes names in the output.txt
 		PrintWriter prologWriter = new PrintWriter(new File(ConfigManager.getFilePath() + "/output.txt"));
-		prologWriter.println(orignalText);
+		prologWriter.println(originalText);
 		prologWriter.close();
 
 		addBaseClass(attributes);
@@ -88,11 +85,11 @@ public class DeductiveDB {
 	/**
 	 * Reads the output.txt for mapping the attributes to names or values so
 	 * that integration can be performed. Mapping is important to identify the
-	 * attributes in AML files. This extracts the attributes from datalog format
+	 * attributes in AML files. This extracts the attributes from Datalog format
 	 * to java string objects so that query can be made on them.
 	 * 
 	 * @param extractedAttr
-	 * @param orignalText
+	 * @param originalText
 	 * @throws Exception
 	 */
 	public void readOutput() throws Exception {
@@ -113,7 +110,7 @@ public class DeductiveDB {
 				line = br.readLine();
 			}
 			extractedAttr = sb.toString();
-			orignalText = orignal.toString();
+			originalText = orignal.toString();
 		} finally {
 			br.close();
 		}

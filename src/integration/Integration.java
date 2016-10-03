@@ -24,7 +24,7 @@ public class Integration {
 	private XmlParser xml;
 
 	/**
-	 * This method integrates the two AML files.
+	 * This method integrates two AML files.
 	 * 
 	 * @throws Throwable
 	 */
@@ -63,8 +63,7 @@ public class Integration {
 	}
 
 	/**
-	 * This is an algorithm function defined for data integration for nodes with
-	 * attributes
+	 * Algorithm for integrating data for nodes with attributes
 	 * 
 	 * compareConflicts(skips compared one),compareNonConflicts,addNonConflicts
 	 * 
@@ -99,15 +98,13 @@ public class Integration {
 
 			}
 		}
-		// -----------------------------------------------------------------//
 		// update the integration.aml file
 		xml.finalizeIntegration(integration);
 
 	}
 
 	/**
-	 * This is an algorithm function defined for data integration for nodes with
-	 * values
+	 * Algorithm for data integration for nodes with values
 	 * 
 	 * compareConflicts(skips compared one),compareNonConflictsNodes with
 	 * value,addNonConflicts
@@ -135,8 +132,7 @@ public class Integration {
 				if (xml.compareNonConflictsValues(i, seed, integration) != 1) {
 
 					// if its identified its not in integration.aml
-					// We need to add non match elements to the integration
-					// file.
+					// We need to add only non matched elements to the integration file.
 
 					xml.addNonConflictsValues(i, seed, integration);
 

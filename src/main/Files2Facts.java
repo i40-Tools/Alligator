@@ -32,7 +32,7 @@ public class Files2Facts {
 	private ArrayList<File> files;
 
 	/**
-	 * converts the file to turtle format based on Krexter
+	 * Converts the file to turtle format based on Krextor
 	 * 
 	 * @param input
 	 * @param output
@@ -48,7 +48,7 @@ public class Files2Facts {
 	}
 
 	/**
-	 * Read the rdf files of a given path
+	 * Read the RDF files of a given path
 	 * 
 	 * @param path
 	 * @return
@@ -78,7 +78,7 @@ public class Files2Facts {
 	}
 
 	/**
-	 * Reads the turtle format rdf files and extract the contents for data log
+	 * Reads the turtle format RDF files and extract the contents for data log
 	 * conversion.
 	 * 
 	 * @param file
@@ -150,8 +150,8 @@ public class Files2Facts {
 
 	/**
 	 * Creates temporary files which holds the path for edb.pl and output.txt
-	 * These files are necessary for evalAML.pl so that the path is automitacly
-	 * set from configuration.ttl
+	 * These files are necessary for evalAML.pl so that the path is automatically
+	 * set from config.ttl
 	 * 
 	 * @throws FileNotFoundException
 	 */
