@@ -1,5 +1,10 @@
 *.class
 config.ttl
+resources/files/edb.txt
+resources/files/output.txt
+edb.txt
+output.txt
+/target
 
 # Mobile Tools for Java (J2ME)
 .mtj.tmp/

@@ -106,9 +106,8 @@ public class Files2Facts {
 			predicate = stmt.getPredicate();
 			object = stmt.getObject();
 
-			buf.append("clause1(").append(predicate.asNode().getLocalName()).append("(")
+			buf.append("clause1(").append(StringUtil.lowerCaseFirstChar(predicate.asNode().getLocalName())).append("(")
 					.append(StringUtil.lowerCaseFirstChar(subject.asNode().getLocalName()) + number).append(",");
-
 			if (object.isURIResource()) {
 				object = model.getResource(object.as(Resource.class).getURI());
 				String objectStr = object.asNode().getLocalName();
@@ -121,14 +120,18 @@ public class Files2Facts {
 			} else {
 				if (object.isLiteral()) {
 					buf.append("'" + object.asLiteral().getLexicalForm() + "'");
+
 				} else {
 					buf.append(object);
+
 				}
 			}
 
 			buf.append("),true).");
 			buf.append(System.getProperty("line.separator"));
+
 		}
+
 		return buf.toString();
 	}
 
@@ -150,8 +153,8 @@ public class Files2Facts {
 
 	/**
 	 * Creates temporary files which holds the path for edb.pl and output.txt
-	 * These files are necessary for evalAML.pl so that the path is automatically
-	 * set from config.ttl
+	 * These files are necessary for evalAML.pl so that the path is
+	 * automatically set from config.ttl
 	 * 
 	 * @throws FileNotFoundException
 	 */
