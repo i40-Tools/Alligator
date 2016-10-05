@@ -36,13 +36,20 @@ public class DeductiveDB {
 		Query.hasSolution("working_directory(_," + "'" + path + "')");
 	}
 
+	/**
+	 * Executing the AML Datalog rules over Prolog. 
+	 * Executing the writePredicates method which generates the output.txt 
+	 * containing the conflicting elements.  
+	 */
 	public void executeKB(){
 		// Queries evalAMl.pl
 		String evalAML = "consult('resources/files/evalAML.pl')";
-		System.out.println(evalAML + " " + (Query.hasSolution(evalAML) ? "succeeded" : "failed"));
+		System.out.println(evalAML + " " + 
+		(Query.hasSolution(evalAML) ? "succeeded" : "failed"));
 
 		// Queries eval
-		System.out.println("eval" + " " + (Query.hasSolution("eval") ? "succeeded" : "failed"));
+		System.out.println("eval" + " " + 
+		(Query.hasSolution("eval") ? "succeeded" : "failed"));
 
 		// Queries writePredicates.
 		String writeFiles = "writePredicates";
@@ -66,20 +73,24 @@ public class DeductiveDB {
 		while (j < attributes.length) {
 
 			// performs query to get the attribute name
-			Map<String, Term>[] results = Query.allSolutions("hasAttributeName(" + attributes[j] + ",Y)");
+			Map<String, Term>[] results = Query.allSolutions("hasAttributeName"
+					                            + "(" + attributes[j] + ",Y)");
 			for (int i = 0; i < results.length; i++) {
 				// stores in array
 				attrName.add(results[i].get("Y").toString());
 
 				// updates output.txt
-				originalText = originalText.replaceAll(attributes[j], results[i].get("Y").toString());
+				originalText = originalText.replaceAll(attributes[j], 
+						                    results[i].get("Y").toString());
 
 			}
 			j++;
 		}
 
 		// writes the attributes names in the output.txt
-		PrintWriter prologWriter = new PrintWriter(new File(ConfigManager.getFilePath() + "/output.txt"));
+		PrintWriter prologWriter = new PrintWriter(new File(ConfigManager.
+				                                            getFilePath() 
+				                                            + "/output.txt"));
 		prologWriter.println(originalText);
 		prologWriter.close();
 
@@ -98,7 +109,9 @@ public class DeductiveDB {
 	 * @throws Exception
 	 */
 	public void readOutput() throws IOException {
-		BufferedReader br = new BufferedReader(new FileReader(ConfigManager.getFilePath() + "/output.txt"));
+		BufferedReader br = new BufferedReader(new FileReader(ConfigManager.
+				                                              getFilePath() 
+				                                              + "/output.txt"));
 		StringBuilder sb = new StringBuilder();
 		StringBuilder orignal = new StringBuilder();
 		String line = br.readLine();
@@ -120,10 +133,9 @@ public class DeductiveDB {
 
 	/**
 	 * (Work in progress) This function adds a new output.txt for integration
-	 * which mentions the attribute names and the classes it belongs to. This is
-	 * required for identification of attributes if there are multiple
+	 * which mentions the attribute names and the classes it belongs to. 
+	 * This is required for identification of attributes if there are multiple
 	 * attributes with same name. This helps in integration process.
-	 * 
 	 * @param attributes
 	 * @throws FileNotFoundException
 	 */
@@ -134,11 +146,15 @@ public class DeductiveDB {
 		while (j < attributes.length) {
 
 			if (Query.hasSolution("hasAttribute(Y," + attributes[j] + ")")) {
-				Map<String, Term>[] results2 = Query.allSolutions("hasAttribute(Y," + attributes[j] + ")");
+				Map<String, Term>[] results2 = Query.allSolutions(
+						                             "hasAttribute(Y," 
+				                                      + attributes[j] + ")");
 
 				for (int i = 0; i < results2.length; i++) {
-					Map<String, Term>[] results3 = Query
-							.allSolutions("hasAttributeName(" + results2[i].get("Y").toString() + ",Y)");
+					Map<String, Term>[] results3 = Query.allSolutions
+							                            ("hasAttributeName(" + 
+					                                      results2[i].get("Y").
+					                                      toString() + ",Y)");
 					for (int k = 0; k < results3.length; k++) {
 						baseClass.add(results3[k].get("Y").toString());
 					}
@@ -154,12 +170,15 @@ public class DeductiveDB {
 
 		for (int i = 0; i < baseClass.size(); i++) {
 
-			if (!sb.toString().contains(baseClass.get(i) + "," + attrName.get(i))) {
+			if (!sb.toString().contains(baseClass.get(i) + "," + 
+			                            attrName.get(i))) {
 				sb.append(baseClass.get(i) + "," + attrName.get(i));
 				sb.append(System.lineSeparator());
 			}
 		}
-		PrintWriter prologWriter = new PrintWriter(new File(ConfigManager.getFilePath() + "/output2.txt"));
+		PrintWriter prologWriter = new PrintWriter(new File(ConfigManager.
+				                                        getFilePath() + 
+				                                        "/output2.txt"));
 		prologWriter.println(sb.toString());
 		prologWriter.close();
 
