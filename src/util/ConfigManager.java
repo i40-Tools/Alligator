@@ -4,6 +4,7 @@
 
 package util;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -39,6 +40,10 @@ public class ConfigManager {
 	public final static String HET_NAMESPACE = "http://vocab.cs.uni-bonn.de/het#";
 	public final static String URI_NAMESPACE = "http://uri4uri.net/vocab.html/#";
 
+	/**
+	 * Get the instance of manager
+	 * @return manager
+	 */
 	public static ConfigManager getInstance() {
 
 		if (manager == null) {
@@ -49,27 +54,27 @@ public class ConfigManager {
 
 	/**
 	 * This method load the Configuration file parameters
-	 **/
+	 */
 	public static Properties loadConfig() {
 		prop = new Properties();
 		String dir = System.getProperty("user.dir");
 		File configFile = new File(dir + "/config.ttl");
 
 		if (configFile.isFile() == false) {
-			System.out.println("Please especify the configuration file");
+			System.out.println("Please especify the configuration file"
+					        + "(config.ttl)");
 			System.exit(0);
+		}
+		
+		if (configFile.length() == 0) {
+		    System.out.println("The configuration file (config.ttl) is empty");
+		    System.exit(0);
 		}
 
 		model = ModelFactory.createDefaultModel();
 		InputStream inputStream = FileManager.get().open(configFile.getPath());
-		model.read(new InputStreamReader(inputStream), null, "TURTLE"); // parses
-																		// an
-																		// InputStream
-																		// assuming
-																		// RDF
-																		// in
-																		// Turtle
-																		// format
+		model.read(new InputStreamReader(inputStream), null, "TURTLE"); 
+		// parses an InputStream assuming RDF in Turtle format
 
 		literals = new ArrayList<RDFNode>();
 		predicates = new ArrayList<RDFNode>();
