@@ -60,35 +60,42 @@ public class DeductiveDB {
 	 * @throws Throwable
 	 */
 	public void consultKB() throws Throwable {
-
-		String attributes[] = extractedAttr.split(",");
-
+		String attributes[] = null;
+		if (!extractedAttr.equals("")) {
+			attributes = extractedAttr.split(",");
+		}
 		attrName = new ArrayList<String>();
 
 		// loops through all atributes
 		int j = 0;
 
-		while (j < attributes.length) {
+		if (attributes != null) {
+			while (j < attributes.length) {
 
-			// performs query to get the attribute name
-			Map<String, Term>[] results = Query.allSolutions("hasAttributeName" + "(" + attributes[j] + ",Y)");
-			for (int i = 0; i < results.length; i++) {
-				// stores in array
-				attrName.add(results[i].get("Y").toString());
+				// performs query to get the attribute name
+				Map<String, Term>[] results = Query.allSolutions("hasAttributeName" + "(" + attributes[j] + ",Y)");
+				for (int i = 0; i < results.length; i++) {
+					// stores in array
+					attrName.add(results[i].get("Y").toString());
 
-				// updates output.txt
-				originalText = originalText.replaceAll(attributes[j], results[i].get("Y").toString());
+					// updates output.txt
+					originalText = originalText.replaceAll(attributes[j], results[i].get("Y").toString());
 
+				}
+				j++;
 			}
-			j++;
+		} else {
+			System.out.println(
+					"None of the prolog rules returned true for current data set.File integration completed without any specific rules ");
 		}
-
 		// writes the attributes names in the output.txt
 		PrintWriter prologWriter = new PrintWriter(new File(ConfigManager.getFilePath() + "/output.txt"));
 		prologWriter.println(originalText);
 		prologWriter.close();
 
-		addBaseClass(attributes);
+		if (attributes != null) {
+			addBaseClass(attributes);
+		}
 	}
 
 	/**

@@ -133,27 +133,28 @@ public class XmlParser {
 	 * @return
 	 */
 	int compareConflicts(int i) {
-
 		// flag to check if the attribute value is inside matching
 		int flag = 0;
 
 		// loops through all its element.
-		for (int k = 0; k < DeductiveDB.attrName.size(); k++) {
+		if (DeductiveDB.attrName != null) {
+			for (int k = 0; k < DeductiveDB.attrName.size(); k++) {
 
-			if (seedNodes.get(i).getNodeName().equals(DeductiveDB.attrName.get(k))) {
-				// flag=1;
+				if (seedNodes.get(i).getNodeName().equals(DeductiveDB.attrName.get(k))) {
+					// flag=1;
 
-			} else if (seedNodes.get(i).getTextContent().equals(DeductiveDB.attrName.get(k))) {
-				// if match is found
-				flag = 1;
+				} else if (seedNodes.get(i).getTextContent().equals(DeductiveDB.attrName.get(k))) {
+					// if match is found
+					flag = 1;
+				}
+
+				// ignore FileName attribute
+				if (seedNodes.get(i).getNodeName().equals("FileName")) {
+					// not in output.txt
+					flag = 1;
+				}
+
 			}
-
-			// ignore FileName attribute
-			if (seedNodes.get(i).getNodeName().equals("FileName")) {
-				// not in output.txt
-				flag = 1;
-			}
-
 		}
 		return flag;
 	}
@@ -255,23 +256,25 @@ public class XmlParser {
 		// we find its parent node so we can append it under it.
 		for (int m = 0; m < list.getLength(); m++) {
 			// matches the parent in the integration document.
-			NodeList integ = (NodeList) xpath.evaluate("//" + list.item(m).getParentNode().getNodeName(), integration,
-					XPathConstants.NODESET);
+			if (!list.item(m).getParentNode().getNodeName().equals("#document")) {
+				NodeList integ = (NodeList) xpath.evaluate("//" + list.item(m).getParentNode().getNodeName(),
+						integration, XPathConstants.NODESET);
 
-			// now we have the parent name and the nodes to be
-			// added.we export it to integration.aml file.
+				// now we have the parent name and the nodes to be
+				// added.we export it to integration.aml file.
 
-			for (int z = 0; z < integ.getLength(); z++) {
+				for (int z = 0; z < integ.getLength(); z++) {
 
-				// to transfer node from one document to another it
-				// must adopt that node.
-				integ.item(z).getOwnerDocument().adoptNode(list.item(m));
+					// to transfer node from one document to another it
+					// must adopt that node.
+					integ.item(z).getOwnerDocument().adoptNode(list.item(m));
 
-				// now we can add under the parent.
-				integ.item(z).appendChild(list.item(m));
+					// now we can add under the parent.
+					integ.item(z).appendChild(list.item(m));
+
+				}
 
 			}
-
 		}
 
 	}

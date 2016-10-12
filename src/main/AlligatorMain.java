@@ -27,15 +27,18 @@ public class AlligatorMain {
 			DeductiveDB deductiveDB = new DeductiveDB();
 			// formats the output.txt in java objects
 			deductiveDB.readWorkingDirectory();
+
 			deductiveDB.executeKB();
 			// formats the output.txt in java objects
 			deductiveDB.readOutput();
 			deductiveDB.consultKB();
+
 			Integration integ = new Integration();
 			integ.integrate();
 
 		} catch (Exception e) {
 			e.printStackTrace();
+
 		}
 
 	}

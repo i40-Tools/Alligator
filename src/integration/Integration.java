@@ -88,7 +88,6 @@ public class Integration {
 
 				// we run our noConflicting comparision algorithm
 				if (xml.compareNonConflicts(i, seed, integration) != 1) {
-
 					// if its identified its not in integration.aml
 					// We need to add non match elements to the integration
 					// file.
@@ -132,7 +131,8 @@ public class Integration {
 				if (xml.compareNonConflictsValues(i, seed, integration) != 1) {
 
 					// if its identified its not in integration.aml
-					// We need to add only non matched elements to the integration file.
+					// We need to add only non matched elements to the
+					// integration file.
 
 					xml.addNonConflictsValues(i, seed, integration);
 
