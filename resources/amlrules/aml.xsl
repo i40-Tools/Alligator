@@ -100,7 +100,7 @@
 	
 	<SystemUnitClass type="&aml;SystemUnitClass" related-via-properties="&aml;hasSystemUnitClass"/>
 	
-	<RoleClass type="&aml;RoleClass" related-via-properties="&aml;hasRoleClass &aml;hasRoleClass"/>
+	<RoleClass type="&aml;RoleClass" related-via-properties="&aml;hasRoleClass"/>
 </xsl:variable>
 
 <xsl:template match="CAEXFile

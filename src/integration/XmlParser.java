@@ -24,7 +24,7 @@ import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
-import main.DeductiveDB;
+import point.DeductiveDB;
 import util.ConfigManager;
 
 /**

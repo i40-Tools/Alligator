@@ -3,7 +3,7 @@ package tests;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import main.DeductiveDB;
+import point.DeductiveDB;
 
 public class TestDeductiveDB {
 
