@@ -34,11 +34,24 @@
 :-dynamic(sameRoleClassLib/2).
 :-dynamic(sameSystemUnitClass/2).
 :-dynamic(sibling/2).
+:-dynamic(concatString/2).
+
+% Finds substring
+containsOnly(X,Y) :- forall(sub_atom(X,_,1,_,C), sub_atom(Y,_,1,_,C)).
 
 % Attributes are the same if the have the same refSemantic 
-clause1(sameAttribute(X,Y),( hasRefSemantic(X,T),hasRefSemantic(Y,Z),sameRefSemantic(T,Z) )).
+clause1(sameAttribute(X,Y),( hasRefSemantic(X,T),hasRefSemantic(Y,Z),sameRefSemantic(T,Z))).
 clause1(sameRefSemantic(X,Y),(hasCorrespondingAttributePath(X,Z),hasCorrespondingAttributePath(Y,Z))).
 clause1(sameRefSemantic(X,Y),(sameRefSemantic(X,Z),sameRefSemantic(Z,Y))).
+
+
+
+% Attributes are the same if the have the same refSemantic and if they contain -/_sybmbols
+clause1(concatString(X,Y),( hasRefSemantic(X,T),hasRefSemantic(Y,Z),sameRefSemantic(T,Z),hasAttributeValue(X,A),hasAttributeValue(Y,B),(containsOnly('-',A);containsOnly('-',B);containsOnly('_',A);containsOnly('_',B);containsOnly('/',A);containsOnly('/',B)) )).
+clause1(sameRefSemantic(X,Y),(hasCorrespondingAttributePath(X,Z),hasCorrespondingAttributePath(Y,Z))).
+clause1(sameRefSemantic(X,Y),(sameRefSemantic(X,Z),sameRefSemantic(Z,Y))).
+
+
 
 % Testing
 clause1(sameAttributeRoleClass(Z,T),(sameAttribute(X,Y),hasAttribute(Z,X),hasAttribute(T,Y))).
@@ -58,6 +71,8 @@ clause1(eClassVersionAtt(X,Y),(hasAttributeName(X,'eClassVersion'),
                                sibling(Y,T2),
                                eClassIRDIAtt(T1,T2)
                                )).                                     
+
+
 
 clause1(eClassIRDIAtt(X,Y),(  hasAttributeName(X,'eClassIRDI'),
                               hasAttributeName(Y,'eClassIRDI'),
@@ -119,5 +134,7 @@ clause1(sameSystemUnitClass(Z,T),(
                              hasAttribute(T,C),
                              hasAttribute(T,E)
                              )).  
+
+
 
 clause1(sibling(X,Y),(hasAttribute(Z,X),hasAttribute(Z,Y))).

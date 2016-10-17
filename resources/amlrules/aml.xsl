@@ -183,6 +183,7 @@
 	                  |CAEXFile/InstanceHierarchy//InternalElement/Attribute/@Name
 	                  |CAEXFile/InstanceHierarchy//InternalElement/ExternalInterface/@Name
 	                  |CAEXFile/InstanceHierarchy//InternalElement/ExternalInterface/Attribute/@Name
+	                  |CAEXFile/InstanceHierarchy//InternalElement/ExternalInterface/Attribute/Value
 	                  |CAEXFile/InstanceHierarchy//InternalElement/ExternalInterface/@ID
 	                  |CAEXFile/InstanceHierarchy//InternalElement/ExternalInterface/@RefBaseClassPath
 	                  |CAEXFile/InstanceHierarchy//InternalElement/SupportedRoleClass/@RefRoleClassPath
