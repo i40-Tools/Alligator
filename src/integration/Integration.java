@@ -12,7 +12,7 @@ import org.apache.commons.io.FileUtils;
 import org.w3c.dom.DOMException;
 import org.w3c.dom.Document;
 
-import point.Files2Facts;
+import main.Files2Facts;
 import util.ConfigManager;
 
 /**

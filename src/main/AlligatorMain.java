@@ -1,4 +1,4 @@
-package point;
+package main;
 
 import integration.Integration;
 import util.ConfigManager;

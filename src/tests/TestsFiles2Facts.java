@@ -8,7 +8,7 @@ import java.io.File;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import point.Files2Facts;
+import main.Files2Facts;
 import util.ConfigManager;
 
 public class TestsFiles2Facts {
