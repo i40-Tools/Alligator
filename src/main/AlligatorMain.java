@@ -7,7 +7,7 @@ import util.ConfigManager;
  * 
  * Main class of the Alligator project
  * 
- * @author Irlan 
+ * @author Irlan
  * @author Omar
  */
 public class AlligatorMain {
@@ -33,6 +33,7 @@ public class AlligatorMain {
 			deductiveDB.readOutput();
 			deductiveDB.consultKB();
 
+			// integrating files
 			Integration integ = new Integration();
 			integ.integrate();
 
