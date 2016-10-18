@@ -7,7 +7,7 @@ import util.ConfigManager;
  * 
  * Main class of the Alligator project
  * 
- * @author Irlan
+ * @author Irlan 
  * @author Omar
  */
 public class AlligatorMain {
