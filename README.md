@@ -29,6 +29,8 @@ To obtain the latest version of the project please clone the github repository
 
     $ git clone https://github.com/i40-Tools/Alligator.git
 
+Make sure to add resources/ and libs/ folder to your build path.
+
 ## Running the examples
 To run the examples please create a file config.ttl in the main directory of the project. An example is show below:
 ```
@@ -47,6 +49,12 @@ aml:conf
      uri:path "C:/HeterogeneityExampleData/AutomationML/M2-Granularity/Testbeds-1/";
      uri:URI "C:/Users/omar/Desktop/Alligator-master/resources/aml.ttl".
 ```
+
+## Updating Krextor Rules. (RDF convertor)
+Please navigate to /resources/amlrules/aml.xsl
+
+Here you can update, remove or add rules for RDF conversion.
+
 
 ## License
 
