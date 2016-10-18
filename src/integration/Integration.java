@@ -18,7 +18,7 @@ import util.ConfigManager;
 /**
  * 
  * Integrates Two AML files based on Prolog Rules.
- */
+ */ 
 public class Integration {
 
 	private XmlParser xml;
