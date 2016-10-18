@@ -50,7 +50,12 @@ aml:conf
      uri:URI "C:/Users/omar/Desktop/Alligator-master/resources/aml.ttl".
 ```
 
-## Updating Krextor Rules. (RDF convertor)
+## Updating Krextor Rules 
+What is Krextor?
+
+Krextor is a an extensible XSLT-based framework for extracting RDF from XML.
+Read here at : https://github.com/EIS-Bonn/krextor
+
 Please navigate to /resources/amlrules/aml.xsl
 
 Here you can update, remove or add rules for RDF conversion.
