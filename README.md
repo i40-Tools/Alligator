@@ -53,8 +53,8 @@ aml:conf
 ## Updating Krextor Rules 
 What is Krextor?
 
-Krextor is a an extensible XSLT-based framework for extracting RDF from XML.
-Read here at : https://github.com/EIS-Bonn/krextor
+Krextor is a an extensible XSLT-based framework for extracting RDF from XML.                 
+Read more at : https://github.com/EIS-Bonn/krextor
 
 Please navigate to /resources/amlrules/aml.xsl
 
