@@ -5,7 +5,6 @@ resources/files/output.txt
 edb.txt
 output.txt
 target/
-.classpath
 .project
 
 # Mobile Tools for Java (J2ME)
