@@ -43,15 +43,27 @@ public class DeductiveDB {
 	 */
 	public void executeKB() {
 		// Queries evalAMl.pl
-		String evalAML = "consult('resources/files/evalAML.pl')";
-		System.out.println(evalAML + " " + (Query.hasSolution(evalAML) ? "succeeded" : "failed"));
+		// String evalAML = "consult('resources/files/evalAML.pl')";
+		// System.out.println(evalAML + " " + (Query.hasSolution(evalAML) ?
+		// "succeeded" : "failed"));
+
+		// Queries eval
+		// System.out.println("eval" + " " + (Query.hasSolution("eval") ?
+		// "succeeded" : "failed"));
+
+		// Queries writePredicates.
+		// String writeFiles = "writePredicates";
+		// Query.hasSolution(writeFiles);
+
+		String load = "consult('resources/rules/__load.pl')";
+		System.out.println(load + " " + (Query.hasSolution(load) ? "succeeded" : "failed"));
 
 		// Queries eval
 		System.out.println("eval" + " " + (Query.hasSolution("eval") ? "succeeded" : "failed"));
 
-		// Queries writePredicates.
-		String writeFiles = "writePredicates";
-		Query.hasSolution(writeFiles);
+		String fact = "consult('" + ConfigManager.getFilePath() + "/edb.pl" + "')";
+		System.out.println(load + " " + (Query.hasSolution(fact) ? "succeeded" : "failed"));
+
 	}
 
 	/**
@@ -114,16 +126,22 @@ public class DeductiveDB {
 		StringBuilder sb = new StringBuilder();
 		StringBuilder orignal = new StringBuilder();
 		String line = br.readLine();
-
+		line = line.trim(); // remove leading and trailing whitespace
 		while (line != null) {
-			orignal.append(line);
-			orignal.append(System.lineSeparator());
+			if (!line.equals("")) {
 
-			int a = line.indexOf('(');
-			int b = line.indexOf(')');
-			line = line.substring(a + 1, b);
-			sb.append(line + ",");
+				orignal.append(line);
+				orignal.append(System.lineSeparator());
+
+				int a = line.indexOf('(');
+				int b = line.indexOf(')');
+				if (a + 1 >= 0 && b >= 0) {
+					line = line.substring(a + 1, b);
+				}
+				sb.append(line + ",");
+			}
 			line = br.readLine();
+
 		}
 		extractedAttr = sb.toString();
 		originalText = orignal.toString();
@@ -165,10 +183,11 @@ public class DeductiveDB {
 		StringBuilder sb = new StringBuilder();
 
 		for (int i = 0; i < baseClass.size(); i++) {
-
-			if (!sb.toString().contains(baseClass.get(i) + "," + attrName.get(i))) {
-				sb.append(baseClass.get(i) + "," + attrName.get(i));
-				sb.append(System.lineSeparator());
+			if (attrName.size() > i) {
+				if (!sb.toString().contains(baseClass.get(i) + "," + attrName.get(i))) {
+					sb.append(baseClass.get(i) + "," + attrName.get(i));
+					sb.append(System.lineSeparator());
+				}
 			}
 		}
 		PrintWriter prologWriter = new PrintWriter(new File(ConfigManager.getFilePath() + "/output2.txt"));

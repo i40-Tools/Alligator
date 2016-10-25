@@ -106,7 +106,7 @@ public class Files2Facts {
 			predicate = stmt.getPredicate();
 			object = stmt.getObject();
 
-			buf.append("clause1(").append(StringUtil.lowerCaseFirstChar(predicate.asNode().getLocalName())).append("(")
+			buf.append("").append(StringUtil.lowerCaseFirstChar(predicate.asNode().getLocalName())).append("(")
 					.append(StringUtil.lowerCaseFirstChar(subject.asNode().getLocalName()) + number).append(",");
 			if (object.isURIResource()) {
 				object = model.getResource(object.as(Resource.class).getURI());
@@ -127,7 +127,7 @@ public class Files2Facts {
 				}
 			}
 
-			buf.append("),true).");
+			buf.append(").");
 			buf.append(System.getProperty("line.separator"));
 
 		}

@@ -1,6 +1,5 @@
 package main;
 
-import integration.Integration;
 import util.ConfigManager;
 
 /**
@@ -34,8 +33,8 @@ public class AlligatorMain {
 			deductiveDB.consultKB();
 
 			// integrating files
-			Integration integ = new Integration();
-			integ.integrate();
+			// Integration integ = new Integration();
+			// integ.integrate();
 
 		} catch (Exception e) {
 			e.printStackTrace();
