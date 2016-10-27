@@ -42,8 +42,8 @@ public class XmlParser {
 	 * Constructor initializes
 	 */
 	public XmlParser() {
-		integrationNodes = new ArrayList<>();
-		seedNodes = new ArrayList<>();
+		integrationNodes = new ArrayList<Node>();
+		seedNodes = new ArrayList<Node>();
 		xpf = XPathFactory.newInstance();
 		xpath = xpf.newXPath();
 
@@ -428,9 +428,8 @@ public class XmlParser {
 	}
 
 	/***
-	 * This updates seed and integration array with Elemen Values,
-	 * <WriterName> Value </> This value is required for integration of such
-	 * nodes.
+	 * This updates seed and integration array with Elemen Values, <WriterName>
+	 * Value </> This value is required for integration of such nodes.
 	 * 
 	 * @param seed
 	 * @param integration
@@ -438,7 +437,7 @@ public class XmlParser {
 	 */
 
 	void setNodeValues(Document seed, Document integration) throws XPathExpressionException {
-		seedNodes = new ArrayList<>();
+		seedNodes = new ArrayList<Node>();
 
 		NodeList integrationElements = (NodeList) xpath.evaluate("//text()", seed, XPathConstants.NODESET);
 		for (int z = 0; z < integrationElements.getLength(); z++) {
@@ -446,7 +445,7 @@ public class XmlParser {
 			if (!integrationElements.item(z).getNodeValue().toString().trim().equals("")) {
 				seedNodes.add(integrationElements.item(z).getParentNode());
 			}
-			integrationNodes = new ArrayList<>();
+			integrationNodes = new ArrayList<Node>();
 			NodeList nodes2 = (NodeList) xpath.evaluate("//*", integration, XPathConstants.NODESET);
 			setNodes(nodes2, 2);
 		}
