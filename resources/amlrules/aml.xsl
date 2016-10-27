@@ -180,12 +180,12 @@
 	                  |CAEXFile/InstanceHierarchy//InternalElement/@Name
 	                  |CAEXFile/InstanceHierarchy//InternalElement/@ID
 	                  |CAEXFile/InstanceHierarchy//InternalElement/@RefBaseSystemUnitPath
-	                  |CAEXFile/InstanceHierarchy//InternalElement/Attribute/@Name
-	                  |CAEXFile/InstanceHierarchy//InternalElement/Attribute/@AttributeDataType
-	                  |CAEXFile/InstanceHierarchy//InternalElement/Attribute/Value
+	                  |CAEXFile/InstanceHierarchy//InternalElement//Attribute/@Name
+	                  |CAEXFile/InstanceHierarchy//InternalElement//Attribute/@AttributeDataType
+	                  |CAEXFile/InstanceHierarchy//InternalElement//Attribute/Value
 	                  |CAEXFile/InstanceHierarchy//InternalElement/ExternalInterface/@Name
-	                  |CAEXFile/InstanceHierarchy//InternalElement/ExternalInterface/Attribute/@Name
-	                  |CAEXFile/InstanceHierarchy//InternalElement/ExternalInterface/Attribute/Value
+	                  |CAEXFile/InstanceHierarchy//InternalElement/ExternalInterface//Attribute/@Name
+	                  |CAEXFile/InstanceHierarchy//InternalElement/ExternalInterface//Attribute/Value
 	                  |CAEXFile/InstanceHierarchy//InternalElement/ExternalInterface/@ID
 	                  |CAEXFile/InstanceHierarchy//InternalElement/ExternalInterface/@RefBaseClassPath
 	                  |CAEXFile/InstanceHierarchy//InternalElement/SupportedRoleClass/@RefRoleClassPath
