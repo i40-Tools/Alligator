@@ -143,6 +143,7 @@ public class DeductiveDB {
 	void addBaseClass(String attributes[]) throws FileNotFoundException {
 		int j = 0;
 		baseClass = new ArrayList<String>();
+
 		while (j < attributes.length) {
 
 			if (Query.hasSolution("hasAttribute(Y," + attributes[j] + ")")) {
@@ -165,10 +166,11 @@ public class DeductiveDB {
 		StringBuilder sb = new StringBuilder();
 
 		for (int i = 0; i < baseClass.size(); i++) {
-
-			if (!sb.toString().contains(baseClass.get(i) + "," + attrName.get(i))) {
-				sb.append(baseClass.get(i) + "," + attrName.get(i));
-				sb.append(System.lineSeparator());
+			if (attrName.size() > i) {
+				if (!sb.toString().contains(baseClass.get(i) + "," + attrName.get(i))) {
+					sb.append(baseClass.get(i) + "," + attrName.get(i));
+					sb.append(System.lineSeparator());
+				}
 			}
 		}
 		PrintWriter prologWriter = new PrintWriter(new File(ConfigManager.getFilePath() + "/output2.txt"));
