@@ -198,8 +198,8 @@
 	                  |CAEXFile/RoleClassLib/@Name
 	                  |CAEXFile/RoleClassLib/Version
 	                  |CAEXFile/RoleClassLib//RoleClass/@Name
-					  |CAEXFile/RoleClassLib//RoleClass/Attribute/@Name
-					  |CAEXFile/RoleClassLib//RoleClass/Attribute/Value
+					  |CAEXFile/RoleClassLib//RoleClass//Attribute//@Name
+					  |CAEXFile/RoleClassLib//RoleClass//Attribute//Value
 	                  |CAEXFile/RoleClassLib//RoleClass/@RefBaseClassPath
 	                  |CAEXFile/RoleClassLib//RoleClass/ExternalInterface/@Name
 	                  |CAEXFile/RoleClassLib//RoleClass/ExternalInterface/Attribute/@Name

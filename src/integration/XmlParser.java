@@ -1,6 +1,8 @@
 package integration;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 
@@ -131,31 +133,80 @@ public class XmlParser {
 	 * 
 	 * @param i
 	 * @return
+	 * @throws DOMException
+	 * @throws XPathExpressionException
+	 * @throws IOException
 	 */
-	int compareConflicts(int i) {
+	int compareConflicts(int i, Document seed) throws XPathExpressionException, DOMException, IOException {
 		// flag to check if the attribute value is inside matching
 		int flag = 0;
 
 		// loops through all its element.
 		if (DeductiveDB.attrName != null) {
 			for (int k = 0; k < DeductiveDB.attrName.size(); k++) {
+				// we find its parent node so we can append it under it.
 
-				if (seedNodes.get(i).getNodeName().equals(DeductiveDB.attrName.get(k))) {
-					// flag=1;
+				if (seedNodes.get(i).getNodeName().equals(DeductiveDB.attrName.get(k).replaceAll("'", ""))) {
+					// flag = 1;
 
-				} else if (seedNodes.get(i).getTextContent().equals(DeductiveDB.attrName.get(k))) {
+				} else if (seedNodes.get(i).getTextContent().equals(DeductiveDB.attrName.get(k).replaceAll("'", ""))) {
 					// if match is found
 					flag = 1;
+
+				}
+
+				else {
+
+					NodeList list = getAttributeNode(seedNodes.get(i).getTextContent(), seed);
+					NodeList list2 = getAttributeNode(DeductiveDB.attrName.get(k).replaceAll("'", ""), seed);
+
+					if (checkParent2(seedNodes.get(i), list2.item(0))) {
+						flag = 1;
+
+					}
+
+					for (int m = 0; m < list.getLength(); m++) {
+						// matches the parent in the integration document.
+
+						if (list.item(0).getParentNode() != null && list2.item(0) != null && list.item(0) != null) {
+
+							if (list.item(0).isEqualNode(list2.item(0))) {
+								flag = 1;
+
+							}
+
+							if (list.item(0).getParentNode().isEqualNode(list2.item(0))) {
+
+								@SuppressWarnings("resource")
+								BufferedReader br = new BufferedReader(
+										new FileReader(ConfigManager.getFilePath() + "/output.txt"));
+								String line = br.readLine();
+
+								while (line != null) {
+									if (line.contains("concatString")) {
+										flag = 1;
+										break;
+
+									}
+									line = br.readLine();
+								}
+							}
+
+						}
+					}
 				}
 
 				// ignore FileName attribute
 				if (seedNodes.get(i).getNodeName().equals("FileName")) {
+
 					// not in output.txt
 					flag = 1;
 				}
 
 			}
+
 		}
+
 		return flag;
 	}
 
@@ -417,6 +468,31 @@ public class XmlParser {
 		}
 
 		return true;
+	}
+
+	static boolean checkParent2(Node seed, Node integration) {
+		// loops until there are no more parents.
+
+		while (seed.getParentNode() != null) {
+
+			// compares parents name
+			if (seed != null && integration != null) {
+				if (!seed.getNodeName().equals(integration.getNodeName())) {
+
+					// if equal puts next parent
+					seed = seed.getParentNode();
+
+				}
+
+				else {
+
+					return true;
+				}
+			} else {
+				return false;
+			}
+		}
+		return false;
 	}
 
 	void finalizeIntegration(Document integration) throws TransformerFactoryConfigurationError, TransformerException {

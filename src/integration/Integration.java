@@ -1,6 +1,7 @@
 package integration;
 
 import java.io.File;
+import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 
@@ -18,7 +19,7 @@ import util.ConfigManager;
 /**
  * 
  * Integrates Two AML files based on Prolog Rules.
- */ 
+ */
 public class Integration {
 
 	private XmlParser xml;
@@ -73,9 +74,10 @@ public class Integration {
 	 * @throws DOMException
 	 * @throws TransformerFactoryConfigurationError
 	 * @throws TransformerException
+	 * @throws IOException
 	 */
-	public void processNodesArributes(Document seed, Document integration)
-			throws XPathExpressionException, DOMException, TransformerFactoryConfigurationError, TransformerException {
+	public void processNodesArributes(Document seed, Document integration) throws XPathExpressionException,
+			DOMException, TransformerFactoryConfigurationError, TransformerException, IOException {
 
 		xml.getAllNodes(seed, integration);
 
@@ -84,7 +86,7 @@ public class Integration {
 		for (int i = 0; i < xml.getSeedNodes().size(); i++) {
 
 			// not in the conflicting Element of output.txt
-			if (xml.compareConflicts(i) == 0) {
+			if (xml.compareConflicts(i, seed) == 0) {
 
 				// we run our noConflicting comparision algorithm
 				if (xml.compareNonConflicts(i, seed, integration) != 1) {
@@ -113,9 +115,11 @@ public class Integration {
 	 * @throws XPathExpressionException
 	 * @throws TransformerFactoryConfigurationError
 	 * @throws TransformerException
+	 * @throws IOException
+	 * @throws DOMException
 	 */
-	void processNodesValues(Document seed, Document integration)
-			throws XPathExpressionException, TransformerFactoryConfigurationError, TransformerException {
+	void processNodesValues(Document seed, Document integration) throws XPathExpressionException,
+			TransformerFactoryConfigurationError, TransformerException, DOMException, IOException {
 
 		// update for node values, array's updated.
 		xml.setNodeValues(seed, integration);
@@ -125,7 +129,7 @@ public class Integration {
 		for (int i = 0; i < xml.getSeedNodes().size(); i++) {
 
 			// not in the conflicting Element of output.txt
-			if (xml.compareConflicts(i) == 0) {
+			if (xml.compareConflicts(i, seed) == 0) {
 
 				// we run our noConflicting comparision algorithm
 				if (xml.compareNonConflictsValues(i, seed, integration) != 1) {
