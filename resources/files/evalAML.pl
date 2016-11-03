@@ -15,7 +15,7 @@
  assert(amlPredicates(
  [
  'sameRoleClassLib','sameRoleClass','sameInterfaceClass','sameSystemUnitClass',
- 'eClassClassificationAtt','eClassVersionAtt','eClassIRDIAtt','sameAttribute','concatString' 
+ 'eClassClassificationAtt','eClassVersionAtt','eClassIRDIAtt','sameAttribute','concatString','sameIdentifier' 
  ] 
  )),    
  consult(SEMI1),
