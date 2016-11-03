@@ -121,7 +121,9 @@ public class DeductiveDB {
 
 			int a = line.indexOf('(');
 			int b = line.indexOf(')');
-			line = line.substring(a + 1, b);
+			if (a + 1 >= 0 && b >= 0) {
+				line = line.substring(a + 1, b);
+			}
 			sb.append(line + ",");
 			line = br.readLine();
 		}

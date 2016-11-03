@@ -207,22 +207,23 @@
 	                  |CAEXFile/RoleClassLib//RoleClass/ExternalInterface/@RefBaseClassPath
 	                  |CAEXFile/SystemUnitClassLib/@Name
 	                  |CAEXFile/SystemUnitClassLib/Version
-	                  |CAEXFile/SystemUnitClassLib//SystemUnitClass/InternalElement/@Name
-	                  |CAEXFile/SystemUnitClassLib//SystemUnitClass/InternalElement/@ID
-	                  |CAEXFile/SystemUnitClassLib//SystemUnitClass/InternalElement/@RefBaseSystemUnitPath
-	                  |CAEXFile/SystemUnitClassLib//SystemUnitClass/InternalElement/Attribute/@Name
-	                  |CAEXFile/SystemUnitClassLib//SystemUnitClass/InternalElement/ExternalInterface/@Name
-	                  |CAEXFile/SystemUnitClassLib//SystemUnitClass/InternalElement/ExternalInterface/@ID
-	                  |CAEXFile/SystemUnitClassLib//SystemUnitClass/InternalElement/ExternalInterface/@RefBaseClassPath
-	                  |CAEXFile/SystemUnitClassLib//SystemUnitClass/InternalElement/SupportedRoleClass/@RefRoleClassPath
-	                  |CAEXFile/SystemUnitClassLib//SystemUnitClass/InternalElement/RoleRequirements/@RefBaseRoleClassPath
+	                  |CAEXFile/SystemUnitClassLib//SystemUnitClass//InternalElement/@Name
+	                  |CAEXFile/SystemUnitClassLib//SystemUnitClass//InternalElement/@ID
+	                  |CAEXFile/SystemUnitClassLib//SystemUnitClass//InternalElement/@RefBaseSystemUnitPath
+	                  |CAEXFile/SystemUnitClassLib//SystemUnitClass//InternalElement//Attribute/@Name
+	                  |CAEXFile/SystemUnitClassLib//SystemUnitClass//InternalElement//Attribute/Value
+	                  |CAEXFile/SystemUnitClassLib//SystemUnitClass//InternalElement//ExternalInterface/@Name
+	                  |CAEXFile/SystemUnitClassLib//SystemUnitClass//InternalElement//ExternalInterface/@ID
+	                  |CAEXFile/SystemUnitClassLib//SystemUnitClass//InternalElement//ExternalInterface/@RefBaseClassPath
+	                  |CAEXFile/SystemUnitClassLib//SystemUnitClass//InternalElement//SupportedRoleClass/@RefRoleClassPath
+	                  |CAEXFile/SystemUnitClassLib//SystemUnitClass//InternalElement//RoleRequirements/@RefBaseRoleClassPath
 	                  |CAEXFile/SystemUnitClassLib//SystemUnitClass/@Name
-					  |CAEXFile/SystemUnitClassLib//SystemUnitClass/Attribute/@Name
-					  |CAEXFile/SystemUnitClassLib//SystemUnitClass/Attribute/Value
-	                  |CAEXFile/SystemUnitClassLib//SystemUnitClass/ExternalInterface/@Name
-	                  |CAEXFile/SystemUnitClassLib//SystemUnitClass/ExternalInterface/@ID
-	                  |CAEXFile/SystemUnitClassLib//SystemUnitClass/ExternalInterface/@RefBaseClassPath
-	                  |CAEXFile/SystemUnitClassLib//SystemUnitClass/SupportedRoleClass/@RefRoleClassPath" 
+					  |CAEXFile/SystemUnitClassLib//SystemUnitClass//Attribute/@Name
+					  |CAEXFile/SystemUnitClassLib//SystemUnitClass//Attribute/Value
+	                  |CAEXFile/SystemUnitClassLib//SystemUnitClass//ExternalInterface/@Name
+	                  |CAEXFile/SystemUnitClassLib//SystemUnitClass//ExternalInterface/@ID
+	                  |CAEXFile/SystemUnitClassLib//SystemUnitClass//ExternalInterface/@RefBaseClassPath
+	                  |CAEXFile/SystemUnitClassLib//SystemUnitClass//SupportedRoleClass/@RefRoleClassPath" 
 	                  mode="krextor:main">
  <xsl:apply-templates select="." mode="krextor:add-literal-property"/>
 </xsl:template>
