@@ -1,6 +1,8 @@
 package main;
 
+import Test.ModelRepair;
 import integration.Integration;
+import integration.XSDValidator;
 import util.ConfigManager;
 
 /**
@@ -36,6 +38,14 @@ public class AlligatorMain {
 			// integrating files
 			Integration integ = new Integration();
 			integ.integrate();
+
+			// chec valdty
+			if (!new XSDValidator(ConfigManager.getFilePath() + "integration/integration.aml").schemaValidate()) {
+				System.out.println("Repairing Structure");
+				ModelRepair.testRoundTrip(ConfigManager.getFilePath() + "integration/integration.aml");
+				System.out.println("Schema Validated");
+
+			}
 
 		} catch (Exception e) {
 			e.printStackTrace();

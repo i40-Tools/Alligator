@@ -1,16 +1,10 @@
 package integration;
 
 import java.io.File;
-import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 
-import javax.xml.transform.TransformerException;
-import javax.xml.transform.TransformerFactoryConfigurationError;
-import javax.xml.xpath.XPathExpressionException;
-
 import org.apache.commons.io.FileUtils;
-import org.w3c.dom.DOMException;
 import org.w3c.dom.Document;
 
 import main.Files2Facts;
@@ -70,14 +64,9 @@ public class Integration {
 	 * 
 	 * @param seed
 	 * @param integration
-	 * @throws XPathExpressionException
-	 * @throws DOMException
-	 * @throws TransformerFactoryConfigurationError
-	 * @throws TransformerException
-	 * @throws IOException
+	 * @throws Throwable
 	 */
-	public void processNodesArributes(Document seed, Document integration) throws XPathExpressionException,
-			DOMException, TransformerFactoryConfigurationError, TransformerException, IOException {
+	public void processNodesArributes(Document seed, Document integration) throws Throwable {
 
 		xml.getAllNodes(seed, integration);
 
@@ -112,14 +101,9 @@ public class Integration {
 	 * 
 	 * @param seed
 	 * @param integration
-	 * @throws XPathExpressionException
-	 * @throws TransformerFactoryConfigurationError
-	 * @throws TransformerException
-	 * @throws IOException
-	 * @throws DOMException
+	 * @throws Throwable
 	 */
-	void processNodesValues(Document seed, Document integration) throws XPathExpressionException,
-			TransformerFactoryConfigurationError, TransformerException, DOMException, IOException {
+	void processNodesValues(Document seed, Document integration) throws Throwable {
 
 		// update for node values, array's updated.
 		xml.setNodeValues(seed, integration);

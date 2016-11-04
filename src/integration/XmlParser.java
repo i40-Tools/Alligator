@@ -9,7 +9,6 @@ import java.util.ArrayList;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.Transformer;
-import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.TransformerFactoryConfigurationError;
 import javax.xml.transform.dom.DOMSource;
@@ -303,27 +302,31 @@ public class XmlParser {
 		// found. i represent that node.
 
 		NodeList list = getAttributeNode(seedNodes.get(i).getTextContent(), seed);
-		// System.out.println(seedNodes.get(i).getNodeName());
+
 		// we find its parent node so we can append it under it.
 		for (int m = 0; m < list.getLength(); m++) {
+
 			// matches the parent in the integration document.
+
 			if (!list.item(m).getParentNode().getNodeName().equals("#document")) {
 				NodeList integ = (NodeList) xpath.evaluate("//" + list.item(m).getParentNode().getNodeName(),
 						integration, XPathConstants.NODESET);
-
 				// now we have the parent name and the nodes to be
 				// added.we export it to integration.aml file.
-
+				int index = 0;
 				for (int z = 0; z < integ.getLength(); z++) {
-
 					// to transfer node from one document to another it
 					// must adopt that node.
-					integ.item(z).getOwnerDocument().adoptNode(list.item(m));
 
-					// now we can add under the parent.
-					integ.item(z).appendChild(list.item(m));
+					if (checkParent(list.item(m).getParentNode(), integ.item(z))) {
 
+						index = z;
+					}
 				}
+				integ.item(index).getOwnerDocument().adoptNode(list.item(m));
+
+				// now we can add under the parent.
+				integ.item(index).appendChild(list.item(m));
 
 			}
 		}
@@ -353,7 +356,6 @@ public class XmlParser {
 		// matches the parent in the integration document.
 		NodeList integ = (NodeList) xpath.evaluate("//" + node.getParentNode().getNodeName(), integration,
 				XPathConstants.NODESET);
-
 		// now we have the parent name and the nodes to be
 		// added.we export it to integration.aml file.
 
@@ -495,7 +497,7 @@ public class XmlParser {
 		return false;
 	}
 
-	void finalizeIntegration(Document integration) throws TransformerFactoryConfigurationError, TransformerException {
+	void finalizeIntegration(Document integration) throws TransformerFactoryConfigurationError, Throwable {
 		// finally we update our integration.aml file.
 		Transformer xformer = TransformerFactory.newInstance().newTransformer();
 		xformer.transform(new DOMSource(integration),
