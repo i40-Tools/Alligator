@@ -49,7 +49,7 @@ clause1(sameRefSemantic(X,Y),(hasCorrespondingAttributePath(X,Z),hasCorrespondin
 clause1(sameRefSemantic(X,Y),(sameRefSemantic(X,Z),sameRefSemantic(Z,Y))).
 
 % Internal Elements are the same if the have the same identifier 
-clause1(sameIdentifier(X,Y),(hasInternalElement(X,T),hasInternalElement(Y,Z),sameId(T,Z))).
+clause1(sameIdentifier(X,Y),sameId(X,Y)).
 clause1(sameId(X,Y),(identifier(X,Z),identifier(Y,Z))).
 clause1(sameId(X,Y),(sameId(X,Z),sameId(Z,Y))).
 

@@ -177,6 +177,7 @@
 	                  |CAEXFile/ExternalReference/@Path
 	                  |CAEXFile/ExternalReference/@Alias
 	                  |CAEXFile/InstanceHierarchy/@Name
+	                  |CAEXFile/InstanceHierarchy/@ID
 	                  |CAEXFile/InstanceHierarchy//InternalElement/@Name
 	                  |CAEXFile/InstanceHierarchy//InternalElement/@ID
 	                  |CAEXFile/InstanceHierarchy//InternalElement/@RefBaseSystemUnitPath

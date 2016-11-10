@@ -136,11 +136,13 @@ public class XmlParser {
 	 * @throws XPathExpressionException
 	 * @throws IOException
 	 */
-	int compareConflicts(int i, Document seed) throws XPathExpressionException, DOMException, IOException {
+	int compareConflicts(int i, Document seed, Document integration)
+			throws XPathExpressionException, DOMException, IOException {
 		// flag to check if the attribute value is inside matching
 		int flag = 0;
 
 		// loops through all its element.
+
 		if (DeductiveDB.attrName != null) {
 			for (int k = 0; k < DeductiveDB.attrName.size(); k++) {
 				// we find its parent node so we can append it under it.
@@ -157,9 +159,19 @@ public class XmlParser {
 				else {
 
 					NodeList list = getAttributeNode(seedNodes.get(i).getTextContent(), seed);
+					if (list.getLength() == 0) {
+						list = getAttributeNode(seedNodes.get(i).getTextContent(), integration);
+
+					}
+
 					NodeList list2 = getAttributeNode(DeductiveDB.attrName.get(k).replaceAll("'", ""), seed);
+					NodeList list3 = getAttributeNode(DeductiveDB.attrName.get(k).replaceAll("'", ""), integration);
 
 					if (checkParent2(seedNodes.get(i), list2.item(0))) {
+						flag = 1;
+
+					}
+					if (checkParent(seedNodes.get(i), list3.item(0))) {
 						flag = 1;
 
 					}
@@ -167,14 +179,23 @@ public class XmlParser {
 					for (int m = 0; m < list.getLength(); m++) {
 						// matches the parent in the integration document.
 
-						if (list.item(0).getParentNode() != null && list2.item(0) != null && list.item(0) != null) {
+						if (list.item(0).getParentNode() != null && list2.item(0) != null && list3.item(0) != null
+								&& list.item(0) != null) {
 
-							if (list.item(0).isEqualNode(list2.item(0))) {
+							if (seedNodes.get(i).getTextContent().equals("Connection")) {
+
+							}
+
+							if (list.item(0).isEqualNode(list2.item(0)) || list.item(0).isEqualNode(list3.item(0))) {
+
 								flag = 1;
 
 							}
 
-							if (list.item(0).getParentNode().isEqualNode(list2.item(0))) {
+							if (list.item(0).getParentNode().isEqualNode(list2.item(0).getParentNode())
+									|| list.item(0).getParentNode().isEqualNode(list3.item(0).getParentNode())) {
+
+								// flag = 1;
 
 								@SuppressWarnings("resource")
 								BufferedReader br = new BufferedReader(
@@ -431,10 +452,13 @@ public class XmlParser {
 	static NodeList getAttributeNode(String value, Document seed) throws XPathExpressionException {
 		// xpath query to get the Attribute
 
-		Object result = (Object) xpath.evaluate("//*[@*=\"" + value + "\"]", seed, XPathConstants.NODESET);
+		Object result;
+
+		result = (Object) xpath.evaluate("//*[@*=\"" + value + "\"]", seed, XPathConstants.NODESET);
 		NodeList nodeList = (NodeList) result;
+
 		if (nodeList.getLength() != 0) {
-			// System.out.println(nodeList.item(0).getNodeName());
+
 		}
 		return nodeList;
 
@@ -479,6 +503,7 @@ public class XmlParser {
 
 			// compares parents name
 			if (seed != null && integration != null) {
+
 				if (!seed.getNodeName().equals(integration.getNodeName())) {
 
 					// if equal puts next parent
