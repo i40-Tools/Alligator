@@ -18,8 +18,10 @@ import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathExpressionException;
 import javax.xml.xpath.XPathFactory;
 
+import org.w3c.dom.Attr;
 import org.w3c.dom.DOMException;
 import org.w3c.dom.Document;
+import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
@@ -172,9 +174,30 @@ public class XmlParser {
 
 					}
 					if (checkParent(seedNodes.get(i), list3.item(0))) {
-						flag = 1;
+						if (list.item(0) != null) {
+							NamedNodeMap list4 = list.item(0).getAttributes();
+							for (int j = 0; j < list4.getLength(); j++) {
+								final Attr attribute = (Attr) list4.item(j);
+								final String name = attribute.getName();
+								final String value = attribute.getValue();
+								@SuppressWarnings("resource")
+								BufferedReader br = new BufferedReader(
+										new FileReader(ConfigManager.getFilePath() + "/output.txt"));
+								String line = br.readLine();
 
+								while (line != null) {
+									if (line.contains(value)) {
+										flag = 1;
+										break;
+
+									}
+									line = br.readLine();
+								}
+							}
+						}
 					}
+
+					// flag = 1;
 
 					for (int m = 0; m < list.getLength(); m++) {
 						// matches the parent in the integration document.
@@ -182,18 +205,14 @@ public class XmlParser {
 						if (list.item(0).getParentNode() != null && list2.item(0) != null && list3.item(0) != null
 								&& list.item(0) != null) {
 
-							if (seedNodes.get(i).getTextContent().equals("Connection")) {
-
-							}
-
 							if (list.item(0).isEqualNode(list2.item(0)) || list.item(0).isEqualNode(list3.item(0))) {
 
 								flag = 1;
 
 							}
 
-							if (list.item(0).getParentNode().isEqualNode(list2.item(0).getParentNode())
-									|| list.item(0).getParentNode().isEqualNode(list3.item(0).getParentNode())) {
+							if (list.item(0).getParentNode().isEqualNode(list2.item(0))
+									|| list.item(0).getParentNode().isEqualNode(list3.item(0))) {
 
 								// flag = 1;
 
@@ -330,6 +349,9 @@ public class XmlParser {
 			// matches the parent in the integration document.
 
 			if (!list.item(m).getParentNode().getNodeName().equals("#document")) {
+				Object result = (Object) xpath.evaluate("//*[@*=\"" + seedNodes.get(i).getTextContent() + "\"]",
+						integration, XPathConstants.NODESET);
+				NodeList nodeList = (NodeList) result;
 				NodeList integ = (NodeList) xpath.evaluate("//" + list.item(m).getParentNode().getNodeName(),
 						integration, XPathConstants.NODESET);
 				// now we have the parent name and the nodes to be
@@ -344,11 +366,12 @@ public class XmlParser {
 						index = z;
 					}
 				}
-				integ.item(index).getOwnerDocument().adoptNode(list.item(m));
+				if (nodeList.getLength() == 0) {
+					integ.item(index).getOwnerDocument().adoptNode(list.item(m));
 
-				// now we can add under the parent.
-				integ.item(index).appendChild(list.item(m));
-
+					// now we can add under the parent.
+					integ.item(index).appendChild(list.item(m));
+				}
 			}
 		}
 
@@ -420,13 +443,14 @@ public class XmlParser {
 					org.w3c.dom.Node node = seedFile.item(i);
 					for (int j = 0; j < integrationFile.getLength(); j++) {
 						org.w3c.dom.Node node2 = integrationFile.item(i);
-						if (node.getNodeName().equals(node2.getNodeName())) {
+						if (node != null && node2 != null) {
+							if (node.getNodeName().equals(node2.getNodeName())) {
 
-							// for The node , it checks it parent
-							if (checkParent(node, node2)) {
-								return true;
+								// for The node , it checks it parent
+								if (checkParent(node, node2)) {
+									return true;
+								}
 							}
-
 						}
 					}
 				}
