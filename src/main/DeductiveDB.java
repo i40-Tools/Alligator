@@ -11,7 +11,9 @@ import java.util.Map;
 
 import org.jpl7.Query;
 import org.jpl7.Term;
+import org.w3c.dom.Document;
 
+import integration.XmlParser;
 import util.ConfigManager;
 
 /**
@@ -91,6 +93,8 @@ public class DeductiveDB {
 		// writes the attributes names in the output.txt
 		PrintWriter prologWriter = new PrintWriter(new File(ConfigManager.getFilePath() + "/output.txt"));
 		prologWriter.println(originalText);
+		Document doc = XmlParser.initInput(ConfigManager.getFilePath() + "seed.aml");
+		prologWriter.println("Number of Elements =" + XmlParser.getAllNodes(doc).size());
 		prologWriter.close();
 
 		if (attributes != null) {

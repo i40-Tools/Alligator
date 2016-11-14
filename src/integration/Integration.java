@@ -17,6 +17,7 @@ import util.ConfigManager;
 public class Integration {
 
 	private XmlParser xml;
+	public static int count = 0;
 
 	/**
 	 * This method integrates two AML files.
@@ -49,8 +50,8 @@ public class Integration {
 
 		// initializing documents.
 
-		Document seed = xml.initInput(file.get(0).getPath());
-		Document integration = xml.initInput(ConfigManager.getFilePath() + "integration/integration.aml");
+		Document seed = XmlParser.initInput(file.get(0).getPath());
+		Document integration = XmlParser.initInput(ConfigManager.getFilePath() + "integration/integration.aml");
 
 		processNodesArributes(seed, integration);
 		processNodesValues(seed, integration);
@@ -76,12 +77,14 @@ public class Integration {
 
 			// not in the conflicting Element of output.txt
 			if (xml.compareConflicts(i, seed, integration) == 0) {
+
 				// System.out.println(xml.seedNodes.get(i).getTextContent());
 				// we run our noConflicting comparision algorithm
 				if (xml.compareNonConflicts(i, seed, integration) != 1) {
 					// if its identified its not in integration.aml
 					// We need to add non match elements to the integration
 					// file.
+
 					xml.addNonConflicts(i, seed, integration);
 
 				}

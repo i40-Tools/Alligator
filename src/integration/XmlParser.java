@@ -21,6 +21,7 @@ import javax.xml.xpath.XPathFactory;
 import org.w3c.dom.Attr;
 import org.w3c.dom.DOMException;
 import org.w3c.dom.Document;
+import org.w3c.dom.Element;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
@@ -72,7 +73,7 @@ public class XmlParser {
 	 * @param inputFile
 	 * @return
 	 */
-	public Document initInput(String inputFile) {
+	public static Document initInput(String inputFile) {
 
 		Document seed = null;
 		try {
@@ -178,6 +179,7 @@ public class XmlParser {
 							NamedNodeMap list4 = list.item(0).getAttributes();
 							for (int j = 0; j < list4.getLength(); j++) {
 								final Attr attribute = (Attr) list4.item(j);
+								@SuppressWarnings("unused")
 								final String name = attribute.getName();
 								final String value = attribute.getValue();
 								@SuppressWarnings("resource")
@@ -340,7 +342,6 @@ public class XmlParser {
 	void addNonConflicts(int i, Document seed, Document integration) throws XPathExpressionException, DOMException {
 		// we get the Node of the attribute Value which is not
 		// found. i represent that node.
-
 		NodeList list = getAttributeNode(seedNodes.get(i).getTextContent(), seed);
 
 		// we find its parent node so we can append it under it.
@@ -498,7 +499,7 @@ public class XmlParser {
 	 * @return
 	 */
 
-	static boolean checkParent(Node seed, Node integration) {
+	boolean checkParent(Node seed, Node integration) {
 
 		// loops until there are no more parents.
 		while (seed.getParentNode() != null && integration.getParentNode() != null) {
@@ -576,6 +577,108 @@ public class XmlParser {
 			NodeList nodes2 = (NodeList) xpath.evaluate("//*", integration, XPathConstants.NODESET);
 			setNodes(nodes2, 2);
 		}
+	}
+
+	/**
+	 * This function take xml document and return all its nodes and used for
+	 * count of elements
+	 * 
+	 * @param doc
+	 * @return
+	 */
+
+	public static ArrayList<Node> getAllNodes(Document doc) {
+
+		ArrayList<Node> node = new ArrayList<Node>();
+
+		// start from root.
+		NodeList baseElmntLst = doc.getElementsByTagName("*");
+
+		for (int k = 0; k < baseElmntLst.getLength(); k++) {
+
+			Element baseElmnt = (Element) baseElmntLst.item(k);
+
+			if (!baseElmntLst.item(k).getNodeName().equals("CAEXFile")
+					&& !baseElmntLst.item(k).getNodeName().equals("AdditionalInformation")
+					&& !baseElmntLst.item(k).getNodeName().equals("WriterHeader")
+					&& !baseElmntLst.item(k).getNodeName().equals("RefSemantic")
+					&& !baseElmntLst.item(k).getNodeName().equals("Value")) {
+				String value = getNodeValue(baseElmntLst.item(k));
+
+				// if value is null its add to list
+				if (value == null) {
+					node.add(baseElmnt);
+
+				}
+			}
+
+		}
+		return node;
+	}
+
+	/**
+	 * Functions returns node names
+	 * 
+	 * @param n
+	 * @return
+	 */
+	public ArrayList<String> getNodeName(ArrayList<Node> n) {
+
+		ArrayList<String> temp = new ArrayList<String>();
+
+		for (int i = 0; i < n.size(); i++) {
+
+			temp.add(n.get(i).getNodeName().trim());
+
+		}
+		return temp;
+	}
+
+	/**
+	 * This Function gets Attributes for any Given Node.
+	 * 
+	 * @param baseElmntAttr
+	 * @return
+	 */
+
+	public ArrayList<Node> getAttribute(NamedNodeMap baseElmntAttr) {
+		ArrayList<Node> node = new ArrayList<Node>();
+		for (int i = 0; i < baseElmntAttr.getLength(); ++i) {
+			Node attr = baseElmntAttr.item(i);
+			node.add(attr);
+		}
+		return node;
+	}
+
+	/**
+	 * This function take parameter node and returns its text value if exist.
+	 * 
+	 * @param node
+	 * @return
+	 */
+
+	protected static String getNodeValue(Node node) {
+
+		// get all of its children if exist
+		NodeList children = node.getChildNodes();
+
+		// loops through children
+		for (int i1 = 0; i1 < children.getLength(); i1++) {
+
+			// gets value
+			Node textChild = children.item(i1);
+			if (textChild.getNodeType() == Node.TEXT_NODE) {
+
+				if (textChild.getNodeValue().trim().length() != 0) {
+
+					// returns the node value
+					return textChild.getNodeValue().trim();
+				}
+			}
+
+		}
+		return null;
+
 	}
 
 }
