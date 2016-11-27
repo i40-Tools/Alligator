@@ -145,7 +145,6 @@ public class XmlParser {
 		int flag = 0;
 
 		// loops through all its element.
-
 		if (DeductiveDB.attrName != null) {
 			for (int k = 0; k < DeductiveDB.attrName.size(); k++) {
 				// we find its parent node so we can append it under it.
@@ -155,6 +154,7 @@ public class XmlParser {
 
 				} else if (seedNodes.get(i).getTextContent().equals(DeductiveDB.attrName.get(k).replaceAll("'", ""))) {
 					// if match is found
+
 					flag = 1;
 
 				}
@@ -171,9 +171,11 @@ public class XmlParser {
 					NodeList list3 = getAttributeNode(DeductiveDB.attrName.get(k).replaceAll("'", ""), integration);
 
 					if (checkParent2(seedNodes.get(i), list2.item(0))) {
+
 						flag = 1;
 
 					}
+
 					if (checkParent(seedNodes.get(i), list3.item(0))) {
 						if (list.item(0) != null) {
 							NamedNodeMap list4 = list.item(0).getAttributes();
@@ -189,7 +191,9 @@ public class XmlParser {
 
 								while (line != null) {
 									if (line.contains(value)) {
+
 										flag = 1;
+
 										break;
 
 									}
@@ -199,8 +203,8 @@ public class XmlParser {
 						}
 					}
 
-					// flag = 1;
-
+					// checks for concatinated string and ignores nested element
+					// if parent elements are matched by refsemantc
 					for (int m = 0; m < list.getLength(); m++) {
 						// matches the parent in the integration document.
 
@@ -223,8 +227,12 @@ public class XmlParser {
 										new FileReader(ConfigManager.getFilePath() + "/output.txt"));
 								String line = br.readLine();
 
+								// matches if node parent is in output.txt
+								// according to refsemantic
 								while (line != null) {
-									if (line.contains("concatString")) {
+									if (line.contains(
+											"concatString('" + DeductiveDB.attrName.get(k).replaceAll("'", ""))) {
+
 										flag = 1;
 										break;
 
@@ -502,19 +510,22 @@ public class XmlParser {
 	boolean checkParent(Node seed, Node integration) {
 
 		// loops until there are no more parents.
-		while (seed.getParentNode() != null && integration.getParentNode() != null) {
+		if (seed != null && integration != null) {
 
-			// compares parents name
-			if (seed.getParentNode().getNodeName().equals(integration.getParentNode().getNodeName())) {
+			while (seed.getParentNode() != null && integration.getParentNode() != null) {
 
-				// if equal puts next parent
-				seed = seed.getParentNode();
+				// compares parents name
+				if (seed.getParentNode().getNodeName().equals(integration.getParentNode().getNodeName())) {
 
-				integration = integration.getParentNode();
+					// if equal puts next parent
+					seed = seed.getParentNode();
 
-			} else {
+					integration = integration.getParentNode();
 
-				return false;
+				} else {
+
+					return false;
+				}
 			}
 		}
 
