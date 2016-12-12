@@ -371,15 +371,25 @@ public class XmlParser {
 					// must adopt that node.
 
 					if (checkParent(list.item(m).getParentNode(), integ.item(z))) {
+						NamedNodeMap orig_elem = list.item(m).getParentNode().getAttributes();
+						NamedNodeMap integ_elem = integ.item(z).getAttributes();
 
-						index = z;
+						// needs testng
+						if (orig_elem.getLength() == integ_elem.getLength()
+								&& orig_elem.item(0).getTextContent().equals(integ_elem.item(0).getTextContent()))
+
+						{
+
+							index = z;
+
+						}
 					}
 				}
 				if (nodeList.getLength() == 0) {
 					integ.item(index).getOwnerDocument().adoptNode(list.item(m));
-
 					// now we can add under the parent.
 					integ.item(index).appendChild(list.item(m));
+
 				}
 			}
 		}
