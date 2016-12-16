@@ -143,11 +143,13 @@ public class XmlParser {
 			throws XPathExpressionException, DOMException, IOException {
 		// flag to check if the attribute value is inside matching
 		int flag = 0;
-
 		// loops through all its element.
 		if (DeductiveDB.attrName != null) {
 			for (int k = 0; k < DeductiveDB.attrName.size(); k++) {
 				// we find its parent node so we can append it under it.
+				if (flag == 1) {
+					break;
+				}
 
 				if (seedNodes.get(i).getNodeName().equals(DeductiveDB.attrName.get(k).replaceAll("'", ""))) {
 					// flag = 1;
@@ -207,6 +209,9 @@ public class XmlParser {
 					// if parent elements are matched by refsemantc
 					for (int m = 0; m < list.getLength(); m++) {
 						// matches the parent in the integration document.
+						if (flag == 1) {
+							break;
+						}
 
 						if (list.item(0).getParentNode() != null && list2.item(0) != null && list3.item(0) != null
 								&& list.item(0) != null) {
@@ -328,6 +333,7 @@ public class XmlParser {
 					// if all test passes we can say its already in
 					// the integration document. we can ignore it.
 					check = 1;
+					break;
 				}
 			}
 		}

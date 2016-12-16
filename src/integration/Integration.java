@@ -78,7 +78,6 @@ public class Integration {
 			// not in the conflicting Element of output.txt
 			if (xml.compareConflicts(i, seed, integration) == 0) {
 
-				// System.out.println(xml.seedNodes.get(i).getTextContent());
 				// we run our noConflicting comparision algorithm
 				if (xml.compareNonConflicts(i, seed, integration) != 1) {
 					// if its identified its not in integration.aml

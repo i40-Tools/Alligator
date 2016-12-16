@@ -80,6 +80,8 @@
 	<AdditionalInformation type="&aml;AdditionalInformation" related-via-properties="&aml;hasAdditionalInfomation"/>
 	
 	<ExternalReference type="&aml;ExternalReference" related-via-properties="&aml;hasExternalReference"/>
+
+	<InternalLink type="&aml;InternalLink" related-via-properties="&aml;hasInternalLink"/>
 	
 	<InstanceHierarchy type="&aml;InstanceHierarchy" related-via-properties="&aml;hasInstanceHierarchy"/>
 	
@@ -118,6 +120,7 @@
 					|InterfaceClass
 					|RoleClass
 					|InternalElement
+					|InternalLink
 					|SystemUnitClass" mode="krextor:main">
 	   <xsl:apply-templates select="." mode="krextor:create-resource"/>
 </xsl:template>
@@ -150,6 +153,10 @@
 
 <!-- InternalElement -->
 		<ID property="&dc;identifier" krextor:attribute="yes" datatype="&xsd;string"/>
+		<InternalLink property="&aml;hasInternalLink" krextor:attribute="yes" datatype="&xsd;string"/>
+		<RefPartnerSideA property="&aml;hasRefPartnerSideA" krextor:attribute="yes" datatype="&xsd;string"/>
+		<RefPartnerSideB property="&aml;hasRefPartnerSideB" krextor:attribute="yes" datatype="&xsd;string"/>
+		
 		<RefBaseSystemUnitPath property="&aml;RefBaseSystemUnitPath" krextor:attribute="yes" datatype="&xsd;string"/>
 <!-- ExternalInterface -->
 		<RefBaseClassPath property="&aml;refBaseClassPath" krextor:attribute="yes" datatype="&xsd;string"/>
@@ -191,6 +198,10 @@
 	                  |CAEXFile/InstanceHierarchy//InternalElement/ExternalInterface/@RefBaseClassPath
 	                  |CAEXFile/InstanceHierarchy//InternalElement/SupportedRoleClass/@RefRoleClassPath
 	                  |CAEXFile/InstanceHierarchy//InternalElement/RoleRequirements/@RefBaseRoleClassPath
+	                  |CAEXFile/InstanceHierarchy//InternalElement/InternalLink/@Name
+	                  |CAEXFile/InstanceHierarchy//InternalElement/InternalLink/@RefPartnerSideA
+	                  |CAEXFile/InstanceHierarchy//InternalElement/InternalLink/@RefPartnerSideB
+	                  
 	                  |CAEXFile/InterfaceClassLib/@Name
 	                  |CAEXFile/InterfaceClassLib//InterfaceClass/@Name
 	                  |CAEXFile/InterfaceClassLib//InterfaceClass/@RefBaseClassPath
@@ -218,6 +229,10 @@
 	                  |CAEXFile/SystemUnitClassLib//SystemUnitClass//InternalElement//ExternalInterface/@RefBaseClassPath
 	                  |CAEXFile/SystemUnitClassLib//SystemUnitClass//InternalElement//SupportedRoleClass/@RefRoleClassPath
 	                  |CAEXFile/SystemUnitClassLib//SystemUnitClass//InternalElement//RoleRequirements/@RefBaseRoleClassPath
+	                  |CAEXFile/SystemUnitClassLib//SystemUnitClass//InternalElement/InternalLink/@Name
+	                  |CAEXFile/SystemUnitClassLib//SystemUnitClass//InternalElement/InternalLink/@RefPartnerSideA
+	                  |CAEXFile/SystemUnitClassLib//SystemUnitClass//InternalElement/InternalLink/@RefPartnerSideB
+	               
 	                  |CAEXFile/SystemUnitClassLib//SystemUnitClass/@Name
 					  |CAEXFile/SystemUnitClassLib//SystemUnitClass//Attribute/@Name
 					  |CAEXFile/SystemUnitClassLib//SystemUnitClass//Attribute/Value

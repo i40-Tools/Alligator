@@ -39,6 +39,9 @@
 :-dynamic(sameIdentifier/2).
 :-dynamic(sameId/2).
 :-dynamic(hasInternalElement/2).
+:-dynamic(hasInternalLink/2).
+:-dynamic(hasRefPartnerSideA/2).
+:-dynamic(hasRefPartnerSideB/2).
 
 % Finds substring
 containsOnly(X,Y) :- forall(sub_atom(X,_,1,_,C), sub_atom(Y,_,1,_,C)).
@@ -53,6 +56,11 @@ clause1(sameIdentifier(X,Y),sameId(X,Y)).
 clause1(sameId(X,Y),(identifier(X,Z),identifier(Y,Z))).
 clause1(sameId(X,Y),(sameId(X,Z),sameId(Z,Y))).
 
+% Internal Elements are the same if the have the same InternalLink
+clause1(sameIdentifier(X,Y),(hasInternalLink(X,T),hasInternalLink(Y,Z),
+hasRefPartnerSideA(T,A),hasRefPartnerSideA(Z,A),
+hasRefPartnerSideB(T,B),hasRefPartnerSideB(Z,B)
+)).
 
 clause1(sameIdentifier(X,Y),(hasAttributeName(X,'eClassClassificationClass'),
                                      hasAttributeName(Y,'eClassClassificationClass'),
