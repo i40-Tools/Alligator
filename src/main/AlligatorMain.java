@@ -16,6 +16,18 @@ public class AlligatorMain {
 
 	public static void main(String[] args) throws Throwable {
 
+		// xsl for opcua not working
+		// Krextor krextor = new Krextor();
+		// krextor.convertRdf("c:/Topology.xml", "opcua", "turtle",
+		// "c:/output.ttl");
+
+		// converts opcua to RDF
+		RDFTransformer convert = new RDFTransformer();
+
+		// give input and output
+		convert.transform("c:/Topology.xml", "c:/test.ttl");
+
+		// automation ML part
 		// Generating facts from the AML files, they are converted into RDF
 		Files2Facts filesAMLInRDF = new Files2Facts();
 		try {
