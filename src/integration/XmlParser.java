@@ -574,11 +574,17 @@ public class XmlParser {
 		return false;
 	}
 
-	void finalizeIntegration(Document integration) throws TransformerFactoryConfigurationError, Throwable {
+	void finalizeIntegration(Document integration, String file) throws TransformerFactoryConfigurationError, Throwable {
 		// finally we update our integration.aml file.
 		Transformer xformer = TransformerFactory.newInstance().newTransformer();
-		xformer.transform(new DOMSource(integration),
-				new StreamResult(new File(ConfigManager.getFilePath() + "integration/integration.aml")));
+
+		if (file.endsWith(".aml")) {
+			xformer.transform(new DOMSource(integration),
+					new StreamResult(new File(ConfigManager.getFilePath() + "integration/integration.aml")));
+		} else {
+			xformer.transform(new DOMSource(integration),
+					new StreamResult(new File(ConfigManager.getFilePath() + "integration/integration.opcua")));
+		}
 
 	}
 

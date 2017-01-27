@@ -18,6 +18,7 @@ public class Integration {
 
 	private XmlParser xml;
 	public static int count = 0;
+	ArrayList<File> file;
 
 	/**
 	 * This method integrates two AML files.
@@ -36,22 +37,32 @@ public class Integration {
 		Files2Facts filesAMLInRDF = new Files2Facts();
 
 		// gets heterogeneity files in array.
-		ArrayList<File> file = filesAMLInRDF.readFiles(ConfigManager.getFilePath(), ".aml");
+		file = filesAMLInRDF.readFiles(ConfigManager.getFilePath(), ".aml", ".opcua", ".xml");
 
 		String contents = FileUtils.readFileToString(new File(file.get(1).getPath()), "UTF-8");
 
 		new File(ConfigManager.getFilePath() + "integration/").mkdir();
 
 		// One of the AML file will have its contents copied as it is.
-		PrintWriter prologWriter = new PrintWriter(
-				new File(ConfigManager.getFilePath() + "integration/integration.aml"));
+		PrintWriter prologWriter;
+		if (file.get(1).getName().endsWith(".aml")) {
+			prologWriter = new PrintWriter(new File(ConfigManager.getFilePath() + "integration/integration.aml"));
+		} else {
+			prologWriter = new PrintWriter(new File(ConfigManager.getFilePath() + "integration/integration.opcua"));
+		}
 		prologWriter.println(contents);
 		prologWriter.close();
 
 		// initializing documents.
 
 		Document seed = XmlParser.initInput(file.get(0).getPath());
-		Document integration = XmlParser.initInput(ConfigManager.getFilePath() + "integration/integration.aml");
+		Document integration;
+		if (file.get(0).getName().endsWith(".aml") && file.get(1).getName().endsWith(".aml")) {
+			integration = XmlParser.initInput(ConfigManager.getFilePath() + "integration/integration.aml");
+		} else {
+			integration = XmlParser.initInput(ConfigManager.getFilePath() + "integration/integration.opcua");
+
+		}
 
 		processNodesArributes(seed, integration);
 		processNodesValues(seed, integration);
@@ -91,7 +102,7 @@ public class Integration {
 			}
 		}
 		// update the integration.aml file
-		xml.finalizeIntegration(integration);
+		xml.finalizeIntegration(integration, file.get(0).getName());
 
 	}
 
@@ -131,7 +142,7 @@ public class Integration {
 			}
 		}
 
-		xml.finalizeIntegration(integration);
+		xml.finalizeIntegration(integration, file.get(0).getName());
 
 	}
 

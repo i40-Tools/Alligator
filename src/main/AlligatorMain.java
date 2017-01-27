@@ -1,5 +1,7 @@
 package main;
 
+import java.io.File;
+
 import Test.ModelRepair;
 import integration.Integration;
 import integration.XSDValidator;
@@ -22,10 +24,10 @@ public class AlligatorMain {
 		// "c:/output.ttl");
 
 		// converts opcua to RDF
-		RDFTransformer convert = new RDFTransformer();
+		// RDFTransformer convert = new RDFTransformer();
 
 		// give input and output
-		convert.transform("c:/Topology.xml", "c:/test.ttl");
+		// convert.transform("c:/Topology.xml", "c:/test.ttl");
 
 		// automation ML part
 		// Generating facts from the AML files, they are converted into RDF
@@ -33,9 +35,9 @@ public class AlligatorMain {
 		try {
 
 			filesAMLInRDF.prologFilePath();
-			filesAMLInRDF.readFiles(ConfigManager.getFilePath(), ".aml");
+			filesAMLInRDF.readFiles(ConfigManager.getFilePath(), ".aml", ".opcua", ".xml");
 			filesAMLInRDF.convertRdf();
-			filesAMLInRDF.readFiles(ConfigManager.getFilePath(), ".ttl");
+			filesAMLInRDF.readFiles(ConfigManager.getFilePath(), ".ttl", ".rdf", ".owl");
 			filesAMLInRDF.generateExtensionalDB(ConfigManager.getFilePath());
 
 			DeductiveDB deductiveDB = new DeductiveDB();
@@ -52,11 +54,14 @@ public class AlligatorMain {
 			integ.integrate();
 
 			// chec valdty
-			if (!new XSDValidator(ConfigManager.getFilePath() + "integration/integration.aml").schemaValidate()) {
-				System.out.println("Repairing Structure");
-				ModelRepair.testRoundTrip(ConfigManager.getFilePath() + "integration/integration.aml");
-				System.out.println("Schema Validated");
+			File file = new File(ConfigManager.getFilePath() + "integration/integration.aml");
+			if (file.exists()) {
+				if (!new XSDValidator(ConfigManager.getFilePath() + "integration/integration.aml").schemaValidate()) {
+					System.out.println("Repairing Structure");
+					ModelRepair.testRoundTrip(ConfigManager.getFilePath() + "integration/integration.aml");
+					System.out.println("Schema Validated");
 
+				}
 			}
 
 		} catch (Exception e) {

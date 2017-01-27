@@ -93,9 +93,22 @@ public class DeductiveDB {
 		// writes the attributes names in the output.txt
 		PrintWriter prologWriter = new PrintWriter(new File(ConfigManager.getFilePath() + "/output.txt"));
 		prologWriter.println(originalText);
-		Document doc = XmlParser.initInput(ConfigManager.getFilePath() + "seed.aml");
-		prologWriter.println("Number of Elements =" + XmlParser.getAllNodes(doc).size());
-		prologWriter.close();
+		Document doc;
+		File file = new File(ConfigManager.getFilePath() + "seed.aml");
+		File file2 = new File(ConfigManager.getFilePath() + "seed.opcua");
+
+		if (file.exists()) {
+
+			doc = XmlParser.initInput(ConfigManager.getFilePath() + "seed.aml");
+			prologWriter.println("Number of Elements =" + XmlParser.getAllNodes(doc).size());
+			prologWriter.close();
+
+		} else if (file2.exists()) {
+			doc = XmlParser.initInput(ConfigManager.getFilePath() + "seed.opcua");
+			prologWriter.println("Number of Elements =" + XmlParser.getAllNodes(doc).size());
+			prologWriter.close();
+
+		}
 
 		if (attributes != null) {
 			addBaseClass(attributes);

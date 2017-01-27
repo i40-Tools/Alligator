@@ -50,7 +50,7 @@ public class TestsFiles2Facts {
 	public void amlfilesShouldRead() {
 
 		try {
-			filesAMLInRDF.readFiles(ConfigManager.getFilePath(), ".aml");
+			filesAMLInRDF.readFiles(ConfigManager.getFilePath(), ".aml", ".opcua", ".xml");
 			filesAMLInRDF.convertRdf();
 
 		} catch (Exception e) {
@@ -70,7 +70,7 @@ public class TestsFiles2Facts {
 	@Test
 	public void TurtleFormatShouldRead() {
 		try {
-			filesAMLInRDF.readFiles(ConfigManager.getFilePath(), ".ttl");
+			filesAMLInRDF.readFiles(ConfigManager.getFilePath(), ".ttl", ".rdf", ".owl");
 			filesAMLInRDF.generateExtensionalDB(ConfigManager.getFilePath());
 
 		} catch (Exception e) {

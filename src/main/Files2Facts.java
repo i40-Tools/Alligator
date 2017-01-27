@@ -40,9 +40,18 @@ public class Files2Facts {
 	public void convertRdf() {
 		int i = 0;
 		for (File file : files) {
-			Krextor krextor = new Krextor();
-			krextor.convertRdf(file.getAbsolutePath(), "aml", "turtle",
-					ConfigManager.getFilePath() + "plfile" + i + ".ttl");
+			if (file.getName().endsWith(".aml")) {
+				Krextor krextor = new Krextor();
+				krextor.convertRdf(file.getAbsolutePath(), "aml", "turtle",
+						ConfigManager.getFilePath() + "plfile" + i + ".ttl");
+			} else {
+				RDFTransformer convert = new RDFTransformer();
+
+				// give input and output
+				convert.transform(file.getAbsolutePath(), ConfigManager.getFilePath() + "plfile" + i + ".ttl");
+
+			}
+
 			i++;
 		}
 	}
@@ -54,18 +63,33 @@ public class Files2Facts {
 	 * @return
 	 * @throws Exception
 	 */
-	public ArrayList<File> readFiles(String path, String type) throws Exception {
+	public ArrayList<File> readFiles(String path, String type, String type2, String type3) throws Exception {
 		files = new ArrayList<File>();
 		File originalFilesFolder = new File(path);
 		if (originalFilesFolder.isDirectory()) {
 			for (File amlFile : originalFilesFolder.listFiles()) {
-				if (amlFile.isFile() && (amlFile.getName().endsWith(type))) {
+				if (amlFile.isFile() && (amlFile.getName().endsWith(type) || amlFile.getName().endsWith(type2)
+						|| amlFile.getName().endsWith(type3))) {
 					if (amlFile.getName().endsWith(".aml")) {
 						String name = amlFile.getName().replace(".aml", "");
 						if (name.endsWith("0") || name.endsWith("1")) {
 							files.add(amlFile);
 						}
-					} else {
+					}
+
+					else if (amlFile.getName().endsWith(".opcua")) {
+						String name = amlFile.getName().replace(".opcua", "");
+						if (name.endsWith("0") || name.endsWith("1")) {
+							files.add(amlFile);
+						}
+					}
+
+					else if (amlFile.getName().endsWith(".xml")) {
+						String name = amlFile.getName().replace(".xml", "");
+						files.add(amlFile);
+					}
+
+					else {
 						files.add(amlFile);
 					}
 				}
