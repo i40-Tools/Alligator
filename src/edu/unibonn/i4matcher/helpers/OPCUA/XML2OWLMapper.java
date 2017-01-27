@@ -319,9 +319,9 @@ public class XML2OWLMapper {
 							objectType.getResource().getURI());
 					subject.addLiteral(prop, value);
 				}
-			}
+				traverseAttributes(node, object, objectType.getResource());
 
-			traverseAttributes(node, object, objectType.getResource());
+			}
 
 		} // This case is only valid for instances of mixed classes
 		else if (node.getNodeType() == Node.TEXT_NODE) {
@@ -350,7 +350,9 @@ public class XML2OWLMapper {
 		if (object != null) {
 			NodeList list = node.getChildNodes();
 			for (int i = 0, length = list.getLength(); i < length; i++) {
+
 				traverseChildren(list.item(i), object, objectType.getResource());
+
 			}
 		}
 

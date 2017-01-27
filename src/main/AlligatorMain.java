@@ -25,8 +25,8 @@ public class AlligatorMain {
 
 		// converts opcua to RDF
 		// RDFTransformer convert = new RDFTransformer();
-
-		// give input and output
+		//
+		// // give input and output
 		// convert.transform("c:/Topology.xml", "c:/test.ttl");
 
 		// automation ML part
