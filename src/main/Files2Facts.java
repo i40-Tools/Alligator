@@ -86,7 +86,9 @@ public class Files2Facts {
 
 					else if (amlFile.getName().endsWith(".xml")) {
 						String name = amlFile.getName().replace(".xml", "");
-						files.add(amlFile);
+						if (name.endsWith("0") || name.endsWith("1")) {
+							files.add(amlFile);
+						}
 					}
 
 					else {
