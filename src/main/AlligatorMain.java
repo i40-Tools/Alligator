@@ -1,6 +1,11 @@
 package main;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.ArrayList;
 
 import Test.ModelRepair;
 import integration.Integration;
@@ -49,6 +54,9 @@ public class AlligatorMain {
 			deductiveDB.readOutput();
 			deductiveDB.consultKB();
 
+			formatOuput();
+			System.exit(0);
+
 			// integrating files
 			Integration integ = new Integration();
 			integ.integrate();
@@ -66,6 +74,70 @@ public class AlligatorMain {
 
 		} catch (Exception e) {
 			e.printStackTrace();
+
+		}
+
+	}
+
+	private static void formatOuput() throws IOException {
+		// TODO Auto-generated method stub
+
+		File file = new File(ConfigManager.getFilePath() + "output.txt");
+
+		String name[] = { "refSemantic", "sameEClassSpec", "hasRoleClassLib", "hasRoleClass",
+				"roleClassRefSem", "classificationClass", "sameClassification", "sameEClassVersion",
+				"sameEClassIRDI", "sameAttribute", "sameRoleClass", "sameRoleClassLib",
+				"sameCAEXFile", "hasAttribute", "sameAttributeRoleClass",
+				"hasCorrespondingAttributePath", "sameRefSemantic", "hasRefSemantic",
+				"hasAttributeName", "hasAttributeValue", "type", "eClassClassificationAtt",
+				"eClassVersionAtt", "eClassIRDIAtt", "sameInterfaceClass", "type",
+				"sameEClassificationRoleClass", "sameRoleClassLib", "sameSystemUnitClass",
+				"sibling", "concatString", "identifier", "sameIdentifier", "sameId",
+				"hasInternalElement", "hasInternalLink", "hasRefPartnerSideA",
+				"hasRefPartnerSideB" };
+		String result = "";
+		ArrayList<String> aml1 = new ArrayList<>();
+		ArrayList<String> aml2 = new ArrayList<>();
+
+		try (BufferedReader br = new BufferedReader(new FileReader(file))) {
+			String line;
+			while ((line = br.readLine()) != null) {
+				// process the line.
+
+				for (int i = 0; i < name.length; i++) {
+					if (line.contains(name[i])) {
+
+						line = line.replaceAll("'1,", ",");
+						line = line.replaceAll("'2,", ",");
+						line = line.replaceAll("'1", "");
+						line = line.replaceAll("'2", "");
+						line = line.replaceAll("'", "");
+						line = line.replace("(", "");
+						line = line.replace(")", "");
+						line = line.replace(".", "");
+						line = line.replaceAll(name[i], "");
+						String t[] = line.split(",");
+						if (!aml1.contains("aml1:" + t[0])) {
+							aml1.add("aml1:" + t[0]);
+						}
+						if (!aml2.contains("aml2:" + t[1])) {
+							aml2.add("aml2:" + t[1]);
+						}
+
+						result += line.replaceAll(name[i], "") + "\n";
+
+						break;
+					}
+				}
+
+			}
+
+			PrintWriter writer = new PrintWriter(file);
+			for (int i = 0; i < aml1.size(); i++) {
+
+				writer.println(aml1.get(i) + "\t" + aml2.get(i) + "\t" + "1");
+			}
+			writer.close();
 
 		}
 
