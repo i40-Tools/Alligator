@@ -42,6 +42,12 @@
 :-dynamic(hasInternalLink/2).
 :-dynamic(hasRefPartnerSideA/2).
 :-dynamic(hasRefPartnerSideB/2).
+:-dynamic(diffAttribute/2).
+:-dynamic(diffIdentifier/2).
+:-dynamic(diffIdentifier2/2).
+:-dynamic(diffInterfaceClass/2).
+:-dynamic(diffRoleClass/2).
+:-dynamic(diffRoleClassLib/2). 
 
 % Finds substring
 containsOnly(X,Y) :- forall(sub_atom(X,_,1,_,C), sub_atom(Y,_,1,_,C)).
@@ -51,16 +57,32 @@ clause1(sameAttribute(X,Y),( hasRefSemantic(X,T),hasRefSemantic(Y,Z),sameRefSema
 clause1(sameRefSemantic(X,Y),(hasCorrespondingAttributePath(X,Z),hasCorrespondingAttributePath(Y,Z))).
 clause1(sameRefSemantic(X,Y),(sameRefSemantic(X,Z),sameRefSemantic(Z,Y))).
 
+% not rule for above
+clause1(diffAttribute(X,Y),( hasRefSemantic(X,T),hasRefSemantic(Y,Z),
+hasCorrespondingAttributePath(T,W),
+hasCorrespondingAttributePath(Z,R),not(W=R)
+)).
+
 % Internal Elements are the same if the have the same identifier 
-clause1(sameIdentifier(X,Y),sameId(X,Y)).
-clause1(sameId(X,Y),(identifier(X,Z),identifier(Y,Z))).
-clause1(sameId(X,Y),(sameId(X,Z),sameId(Z,Y))).
+clause1(sameIdentifier(X,Y),(identifier(X,T),identifier(Y,T))).
+
+% not rule for above
+clause1(diffIdentifier(X,Y),(identifier(X,Z),identifier(Y,T),not(Z=T))).
+
 
 % Internal Elements are the same if the have the same InternalLink
 clause1(sameIdentifier(X,Y),(hasInternalLink(X,T),hasInternalLink(Y,Z),
 hasRefPartnerSideA(T,A),hasRefPartnerSideA(Z,A),
 hasRefPartnerSideB(T,B),hasRefPartnerSideB(Z,B)
 )).
+
+% not rule for above
+clause1(diffIdentifier2(X,Y),(hasInternalLink(X,T),hasInternalLink(Y,Z),
+hasRefPartnerSideA(T,W),hasRefPartnerSideA(Z,P),
+hasRefPartnerSideB(T,B),hasRefPartnerSideB(Z,D),
+not(W=P),not(B=D)
+)).
+
 
 clause1(sameIdentifier(X,Y),(hasAttributeName(X,'eClassClassificationClass'),
                                      hasAttributeName(Y,'eClassClassificationClass'),
@@ -118,6 +140,8 @@ clause1(sameRoleClass(Z,T),(
                              hasAttribute(T,C),
                              hasAttribute(T,E)
                              )).
+
+
                              
 clause1(sameEClassificationRoleClass(Z,T),(  
                              type(Z,roleClass),

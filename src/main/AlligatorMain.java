@@ -54,7 +54,7 @@ public class AlligatorMain {
 			deductiveDB.readOutput();
 			deductiveDB.consultKB();
 
-			formatOuput();
+			//formatOuput();
 			System.exit(0);
 
 			// integrating files
@@ -94,7 +94,7 @@ public class AlligatorMain {
 				"sameEClassificationRoleClass", "sameRoleClassLib", "sameSystemUnitClass",
 				"sibling", "concatString", "identifier", "sameIdentifier", "sameId",
 				"hasInternalElement", "hasInternalLink", "hasRefPartnerSideA",
-				"hasRefPartnerSideB" };
+				"hasRefPartnerSideB" ,"diffAttribute"};
 		String result = "";
 		ArrayList<String> aml1 = new ArrayList<>();
 		ArrayList<String> aml2 = new ArrayList<>();
