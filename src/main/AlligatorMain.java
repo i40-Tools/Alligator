@@ -36,6 +36,10 @@ public class AlligatorMain {
 
 		// automation ML part
 		// Generating facts from the AML files, they are converted into RDF
+		
+     	getReport("C:/Users/omar/Desktop/examples/run -1/");
+
+		System.exit(0);
 		Files2Facts filesAMLInRDF = new Files2Facts();
 		try {
 
@@ -54,7 +58,7 @@ public class AlligatorMain {
 			deductiveDB.readOutput();
 			deductiveDB.consultKB();
 
-			//formatOuput();
+			formatOuput();
 			System.exit(0);
 
 			// integrating files
@@ -78,32 +82,115 @@ public class AlligatorMain {
 		}
 
 	}
+	
+// run bulk report
+	static void getReport(String root) throws Throwable {
+		int k = 1;
+		while (k <=1) {
+			int i = 3;
+			while (i <=10) {
+				if (k == 1) {
+					System.out.println(root + "M1/M1.1//Testbeds-" + i);
+					ConfigManager.filePath = root + "M1/M1.1//Testbeds-"+i+"/Generated/" ;
+					Files2Facts filesAMLInRDF = new Files2Facts();
+					try{
 
+						filesAMLInRDF.prologFilePath();
+						filesAMLInRDF.readFiles(ConfigManager.getFilePath(), ".aml", ".opcua", ".xml");
+						filesAMLInRDF.convertRdf();
+						filesAMLInRDF.readFiles(ConfigManager.getFilePath(), ".ttl", ".rdf", ".owl");
+						filesAMLInRDF.generateExtensionalDB(ConfigManager.getFilePath());
+
+						DeductiveDB deductiveDB = new DeductiveDB();
+						// formats the output.txt in java objects
+						deductiveDB.readWorkingDirectory();
+
+						deductiveDB.executeKB();
+						// formats the output.txt in java objects
+						deductiveDB.readOutput();
+						deductiveDB.consultKB();
+
+						formatOuput();
+					}catch(Exception e){
+						formatOuput();
+					}
+
+				}
+
+				else {
+					System.out.println(root + "M" + k + "/Testbeds-" + i);
+					
+					ConfigManager.filePath = root + "M" + k + "/Testbeds-" + i + "/Generated/";
+
+					Files2Facts filesAMLInRDF = new Files2Facts();
+					
+
+					filesAMLInRDF.prologFilePath();
+					filesAMLInRDF.readFiles(ConfigManager.getFilePath(), ".aml", ".opcua", ".xml");
+					filesAMLInRDF.convertRdf();
+					filesAMLInRDF.readFiles(ConfigManager.getFilePath(), ".ttl", ".rdf", ".owl");
+					filesAMLInRDF.generateExtensionalDB(ConfigManager.getFilePath());
+
+					DeductiveDB deductiveDB = new DeductiveDB();
+					// formats the output.txt in java objects
+					deductiveDB.readWorkingDirectory();
+
+					deductiveDB.executeKB();
+					// formats the output.txt in java objects
+					deductiveDB.readOutput();
+					deductiveDB.consultKB();
+
+					formatOuput();
+				
+				}
+				i++;
+			}
+			k++;
+		}
+
+//		getresults(root);
+	}
+
+	
+	
 	private static void formatOuput() throws IOException {
 		// TODO Auto-generated method stub
 
 		File file = new File(ConfigManager.getFilePath() + "output.txt");
 
-		String name[] = { "refSemantic", "sameEClassSpec", "hasRoleClassLib", "hasRoleClass",
-				"roleClassRefSem", "classificationClass", "sameClassification", "sameEClassVersion",
-				"sameEClassIRDI", "sameAttribute", "sameRoleClass", "sameRoleClassLib",
-				"sameCAEXFile", "hasAttribute", "sameAttributeRoleClass",
-				"hasCorrespondingAttributePath", "sameRefSemantic", "hasRefSemantic",
-				"hasAttributeName", "hasAttributeValue", "type", "eClassClassificationAtt",
-				"eClassVersionAtt", "eClassIRDIAtt", "sameInterfaceClass", "type",
-				"sameEClassificationRoleClass", "sameRoleClassLib", "sameSystemUnitClass",
-				"sibling", "concatString", "identifier", "sameIdentifier", "sameId",
-				"hasInternalElement", "hasInternalLink", "hasRefPartnerSideA",
-				"hasRefPartnerSideB" ,"diffAttribute"};
-		String result = "";
+		String name[] = {"sameRoleClassLib","sameRoleClass","sameInterfaceClassLib","sameInterfaceClass",
+				 "sameSystemUnitClassLib","sameSystemUnitClass","sameInstanceHierarichy",
+				 "sameAttribute","sameIdentifier"};
+		
+		String diffname[] = {"diffAttribute","diffIdentifier","diffIdentifier2",
+				"diffRoleClass","diffRoleClassLib","diffSystemUnitClass","diffSystemUnitClassLib",
+				 "diffInterfaceClass","diffInterfaceClassLib","diffInstanceHierarichy"};
+
 		ArrayList<String> aml1 = new ArrayList<>();
-		ArrayList<String> aml2 = new ArrayList<>();
+		ArrayList<String> list=new ArrayList<>();
 
 		try (BufferedReader br = new BufferedReader(new FileReader(file))) {
 			String line;
+
+			while ((line = br.readLine()) != null) {
+              if(!list.contains(line))				
+			     list.add(line);
+			}
+		}
+		
+		PrintWriter writer = new PrintWriter(file); 
+		for(String str: list) {
+		  writer.println(str);
+		}
+		writer.close();
+
+		try (BufferedReader br = new BufferedReader(new FileReader(file))) {
+			String line;
+			
 			while ((line = br.readLine()) != null) {
 				// process the line.
-
+                  
+				
 				for (int i = 0; i < name.length; i++) {
 					if (line.contains(name[i])) {
 
@@ -113,18 +200,57 @@ public class AlligatorMain {
 						line = line.replaceAll("'2", "");
 						line = line.replaceAll("'", "");
 						line = line.replace("(", "");
-						line = line.replace(")", "");
+						line = line.replace("äö)", "");
+						line = line.replace("äö1)", "");
+						line = line.replace("äö2)", "");
+						line = line.replace("äö3)", "");
+						line = line.replace("äö4)", "");						
+						line = line.replace("äö1", "äö");
+						line = line.replace("äö2", "äö");							
+						line = line.replace("äö3", "äö");
+						line = line.replace("äö4", "äö");							
 						line = line.replace(".", "");
 						line = line.replaceAll(name[i], "");
-						String t[] = line.split(",");
-						if (!aml1.contains("aml1:" + t[0])) {
-							aml1.add("aml1:" + t[0]);
-						}
-						if (!aml2.contains("aml2:" + t[1])) {
-							aml2.add("aml2:" + t[1]);
+						String t[] = line.split("äö,");
+						if(t!=null)
+						if (!aml1.contains("aml1:" + t[0]+ "\t" + "aml2:" + t[1]+ "\t" + "1")) {
+							aml1.add("aml1:" + t[0]+ "\t" + "aml2:" + t[1]+ "\t" + "1");
 						}
 
-						result += line.replaceAll(name[i], "") + "\n";
+						break;
+					}
+				}
+				
+				
+				for (int i = 0; i < diffname.length; i++) {
+					if (line.contains(diffname[i])) {
+
+						line = line.replaceAll("'1,", ",");
+						line = line.replaceAll("'2,", ",");
+						line = line.replaceAll("'1", "");
+						line = line.replaceAll("'2", "");
+						line = line.replaceAll("'", "");
+						line = line.replace("(", "");
+						line = line.replace("äö)", "");
+						line = line.replace("äö1)", "");
+						line = line.replace("äö2)", "");
+						line = line.replace("äö3)", "");
+						line = line.replace("äö4)", "");						
+						line = line.replace("äö1", "äö");
+						line = line.replace("äö2", "äö");							
+						line = line.replace("äö3", "äö");
+						line = line.replace("äö4", "äö");							
+
+						line = line.replace(".", "");
+						line = line.replaceAll(diffname[i], "");
+
+						String t[] = line.split("äö,");
+						if(t!=null){
+
+						if (!aml1.contains("aml1:" + t[0]+ "\t" + "aml2:" + t[1]+ "\t" + "0")) {
+							aml1.add("aml1:" + t[0]+ "\t" + "aml2:" + t[1]+ "\t" + "0");
+						}
+						}
 
 						break;
 					}
@@ -132,12 +258,12 @@ public class AlligatorMain {
 
 			}
 
-			PrintWriter writer = new PrintWriter(file);
+			PrintWriter writers = new PrintWriter(file);
 			for (int i = 0; i < aml1.size(); i++) {
 
-				writer.println(aml1.get(i) + "\t" + aml2.get(i) + "\t" + "1");
+				writers.println(aml1.get(i));
 			}
-			writer.close();
+			writers.close();
 
 		}
 

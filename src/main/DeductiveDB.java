@@ -81,7 +81,7 @@ public class DeductiveDB {
 					attrName.add(results[i].get("Y").toString());
 
 					// updates output.txt
-					originalText = originalText.replaceAll(attributes[j], results[i].get("Y").toString());
+					originalText = originalText.replace(attributes[j], results[i].get("Y").toString()+"äö");
 
 				}
 				j++;

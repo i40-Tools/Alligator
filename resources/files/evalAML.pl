@@ -14,9 +14,14 @@
        
  assert(amlPredicates(
  [
- 'sameRoleClassLib','sameRoleClass','sameInterfaceClass','sameSystemUnitClass',
- 'eClassClassificationAtt','eClassVersionAtt','eClassIRDIAtt','sameAttribute','concatString','sameIdentifier','diffAttribute','diffIdentifier','diffIdentifier2' 
- ] 
+ 'sameRoleClassLib','sameRoleClass','sameInterfaceClassLib','sameInterfaceClass',
+ 'sameSystemUnitClassLib','sameSystemUnitClass','sameInstanceHierarichy',
+ 'sameAttribute','sameIdentifier', 
+ 'diffAttribute','diffIdentifier','diffIdentifier2',
+ 'diffRoleClass','diffRoleClassLib','diffSystemUnitClass','diffSystemUnitClassLib',
+ 'diffInterfaceClass','diffInterfaceClassLib','diffInstanceHierarichy'
+ 
+  ] 
  )),    
  consult(SEMI1),
  consult(AML_RULE),
