@@ -17,7 +17,6 @@ public class TestDeductiveDB {
 	@Test
 	public void prologFilesShouldQueryFromJava() {
 		try {
-			deductiveDB.consultKB();
 
 		} catch (Throwable e) {
 			// TODO Auto-generated catch block

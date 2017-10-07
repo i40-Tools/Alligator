@@ -16,10 +16,7 @@
  [
  'sameRoleClassLib','sameRoleClass','sameInterfaceClassLib','sameInterfaceClass',
  'sameSystemUnitClassLib','sameSystemUnitClass','sameInstanceHierarichy',
- 'sameAttribute','sameIdentifier', 
- 'diffAttribute','diffIdentifier','diffIdentifier2',
- 'diffRoleClass','diffRoleClassLib','diffSystemUnitClass','diffSystemUnitClassLib',
- 'diffInterfaceClass','diffInterfaceClassLib','diffInstanceHierarichy'
+ 'sameAttribute','sameIdentifier','sameExternalReference','sameId'
  
   ] 
  )),    

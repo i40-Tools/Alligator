@@ -2,18 +2,14 @@ package main;
 
 import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
-import java.util.Map;
 
+import org.apache.commons.lang3.StringUtils;
 import org.jpl7.Query;
-import org.jpl7.Term;
-import org.w3c.dom.Document;
 
-import integration.XmlParser;
 import util.ConfigManager;
 
 /**
@@ -57,65 +53,6 @@ public class DeductiveDB {
 	}
 
 	/**
-	 * Querying the knowledge base.
-	 * 
-	 * @throws Throwable
-	 */
-	public void consultKB() throws Throwable {
-		String attributes[] = null;
-		if (!extractedAttr.equals("")) {
-			attributes = extractedAttr.split(",");
-		}
-		attrName = new ArrayList<String>();
-
-		// loops through all atributes
-		int j = 0;
-
-		if (attributes != null) {
-			while (j < attributes.length) {
-
-				// performs query to get the attribute name
-				Map<String, Term>[] results = Query.allSolutions("hasAttributeName" + "(" + attributes[j] + ",Y)");
-				for (int i = 0; i < results.length; i++) {
-					// stores in array
-					attrName.add(results[i].get("Y").toString());
-
-					// updates output.txt
-					originalText = originalText.replace(attributes[j], results[i].get("Y").toString()+"äö");
-
-				}
-				j++;
-			}
-		} else {
-			System.out.println(
-					"None of the prolog rules returned true for current data set.File integration completed without any specific rules ");
-		}
-		// writes the attributes names in the output.txt
-		PrintWriter prologWriter = new PrintWriter(new File(ConfigManager.getFilePath() + "/output.txt"));
-		prologWriter.println(originalText);
-		Document doc;
-		File file = new File(ConfigManager.getFilePath() + "seed.aml");
-		File file2 = new File(ConfigManager.getFilePath() + "seed.opcua");
-
-		if (file.exists()) {
-
-			doc = XmlParser.initInput(ConfigManager.getFilePath() + "seed.aml");
-			prologWriter.println("Number of Elements =" + XmlParser.getAllNodes(doc).size());
-			prologWriter.close();
-
-		} else if (file2.exists()) {
-			doc = XmlParser.initInput(ConfigManager.getFilePath() + "seed.opcua");
-			prologWriter.println("Number of Elements =" + XmlParser.getAllNodes(doc).size());
-			prologWriter.close();
-
-		}
-
-		if (attributes != null) {
-			addBaseClass(attributes);
-		}
-	}
-
-	/**
 	 * Reads the output.txt for mapping the attributes to names or values so
 	 * that integration can be performed. Mapping is important to identify the
 	 * attributes in AML files. This extracts the attributes from Datalog format
@@ -127,11 +64,11 @@ public class DeductiveDB {
 	 * @throws Exception
 	 */
 	public void readOutput() throws IOException {
-		BufferedReader br = new BufferedReader(new FileReader(ConfigManager.getFilePath() + "/output.txt"));
+		BufferedReader br = new BufferedReader(
+				new FileReader(ConfigManager.getFilePath() + "Alligator/output.txt"));
 		StringBuilder sb = new StringBuilder();
 		StringBuilder orignal = new StringBuilder();
 		String line = br.readLine();
-
 		while (line != null) {
 			orignal.append(line);
 			orignal.append(System.lineSeparator());
@@ -140,62 +77,36 @@ public class DeductiveDB {
 			int b = line.indexOf(')');
 			if (a + 1 >= 0 && b >= 0) {
 				line = line.substring(a + 1, b);
+
 			}
-			sb.append(line + ",");
+			String array[] = line.split(",");
+			if (array.length > 0) {
+				if (!(array[0].substring(array[0].length() - 1)
+						.equals(array[1].substring(array[1].length() - 1))))
+					sb.append("aml1:" + removeLastChar(StringUtils.capitalize(array[0])) + ","
+							+ "aml2:" + removeLastChar(StringUtils.capitalize(array[1])) + "\n");
+			}
+
+			// sb.append(line + ",");
 			line = br.readLine();
 		}
 		extractedAttr = sb.toString();
 		originalText = orignal.toString();
+		PrintWriter prologWriter = new PrintWriter(
+				new File(ConfigManager.getFilePath() + "Alligator/output.txt"));
+		prologWriter.println(extractedAttr);
+		prologWriter.close();
 		br.close();
+
 	}
 
 	/**
-	 * (Work in progress) This function adds a new output.txt for integration
-	 * which mentions the attribute names and the classes it belongs to. This is
-	 * required for identification of attributes if there are multiple
-	 * attributes with same name. This helps in integration process.
+	 * Removes last string
 	 * 
-	 * @param attributes
-	 * @throws FileNotFoundException
+	 * @param str
+	 * @return
 	 */
-
-	void addBaseClass(String attributes[]) throws FileNotFoundException {
-		int j = 0;
-		baseClass = new ArrayList<String>();
-
-		while (j < attributes.length) {
-
-			if (Query.hasSolution("hasAttribute(Y," + attributes[j] + ")")) {
-				Map<String, Term>[] results2 = Query.allSolutions("hasAttribute(Y," + attributes[j] + ")");
-
-				for (int i = 0; i < results2.length; i++) {
-					Map<String, Term>[] results3 = Query
-							.allSolutions("hasAttributeName(" + results2[i].get("Y").toString() + ",Y)");
-					for (int k = 0; k < results3.length; k++) {
-						baseClass.add(results3[k].get("Y").toString());
-					}
-				}
-			} else {
-				baseClass.add(attributes[j]);
-			}
-
-			j++;
-		}
-
-		StringBuilder sb = new StringBuilder();
-
-		for (int i = 0; i < baseClass.size(); i++) {
-			if (attrName.size() > i) {
-				if (!sb.toString().contains(baseClass.get(i) + "," + attrName.get(i))) {
-					sb.append(baseClass.get(i) + "," + attrName.get(i));
-					sb.append(System.lineSeparator());
-				}
-			}
-		}
-		PrintWriter prologWriter = new PrintWriter(new File(ConfigManager.getFilePath() + "/output2.txt"));
-		prologWriter.println(sb.toString());
-		prologWriter.close();
-
+	private String removeLastChar(String str) {
+		return str.substring(0, str.length() - 1);
 	}
-
 }

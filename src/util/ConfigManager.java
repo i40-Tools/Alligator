@@ -119,6 +119,16 @@ public class ConfigManager {
 	}
 
 	/**
+	 * Reads the configuration of the experiment folder 
+	 * @return true or false
+	 */
+	public static String getExperimentFolder() {
+		String filePath = loadConfig().getProperty(URI_NAMESPACE + "experimentFolder");
+		return filePath;
+	}
+	
+	
+	/**
 	 * Get the general file path where all the files are located
 	 * 
 	 * @return

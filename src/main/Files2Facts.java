@@ -7,6 +7,10 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.LinkedHashSet;
+import java.util.Set;
 
 import com.hp.hpl.jena.rdf.model.Model;
 import com.hp.hpl.jena.rdf.model.ModelFactory;
@@ -16,6 +20,7 @@ import com.hp.hpl.jena.rdf.model.Statement;
 import com.hp.hpl.jena.rdf.model.StmtIterator;
 import com.hp.hpl.jena.util.FileManager;
 
+import industryStandard.AML;
 import uni.bonn.krextor.Krextor;
 import util.ConfigManager;
 import util.StringUtil;
@@ -26,10 +31,12 @@ import util.StringUtil;
  * @author Irlan 28.06.2016
  */
 public class Files2Facts {
-	private RDFNode object;
-	private RDFNode predicate;
-	private RDFNode subject;
-	private ArrayList<File> files;
+	public RDFNode object;
+	public RDFNode predicate;
+	public RDFNode subject;
+	public ArrayList<File> files;
+	public Model model;
+	private LinkedHashSet<String> subjectsToWrite;
 
 	/**
 	 * Converts the file to turtle format based on Krextor
@@ -48,7 +55,8 @@ public class Files2Facts {
 				RDFTransformer convert = new RDFTransformer();
 
 				// give input and output
-				convert.transform(file.getAbsolutePath(), ConfigManager.getFilePath() + "plfile" + i + ".ttl");
+				convert.transform(file.getAbsolutePath(),
+						ConfigManager.getFilePath() + "plfile" + i + ".ttl");
 
 			}
 
@@ -63,13 +71,15 @@ public class Files2Facts {
 	 * @return
 	 * @throws Exception
 	 */
-	public ArrayList<File> readFiles(String path, String type, String type2, String type3) throws Exception {
+	public ArrayList<File> readFiles(String path, String type, String type2, String type3)
+			throws Exception {
 		files = new ArrayList<File>();
 		File originalFilesFolder = new File(path);
 		if (originalFilesFolder.isDirectory()) {
 			for (File amlFile : originalFilesFolder.listFiles()) {
-				if (amlFile.isFile() && (amlFile.getName().endsWith(type) || amlFile.getName().endsWith(type2)
-						|| amlFile.getName().endsWith(type3))) {
+				if (amlFile.isFile()
+						&& (amlFile.getName().endsWith(type) || amlFile.getName().endsWith(type2)
+								|| amlFile.getName().endsWith(type3))) {
 					if (amlFile.getName().endsWith(".aml")) {
 						String name = amlFile.getName().replace(".aml", "");
 						if (name.endsWith("0") || name.endsWith("1")) {
@@ -104,6 +114,62 @@ public class Files2Facts {
 	}
 
 	/**
+	 * This function reads the RDF files and extract their contents for creating
+	 * PSL predicates.
+	 * 
+	 * @param file
+	 * @param number
+	 * @param standard
+	 * @return
+	 * @throws Exception
+	 */
+	public String createModel(File file, int number, String standard, AML aml) throws Exception {
+
+		InputStream inputStream = FileManager.get().open(file.getAbsolutePath());
+		Model model = ModelFactory.createDefaultModel();
+		model.read(new InputStreamReader(inputStream), null, "TURTLE");
+		subjectsToWrite = new LinkedHashSet<String>();
+		switch (standard) {
+
+		case "aml":
+			aml.setModel(model);
+			aml.setNumber(number);
+			aml.addsDataforAML(); // process required data for AML
+
+			writeData(aml);
+		}
+		return "";
+	}
+
+	/**
+	 * This function create AML model files. Files are created based on key in
+	 * the hashMap. *
+	 * 
+	 * @param aml
+	 * @throws FileNotFoundException
+	 */
+	private void writeData(AML aml) throws FileNotFoundException {
+		try {
+			Set<String> predicates = aml.generic.keySet();
+			// gets predicates to name the data files
+			for (String i : predicates) {
+				// name files as predicates
+				PrintWriter documentwriter = new PrintWriter(
+						ConfigManager.getFilePath() + "Alligator/model/" + i + ".txt");
+				Collection<String> values = aml.generic.get(i);
+				// for every predicate get its value
+				for (String val : values) {
+					documentwriter.println(val);
+				}
+
+				documentwriter.close();
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	/**
 	 * Reads the turtle format RDF files and extract the contents for data log
 	 * conversion.
 	 * 
@@ -132,8 +198,11 @@ public class Files2Facts {
 			predicate = stmt.getPredicate();
 			object = stmt.getObject();
 
-			buf.append("clause1(").append(StringUtil.lowerCaseFirstChar(predicate.asNode().getLocalName())).append("(")
-					.append(StringUtil.lowerCaseFirstChar(subject.asNode().getLocalName()) + number).append(",");
+			buf.append("clause1(")
+					.append(StringUtil.lowerCaseFirstChar(predicate.asNode().getLocalName()))
+					.append("(")
+					.append(StringUtil.lowerCaseFirstChar(subject.asNode().getLocalName()) + number)
+					.append(",");
 			if (object.isURIResource()) {
 				object = model.getResource(object.as(Resource.class).getURI());
 				String objectStr = object.asNode().getLocalName();
@@ -162,6 +231,59 @@ public class Files2Facts {
 	}
 
 	/**
+	 * Adds aml Values
+	 * 
+	 * @param amlList
+	 * @param amlValue
+	 * @param aml
+	 * @return
+	 */
+	HashMap<String, String> addAmlNegValues(ArrayList<?> amlList, HashMap<String, String> amlValue,
+			String aml, String predicate, ArrayList<?> type, HashMap<String, String> pred) {
+		for (int i = 0; i < amlList.size(); i++) {
+			StmtIterator iterator = model.listStatements();
+			while (iterator.hasNext()) {
+				Statement stmt = iterator.nextStatement();
+				subject = stmt.getSubject();
+
+				if (subject.asResource().getLocalName().equals(amlList.get(i))) {
+					String value = getValue(subject, predicate);
+					if (value != null && !value.contains("eClassIRDI")
+							&& !value.contains("eClassClassificationClass")
+							&& !value.contains("eClassVersion")) {
+						amlValue.put(aml + value, type.get(i).toString());
+						pred.put(aml + value, predicate);
+
+						iterator.close();
+						break;
+					}
+				}
+			}
+		}
+		return amlValue;
+	}
+
+	/**
+	 * get predicate Value
+	 * 
+	 * @param name
+	 * @return
+	 */
+	String getValue(RDFNode name, String predicate) {
+		String type = null;
+		StmtIterator stmts = model.listStatements(name.asResource(), null, (RDFNode) null);
+		while (stmts.hasNext()) {
+			Statement stmte = stmts.nextStatement();
+
+			if (stmte.getPredicate().asNode().getLocalName().toString().equals(predicate)) {
+				type = stmte.getObject().asLiteral().getLexicalForm();
+			}
+
+		}
+		return type;
+	}
+
+	/**
 	 * Generate all the files of a given folder
 	 * 
 	 * @throws Exception
@@ -172,7 +294,7 @@ public class Files2Facts {
 		for (File file : files) {
 			buf.append(factsFromFiles(file, i++));
 		}
-		PrintWriter prologWriter = new PrintWriter(new File(path + "edb.pl"));
+		PrintWriter prologWriter = new PrintWriter(new File(path + "Alligator/model/edb.pl"));
 		prologWriter.println(buf);
 		prologWriter.close();
 	}
@@ -185,15 +307,37 @@ public class Files2Facts {
 	 * @throws FileNotFoundException
 	 */
 	public void prologFilePath() throws FileNotFoundException {
+		new File(ConfigManager.getFilePath() + "Alligator/Precision").mkdirs();
+
+		new File(ConfigManager.getFilePath() + "Alligator/model").mkdirs();
 		PrintWriter prologWriter = new PrintWriter(
 				new File(System.getProperty("user.dir") + "/resources/files/edb.txt"));
-		prologWriter.println("'" + ConfigManager.getFilePath() + "edb.pl" + "'.");
+
+		prologWriter.println("'" + ConfigManager.getFilePath() + "Alligator/model/edb.pl" + "'.");
 		prologWriter.close();
 
-		prologWriter = new PrintWriter(new File(System.getProperty("user.dir") + "/resources/files/output.txt"));
-		prologWriter.println("'" + ConfigManager.getFilePath() + "output.txt" + "'.");
+		prologWriter = new PrintWriter(
+				new File(System.getProperty("user.dir") + "/resources/files/output.txt"));
+		prologWriter.println("'" + ConfigManager.getFilePath() + "Alligator/output.txt" + "'.");
 		prologWriter.close();
 
+	}
+
+	/**
+	 * This function Generates Alligator Evaluation model.
+	 * 
+	 * @param path
+	 * @throws Exception
+	 */
+	public void generateModel(String path) throws Exception {
+		int i = 1;
+		AML aml = new AML();
+		for (File file : files) {
+			// pass in the writers
+			if (!file.getName().equals("seed.ttl")) {
+				createModel(file, i++, "aml", aml);
+			}
+		}
 	}
 
 }
