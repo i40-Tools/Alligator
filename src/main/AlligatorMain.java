@@ -27,6 +27,8 @@ public class AlligatorMain {
 		//Report.getResults();
 		//Report.getSize();
 		//System.exit(0);
+		// deletes old Rdf files can cause bad results.
+		Report.cleanUp();
 		Files2Facts filesAMLInRDF = new Files2Facts();
 		try {
 			Similar similar = new Similar();

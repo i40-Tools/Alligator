@@ -19,10 +19,10 @@ public class Report {
 
 	// run bulk report
 	static void getReport(String root) throws Throwable {
-		int k = 6;
-		while (k <= 6) {
-			int i = 7;
-			while (i <= 7) {
+		int k = 2;
+		while (k <= 2) {
+			int i = 4;
+			while (i <= 4) {
 				long startTime = System.currentTimeMillis();
 				if (k == 1) {
 					System.out.println(root + "M1/M1.1//Testbeds-" + i);
@@ -57,7 +57,7 @@ public class Report {
 				else {
 					System.out.println(root + "M" + k + "/Testbeds-" + i);
 
-					ConfigManager.filePath = root + "M" + k + "/Testbeds-" + i + "/Generated/";
+					ConfigManager.filePath = root + "M" + k + "/Testbeds-" + i + "/";
 					cleanUp();
 					Files2Facts filesAMLInRDF = new Files2Facts();
 						Similar similar = new Similar();
@@ -92,7 +92,9 @@ public class Report {
 
 	}
 
-
+/**
+ * Deletes rdf files
+ */
 	public static void cleanUp() {
 		File file1 = new File(ConfigManager.getFilePath() + "plfile0.ttl");
 		File file2 = new File(ConfigManager.getFilePath() + "plfile1.ttl");
@@ -102,7 +104,9 @@ public class Report {
 		file2 = new File(ConfigManager.getFilePath() + "Generated/seed.ttl");
 		file1.delete();
 		file2.delete();
-
+		file1 = new File(ConfigManager.getFilePath() + "Generated/plfile0.ttl");
+		file1 = new File(ConfigManager.getFilePath() + "Generated/plfile0.ttl");
+		
 	}
 
 	
@@ -115,8 +119,8 @@ public class Report {
 	 * @throws IOException
 	 */
 	static void getResults() throws IOException {
-		int k = 6;
-		while (k <= 6) {
+		int k = 7;
+		while (k <= 7) {
 			int j = 1;
 			String line;
 			String precision = "";
@@ -125,7 +129,7 @@ public class Report {
 			String time = "";
 
 
-			while (j <= 5) {
+			while (j <= 10) {
 				BufferedReader br = new BufferedReader(new FileReader(
 						new File(ConfigManager.getExperimentFolder() + "M" + k + "/Testbeds-"+j
 								+ "/Generated/Alligator/Precision/F1NoTraining.txt")));
@@ -150,9 +154,9 @@ public class Report {
 			}
 
 			System.out.print(precision);
-			System.out.print(recall);
-			System.out.print(fmeasure);
-			System.out.print(time);
+			//System.out.print(recall);
+			//System.out.print(fmeasure);
+			//System.out.print(time);
 
 			k++;
 		}
@@ -165,12 +169,12 @@ public class Report {
 	 * @throws IOException
 	 */
 	static void getSize() throws IOException {
-		int k = 6;
-		while (k <= 6) {
+		int k = 7;
+		while (k <= 7) {
 			int j = 1;
 
 			String filesize = "";
-			while (j <= 5) {
+			while (j <= 10) {
 				if (k == 1) {
 					File f = new File(
 							ConfigManager.getExperimentFolder() + "M" + k + "/M1.1/Testbeds-" + j + "/Generated/seed.aml");

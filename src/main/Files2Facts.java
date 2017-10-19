@@ -295,7 +295,7 @@ public class Files2Facts {
 			buf.append(factsFromFiles(file, i++));
 		}
 		PrintWriter prologWriter = new PrintWriter(new File(path + "Alligator/model/edb.pl"));
-		prologWriter.println(buf);
+		prologWriter.println(buf.toString().replaceAll("\\\\", ""));
 		prologWriter.close();
 	}
 

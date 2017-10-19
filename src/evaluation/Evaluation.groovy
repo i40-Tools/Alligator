@@ -98,9 +98,10 @@ public class Evaluation
 	public void evalResults() {
 		testDir = util.ConfigManager.getFilePath() + "Alligator/"
 		
-		File file = new File(testDir+"GoldStandard.txt");
+		File file = new File(util.ConfigManager.getFilePath()+"GoldStandard.txt");
 		if (!file.exists()) {
-			System.out.println("Error :: GoldStandard Missing in" + testDir + "model");
+			System.out.println("Error :: GoldStandard Missing in" + util.ConfigManager.getFilePath()
+				 + "model");
 			System.exit(0);
 		}
 		targetsPartition = new Partition(5)
@@ -110,7 +111,7 @@ public class Evaluation
 		InserterUtils.loadDelimitedDataTruth(insert, testDir + "output.txt")
 
 		insert  =  data.getInserter(eval, truthPartition)
-		InserterUtils.loadDelimitedDataTruth(insert, testDir + "GoldStandard.txt")
+		InserterUtils.loadDelimitedDataTruth(insert, util.ConfigManager.getFilePath() + "GoldStandard.txt")
 		Database resultsDB = data.getDatabase(targetsPartition, [eval] as Set)
 		Database truthDB = data.getDatabase(truthPartition, [eval] as Set)
 		DiscretePredictionComparator dpc = new DiscretePredictionComparator(resultsDB)

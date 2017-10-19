@@ -54,7 +54,6 @@
 :-dynamic(diffeClassIRDI/2).
 :-dynamic(diffEClassVersion/2).
 :-dynamic(diffRoleClassLib/2).
-
 % Finds substring
 containsOnly(X,Y) :- forall(sub_atom(X,_,1,_,C), sub_atom(Y,_,1,_,C)).
 
