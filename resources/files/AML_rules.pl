@@ -63,7 +63,7 @@ clause1(sameRefSemantic(X,Y),(hasCorrespondingAttributePath(X,Z),hasCorrespondin
 clause1(sameRefSemantic(X,Y),(sameRefSemantic(X,Z),sameRefSemantic(Z,Y))).
 
 % Rule:2 Generic Attributes are the same if the have the same Name 
-%clause1(sameAttribute(X,Y),( hasAttributeName(X,Z),hasAttributeName(Y,Z))).
+clause1(sameAttribute(X,Y),( hasAttributeName(X,Z),hasAttributeName(Y,Z))).
 
 
 % Rule:3 Generic Attributes are the same if they have the same values
