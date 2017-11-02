@@ -62,36 +62,32 @@ clause1(sameAttribute(X,Y),( hasRefSemantic(X,T),hasRefSemantic(Y,Z),sameRefSema
 clause1(sameRefSemantic(X,Y),(hasCorrespondingAttributePath(X,Z),hasCorrespondingAttributePath(Y,Z))).
 clause1(sameRefSemantic(X,Y),(sameRefSemantic(X,Z),sameRefSemantic(Z,Y))).
 
-% Rule:2 Attributes are the same if the have the same Name 
-clause1(sameAttribute(X,Y),( hasAttributeName(X,Z),hasAttributeName(Y,Z))).
+% Rule:2 Generic Attributes are the same if the have the same Name 
+%clause1(sameAttribute(X,Y),( hasAttributeName(X,Z),hasAttributeName(Y,Z))).
 
-% Rule:3 Two AML CAEX files are the same if they have the same path 
+
+% Rule:3 Generic Attributes are the same if they have the same values
+clause1(sameAttribute(X,Y),(  hasAttributeValue(X,Z),
+                              hasAttributeValue(Y,Z))
+                              ).                                     
+
+
+% Rule:4 Two AML CAEX files are the same if they have the same path 
 clause1(sameExternalReference(X,Y),(refBaseClassPath(X,T),refBaseClassPath(Y,T))).
 
 
-
-% Rule:4 Internal Elements are the same if the have the same InternalLink
+% Rule:5 Internal Elements are the same if the have the same InternalLink
 clause1(sameIdentifier(X,Y),(hasInternalLink(X,T),hasInternalLink(Y,Z),
 hasRefPartnerSideA(T,A),hasRefPartnerSideA(Z,A),
 hasRefPartnerSideB(T,B),hasRefPartnerSideB(Z,B)
 )).
 
-% Rule:5 Internal Elements are the same if the have the same identifier 
+% Rule:6 Generic Elements are the same if the have the same identifier 
 clause1(sameId(X,Y),(identifier(X,T),identifier(Y,T))).
 
-% Rule:6 Role Class are same if they have same attribute name
-clause1(sameRoleClass(X,Y),(
-                             type(X,roleClass),
-                             type(Y,roleClass), 
-                            hasAttributeName(X,T),
-                            hasAttributeName(Y,T)
-                             )). 
 
-
-% Rule:7 Role Class are same if they have same eclass,iridi and eclassversion 
+% Rule:7 Generic Class are same if they have same eclass,iridi and eclassversion 
 clause1(sameRoleClass(Z,T),(  
-                             type(Z,roleClass),
-                             type(T,roleClass),
                              eClassClassificationAtt(X,Y),
                              eClassVersionAtt(B,C),
                              eClassIRDIAtt(D,E),
@@ -103,97 +99,10 @@ clause1(sameRoleClass(Z,T),(
                              hasAttribute(T,E)
                              )).
 
-%Rule:8 Role Class Lib are same if they have same attribute name
-clause1(sameRoleClassLib(X,Y),(
-                             type(X,roleClassLib),
-                             type(Y,roleClassLib), 
-                            hasAttributeName(X,T),
-                            hasAttributeName(Y,T)
-                             )). 
-
  
-% Rule:9 Interface Class are same if they have same eclass,iridi and eclassversion                             
-clause1(sameInterfaceClass(Z,T),(
-                             type(Z,interfaceClass),
-                             type(T,interfaceClass), 
-                             eClassClassificationAtt(X,Y),
-                             eClassVersionAtt(B,C),
-                             eClassIRDIAtt(D,E),
-                             hasAttribute(Z,X),
-                             hasAttribute(Z,B),
-                             hasAttribute(Z,D),
-                             hasAttribute(T,Y),
-                             hasAttribute(T,C),
-                             hasAttribute(T,E)
-                             )).                             
-
-
-%Rule:10 Interface Class are same if they have same attribute name                            
- clause1(sameInterfaceClass(X,Y),(
-                             type(X,interfaceClass),
-                             type(Y,interfaceClass), 
-                            hasAttributeName(X,T),
-                            hasAttributeName(Y,T)
-                             )). 
-%Rule:11 Interface Class Lib are same if they have same attribute name            
-clause1(sameInterfaceClassLib(X,Y),(
-                             type(X,interfaceClassLib),
-                             type(Y,interfaceClassLib), 
-                            hasAttributeName(X,T),
-                            hasAttributeName(Y,T)
-                             )).                                    
-
-% Rule:12 System Unit Class are same if they have same attribute name         
-clause1(sameSystemUnitClass(X,Y),(
-                             type(X,systemUnitClass),
-                             type(Y,systemUnitClass), 
-                            hasAttributeName(X,T),
-                            hasAttributeName(Y,T)
-                             )). 
-
-           
-%Rule:13 System Unit Class are same if they have same eclass,iridi and eclassversion                                            
-clause1(sameSystemUnitClass(Z,T),(
-                             type(Z,systemUnitClass),
-                             type(T,systemUnitClass), 
-                             eClassClassificationAtt(X,Y),
-                             eClassVersionAtt(B,C),
-                             eClassIRDIAtt(D,E),
-                             hasAttribute(Z,X),
-                             hasAttribute(Z,B),
-                             hasAttribute(Z,D),
-                             hasAttribute(T,Y),
-                             hasAttribute(T,C),
-                             hasAttribute(T,E)
-                             )).  
-
-%Rule:14 System Unit Class Lib are same if they have same name         
-clause1(sameSystemUnitClassLib(X,Y),(
-                             type(X,systemUnitClassLib),
-                             type(Y,systemUnitClassLib), 
-                            hasAttributeName(X,T),
-                            hasAttributeName(Y,T)
-                             )). 
-
-%Rule:15 InstanceHierarichy are same if they have same name 
-clause1(sameInstanceHierarichy(X,Y),(
-                             type(X,instanceHierarchy),
-                             type(Y,instanceHierarchy), 
-                            hasAttributeName(X,T),
-                            hasAttributeName(Y,T)
-                             )).          
-
 
 clause1(sibling(X,Y),(hasAttribute(Z,X),hasAttribute(Z,Y))).
 
-
-% missing rules
-%  Rule:3 Two AMl hasAttributes are the same if they share the same ID
-% Rule:14 Two AML Attributes are the same if they have the same values
-% Rule:16 Two AMl ExternalElement are the same if they share the same ID
-% Rule:17 Two AMl InstanceHierarchy are the same if they share the same ID
-% Rule:9 Two InternalElement are the same if they have the same name
-% Rule:8 Two InternalLink are the same if they have the same name
 
 % Attributes related to eClass
 clause1(eClassClassificationAtt(X,Y),(hasAttributeName(X,'eClassClassificationClass'),
@@ -218,12 +127,6 @@ clause1(eClassIRDIAtt(X,Y),(  hasAttributeName(X,'eClassIRDI'),
                               hasAttributeValue(X,Z),
                               hasAttributeValue(Y,Z))
                               ).                                     
-
-
-
-
-
-
                              
 clause1(sameEClassificationRoleClass(Z,T),(  
                              type(Z,roleClass),
@@ -232,6 +135,8 @@ clause1(sameEClassificationRoleClass(Z,T),(
                              hasAttributeName(T,'eClassClassSpecification')
                              )).                             
 
+
+
 % Rule:5 Role Class are same if Attributes are the same if the have the same Name 
 %clause1(sameAttributeRoleClass(Z,T),(sameAttribute(X,Y),hasAttribute(Z,X),hasAttribute(T,Y))).
 % Attributes are the same if the have the same refSemantic and if they contain -/_sybmbols (disabled)
@@ -239,7 +144,6 @@ clause1(sameEClassificationRoleClass(Z,T),(
 %clause1(sameRefSemantic(X,Y),(hasCorrespondingAttributePath(X,Z),hasCorrespondingAttributePath(Y,Z))).
 %clause1(sameRefSemantic(X,Y),(sameRefSemantic(X,Z),sameRefSemantic(Z,Y))).
 
-% not rule for above not being used currently.
 %clause1(diffAttribute(X,Y),( hasAttributeName(X,Z),hasAttributeName(Y,R),not(Z=R))).
 
 %clause1(diffAttribute(X,Y),( hasRefSemantic(X,T),hasRefSemantic(Y,Z),
