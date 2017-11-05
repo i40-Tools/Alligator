@@ -136,9 +136,10 @@ public class Similar extends Files2Facts {
 						duplicateCheck
 								.add(aml1Values.get(j) + "\t" + aml2Values.get(j) + "\t" + "1");
                                       
-						String res=aml1Values.get(j) + "\t" + aml2Values.get(j) + "\t" + "1" + "\n";
-						if(!res.contains("null")){
-						results += res;
+						String res = aml1Values.get(j) + "\t" + aml2Values.get(j) + "\t" + "1"
+								+ "\n";
+						if (!res.contains("null")) {
+							results += res;
 						}
 					}
 				}
