@@ -99,9 +99,21 @@ clause1(sameRoleClass(Z,T),(
                              hasAttribute(T,E)
                              )).
 
- 
 
+% Rule:8 Generic Class are same if attribute set is same 
+clause1(sameInterfaceClass(Z,T),( 
+                             type(Z,interfaceClass),
+                             type(T,interfaceClass),   
+                             hasAttribute(Z,X),
+                             hasAttribute(T,Y),
+                             sameAttribute(X,Y),
+                             sameInterfaceClass(Z,T)
+                           
+                             )).
+
+ 
 clause1(sibling(X,Y),(hasAttribute(Z,X),hasAttribute(Z,Y))).
+
 
 
 % Attributes related to eClass
@@ -110,6 +122,7 @@ clause1(eClassClassificationAtt(X,Y),(hasAttributeName(X,'eClassClassificationCl
                                      hasAttributeValue(X,Z),
                                      hasAttributeValue(Y,Z))
                                      ).                                    
+
 clause1(eClassVersionAtt(X,Y),(hasAttributeName(X,'eClassVersion'),
                                hasAttributeName(Y,'eClassVersion'),
                                hasAttributeValue(X,Z),
@@ -128,179 +141,3 @@ clause1(eClassIRDIAtt(X,Y),(  hasAttributeName(X,'eClassIRDI'),
                               hasAttributeValue(Y,Z))
                               ).                                     
                              
-clause1(sameEClassificationRoleClass(Z,T),(  
-                             type(Z,roleClass),
-                             type(T,roleClass),
-                             hasAttributeName(Z,'eClassClassSpecification'),
-                             hasAttributeName(T,'eClassClassSpecification')
-                             )).                             
-
-
-
-% Rule:5 Role Class are same if Attributes are the same if the have the same Name 
-%clause1(sameAttributeRoleClass(Z,T),(sameAttribute(X,Y),hasAttribute(Z,X),hasAttribute(T,Y))).
-% Attributes are the same if the have the same refSemantic and if they contain -/_sybmbols (disabled)
-%clause1(concatString(X,Y),( hasRefSemantic(X,T),hasRefSemantic(Y,Z),sameRefSemantic(T,Z),hasAttributeValue(X,A),hasAttributeValue(Y,B),(containsOnly('-',A);containsOnly('-',B);containsOnly('_',A);containsOnly('_',B);containsOnly('/',A);containsOnly('/',B)) )).
-%clause1(sameRefSemantic(X,Y),(hasCorrespondingAttributePath(X,Z),hasCorrespondingAttributePath(Y,Z))).
-%clause1(sameRefSemantic(X,Y),(sameRefSemantic(X,Z),sameRefSemantic(Z,Y))).
-
-%clause1(diffAttribute(X,Y),( hasAttributeName(X,Z),hasAttributeName(Y,R),not(Z=R))).
-
-%clause1(diffAttribute(X,Y),( hasRefSemantic(X,T),hasRefSemantic(Y,Z),
-%hasCorrespondingAttributePath(T,W),
-%hasCorrespondingAttributePath(Z,R),not(W=R)
-%)).
-
-
-
-% not rule for above
-%clause1(diffIdentifier(X,Y),(identifier(X,Z),identifier(Y,T),not(Z=T))).
-% not rule for above
-%clause1(diffIdentifier2(X,Y),(hasInternalLink(X,T),hasInternalLink(Y,Z),
-%hasRefPartnerSideA(T,W),hasRefPartnerSideA(Z,P),
-%hasRefPartnerSideB(T,B),hasRefPartnerSideB(Z,D),
-%not(W=P),not(B=D)
-%)).
-
-
-%clause1(sameIdentifier(X,Y),(hasAttributeName(X,'eClassClassificationClass'),
-%                                     hasAttributeName(Y,'eClassClassificationClass'),
-%                                     hasAttributeValue(X,Z),
-%                                     hasAttributeValue(Y,Z))
-%                                     ).
-
-% Attributes related to eClass
-%clause1(diffeClassClassificationAtt(X,Y),(hasAttributeName(X,'eClassClassificationClass'),
-%                                     hasAttributeName(Y,'eClassClassificationClass'),
-%                                     hasAttributeValue(X,W),
-%                                     hasAttributeValue(Y,R),
-%                                     not(W=R)                               
-%                                     )).
-
-%clause1(diffEClassVersion(X,Y),(hasAttributeName(X,'eClassVersion'),
-%                               hasAttributeName(Y,'eClassVersion'),
-%                               hasAttributeValue(X,W),
-%                               hasAttributeValue(Y,R),
-%                               not(W=R)                               
-%                               )).                                     
-
-
-
-%clause1(diffeClassIRDI(X,Y),(hasAttributeName(X,'eClassIRDI'),
-%                              hasAttributeName(Y,'eClassIRDI'),
-%                              hasAttributeValue(X,W),
-%                              hasAttributeValue(Y,R),
-%                               not(W=R))).                                     
-
-
-%clause1(diffRoleClass(Z,T),(  
-%                             type(Z,roleClass),
-%                             type(T,roleClass),
-%                             diffeClassClassificationAtt(X,Y),
-%                             diffeClassIRDI(B,C),
-%                             diffEClassVersion(D,E),
-%                             hasAttribute(Z,X),
-%                             hasAttribute(Z,B),
-%                             hasAttribute(Z,D),
-%                             hasAttribute(T,Y),
-%                             hasAttribute(T,C),
-%                             hasAttribute(T,E) 
-%                             )).
-
-%clause1(diffRoleClass(Z,T),(  
-%                             type(Z,roleClass),
-%                             type(T,roleClass),
-%                             diffeClassClassificationAtt(X,Y),
-%                             hasAttribute(Z,X),
-%                             hasAttribute(T,Y)
-%                             )).
-
-%clause1(diffRoleClass(Z,T),(  
-%                             type(Z,roleClass),
-%                             type(T,roleClass),
-%                             diffeClassIRDI(B,C),
-%                             hasAttribute(Z,B),
-%                             hasAttribute(T,C)
-%                             )).
-%clause1(diffRoleClass(Z,T),(  
-%                             type(Z,roleClass),
-%                             type(T,roleClass),
-%                             diffEClassVersion(D,E),
-%                             hasAttribute(Z,D),
-%                             hasAttribute(T,E) 
-%                             )).
-
-%clause1(sameRoleClassLib(X,Y),(
-%                             sameEClassificationRoleClass(Z,T),
-%                            hasRoleClass(X,Z),
-%                             hasRoleClass(Y,T)
-%                             )). 
-                             
-%clause1(diffRoleClassLib(X,Y),(
-%                             type(X,roleClassLib),
-%                             type(Y,roleClassLib), 
-%                            hasAttributeName(X,W),
-%                            hasAttributeName(Y,R),
-%                            not(W=R)
-%                             )). 
-
-
-%clause1(diffRoleClass(X,Y),(
-%                             type(X,roleClass),
-%                             type(Y,roleClass), 
-%                            hasAttributeName(X,W),
-%                            hasAttributeName(Y,R),
-%                            not(W=R)
-%                             )). 
-
-%clause1(diffSystemUnitClass(X,Y),(
-%                             type(X,systemUnitClass),
-%                             type(Y,systemUnitClass), 
-%                             hasAttributeName(X,W),
-%                             hasAttributeName(Y,R),
-%                             not(W=R)
-%                             )). 
-  
-
-%clause1(diffSystemUnitClassLib(X,Y),(
-%                             type(X,systemUnitClassLib),
-%                             type(Y,systemUnitClassLib), 
-%                             hasAttributeName(X,W),
-%                             hasAttributeName(Y,R),
-%                             not(W=R)
-%                             )). 
-
-            
-
-%clause1(diffInterfaceClass(X,Y),(
-%                             type(X,interfaceClass),
-%                             type(Y,interfaceClass), 
-%                             hasAttributeName(X,W),
-%                             hasAttributeName(Y,R),
-%                             not(W=R)
-%                             )). 
-
-
-                      
-
-%clause1(diffInterfaceClassLib(X,Y),(
-%                             type(X,interfaceClassLib),
-%                             type(Y,interfaceClassLib), 
-%                             hasAttributeName(X,W),
-%                             hasAttributeName(Y,R),
-%                             not(W=R)
-%                             )). 
-
-
-                   
-
-%clause1(diffInstanceHierarichy(X,Y),(
-%                             type(X,instanceHierarchy),
-%                             type(Y,instanceHierarchy), 
-%                             hasAttributeName(X,W),
-%                             hasAttributeName(Y,R),
-%                             not(W=R)
-%                             )). 
- 
-                             
-

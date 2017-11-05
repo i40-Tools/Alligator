@@ -48,8 +48,12 @@ public class Similar extends Files2Facts {
 	public void convertSimilar(String path) throws FileNotFoundException {
 		ArrayList<String> aml1List = new ArrayList<String>();
 		ArrayList<String> aml2List = new ArrayList<String>();
+		ArrayList<String> aml1negList = new ArrayList<String>();
+		ArrayList<String> aml2negList = new ArrayList<String>();
 		ArrayList<String> aml1Values = new ArrayList<String>();
 		ArrayList<String> aml2Values = new ArrayList<String>();
+		ArrayList<String> aml1negValues = new ArrayList<String>();
+		ArrayList<String> aml2negValues = new ArrayList<String>();
 		duplicateCheck = new ArrayList<String>();
 
 		try {
@@ -61,9 +65,15 @@ public class Similar extends Files2Facts {
 					String values[] = line.split(",");
 					if (values.length > 1) {
 						// add values which are true
-						aml1List.add(values[0].replaceAll("aml1:", ""));
-						aml2List.add(values[1].replaceAll("aml2:", ""));
+						if (line.contains("truth")) {
+							aml1List.add(values[0].replaceAll("aml1:truth", ""));
+							aml2List.add(values[1].replaceAll("aml2:truth", ""));
 
+							// add values which are classified false
+						} else {
+							aml1negList.add(values[0].replaceAll("aml1:", ""));
+							aml2negList.add(values[1].replaceAll("aml2:", ""));
+						}
 					}
 				}
 			}
@@ -89,6 +99,11 @@ public class Similar extends Files2Facts {
 				addAmlValues(aml1List, aml1Values, "aml1:", "identifier");
 				addAmlValues(aml1List, aml1Values, "aml1:", "hasCorrespondingAttributePath");
 
+				addAmlValues(aml1negList, aml1negValues, "aml1:", "hasAttributeName");
+				addAmlValues(aml1negList, aml1negValues, "aml1:", "refBaseClassPath");
+				addAmlValues(aml1negList, aml1negValues, "aml1:", "identifier");
+				addAmlValues(aml1negList, aml1negValues, "aml1:", "hasCorrespondingAttributePath");
+
 			}
 
 			// converts object to values
@@ -97,6 +112,12 @@ public class Similar extends Files2Facts {
 				addAmlValues(aml2List, aml2Values, "aml2:", "refBaseClassPath");
 				addAmlValues(aml2List, aml2Values, "aml2:", "identifier");
 				addAmlValues(aml2List, aml2Values, "aml2:", "hasCorrespondingAttributePath");
+
+				addAmlValues(aml2negList, aml2negValues, "aml2:", "hasAttributeName");
+				addAmlValues(aml2negList, aml2negValues, "aml2:", "refBaseClassPath");
+				addAmlValues(aml2negList, aml2negValues, "aml2:", "identifier");
+				addAmlValues(aml2negList, aml2negValues, "aml2:", "hasCorrespondingAttributePath");
+
 			}
 		}
 
@@ -104,10 +125,13 @@ public class Similar extends Files2Facts {
 		String results = "";
 		for (int j = 0; j < aml1Values.size(); j++) {
 
-			if(j<aml2Values.size()){
-			if (!aml1Values.get(j).equals("aml1:eClassIRDI")
-					&& !aml1Values.get(j).equals("aml1:eClassClassificationClass")
-					&& !aml1Values.get(j).equals("aml1:eClassVersion")) {
+			if (j < aml2Values.size()) {
+				if (!aml1Values.get(j).equals("aml1:eClassIRDI")
+						&& !aml1Values.get(j).equals("aml1:eClassClassificationClass")
+						&& !aml1Values.get(j).equals("aml1:eClassVersion")
+						&& !aml2Values.get(j).equals("aml1:eClassIRDI")
+						&& !aml2Values.get(j).equals("aml1:eClassClassificationClass")
+						&& !aml2Values.get(j).equals("aml1:eClassVersion")) {
 
 					if (!duplicateCheck
 							.contains(aml1Values.get(j) + "\t" + aml2Values.get(j) + "\t" + "1")) {
@@ -115,10 +139,33 @@ public class Similar extends Files2Facts {
 								.add(aml1Values.get(j) + "\t" + aml2Values.get(j) + "\t" + "1");
 
 						results += aml1Values.get(j) + "\t" + aml2Values.get(j) + "\t" + "1" + "\n";
+					}
 				}
 			}
 		}
-	}
+
+		// update orignal computed results with the new negatiev values
+		for (int j = 0; j < aml1negValues.size(); j++) {
+			if (!aml1negValues.get(j).contains("aml1:eClassIRDI")
+					&& !aml1negValues.get(j).equals("aml1:eClassClassificationClass")
+					&& !aml1negValues.get(j).equals("aml1:eClassVersion")
+					&& !aml2negValues.get(j).contains("aml2:eClassIRDI")
+					&& !aml2negValues.get(j).equals("aml2:eClassClassificationClass")
+					&& !aml2negValues.get(j).equals("aml2:eClassVersion")
+
+			) {
+
+				if (!duplicateCheck
+						.contains(aml1negValues.get(j) + "\t" + aml2negValues.get(j) + "\t" + "0")
+						&& !duplicateCheck.contains(
+								aml1negValues.get(j) + "\t" + aml2negValues.get(j) + "\t" + "1")) {
+					duplicateCheck
+							.add(aml1negValues.get(j) + "\t" + aml2negValues.get(j) + "\t" + "0");
+					results += aml1negValues.get(j) + "\t" + aml2negValues.get(j) + "\t" + "0"
+							+ "\n";
+				}
+			}
+		}
 
 		similar.println(results);
 
@@ -128,15 +175,16 @@ public class Similar extends Files2Facts {
 		// required for integration.
 
 		for (int i = 0; i < aml1Values.size(); i++) {
-			if (i< aml2Values.size()  ) {
+			if (i < aml2Values.size()) {
 				amlValues.add(aml1Values.get(i).replaceAll("aml1:", ""));
 				amlValues.add(aml2Values.get(i).replaceAll("aml2:", ""));
 			}
 		}
 		// removes duplicate
 		amlValues = new ArrayList<String>(new HashSet<String>(amlValues));
-		emulateNegativeResults(path);
-
+		if (util.ConfigManager.getNegativeRules().equals("false")) {
+			emulateNegativeResults(path);
+		}
 	}
 
 	/**

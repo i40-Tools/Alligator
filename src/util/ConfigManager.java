@@ -127,6 +127,16 @@ public class ConfigManager {
 		return filePath;
 	}
 	
+	/**
+	 * Reads whether negative rules will be used or not  
+	 * @return true or false
+	 */
+	public static String getNegativeRules() {
+		String filePath = loadConfig().getProperty(URI_NAMESPACE + "NegativeRules");
+		if(filePath == null) return "false";
+		return filePath;
+	}
+
 	
 	/**
 	 * Get the general file path where all the files are located

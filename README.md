@@ -46,8 +46,23 @@ To run the examples please create a file config.ttl in the main directory of the
 
 aml:conf 
      rdfs:label "General Configuration"@en ;
-     uri:path "C:/HeterogeneityExampleData/AutomationML/M2-Granularity/Testbeds-1/";
-     uri:URI "C:/Users/omar/Desktop/Alligator-master/resources/aml.ttl".
+     uri:path "C:/HeterogeneityExampleData/AutomationML/Single-Heterogeneity/M2/Testbeds-2/";
+	 uri:experimentFolder "E:/ExperimentsToKCAP/Experiment1/run -1/";
+     sto:Standard "aml";
+     ontosec:Training "false";
+     uri:NegativeRules "true";
+     uri:URI "C:/Experiments/SemCPS-/resources/".     
+```
+Please note:  
+```
+uri:path refers to Heterogeneity path                    
+uri:URI refers to the ontology path
+Negative rules true to user orignal.
+false to use emulation.
+```
+
+Just give path of AML heterogenity and folders will be created automatically.                  
+
 ```
 
 ## Updating Krextor Rules 

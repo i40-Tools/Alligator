@@ -7,7 +7,6 @@
  eval:- 
 	working_directory(DIR, DIR),
     atom_concat(DIR, 'resources/files/AML_rules.pl', AML_RULE),
-    atom_concat(DIR, 'resources/files/AML_Neg.pl', AML_RULEs),
     atom_concat(DIR, 'resources/files/semi1.pl', SEMI1),
     atom_concat(DIR, 'resources/files/edb.txt', EDB),
 
@@ -17,13 +16,11 @@
  [
  'sameRoleClassLib','sameRoleClass','sameInterfaceClassLib','sameInterfaceClass',
  'sameSystemUnitClassLib','sameSystemUnitClass','sameInstanceHierarichy',
- 'sameAttribute','sameIdentifier','sameExternalReference','sameId',
- 'diffRoleClass','diffIdentifier2','diffIdentifier','diffAttribute' 
+ 'sameAttribute','sameIdentifier','sameExternalReference','sameId' 
   ] 
  )),    
  consult(SEMI1),
  consult(AML_RULE),
- consult(AML_RULEs),
  consult(X),
  %consult('d:/Deutch/development/Rules4AMLIntegration/resources/files/TestData.pl'),
  tdb.       

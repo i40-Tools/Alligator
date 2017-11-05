@@ -40,8 +40,15 @@ public class DeductiveDB {
 	 * conflicting elements.
 	 */
 	public void executeKB() {
+		String evalAML;
 		// Queries evalAMl.pl
-		String evalAML = "consult('resources/files/evalAML.pl')";
+		// check if run negative rules
+
+		if (util.ConfigManager.getNegativeRules().equals("true")) {
+			evalAML = "consult('resources/files/evalAML.pl')";
+		} else {
+			evalAML = "consult('resources/files/evalAMLnoNeg.pl')";
+		}
 		System.out.println(evalAML + " " + (Query.hasSolution(evalAML) ? "succeeded" : "failed"));
 
 		// Queries eval
@@ -72,19 +79,26 @@ public class DeductiveDB {
 		while (line != null) {
 			orignal.append(line);
 			orignal.append(System.lineSeparator());
-
+			String orignalLine = line;
 			int a = line.indexOf('(');
 			int b = line.indexOf(')');
 			if (a + 1 >= 0 && b >= 0) {
 				line = line.substring(a + 1, b);
-
 			}
 			String array[] = line.split(",");
 			if (array.length > 0) {
 				if (!(array[0].substring(array[0].length() - 1)
 						.equals(array[1].substring(array[1].length() - 1))))
-					sb.append("aml1:" + removeLastChar(StringUtils.capitalize(array[0])) + ","
-							+ "aml2:" + removeLastChar(StringUtils.capitalize(array[1])) + "\n");
+					if (!orignalLine.contains("diff")) {
+						sb.append("aml1:truth" + removeLastChar(StringUtils.capitalize(array[0]))
+								+ "," + "aml2:truth"
+								+ removeLastChar(StringUtils.capitalize(array[1])) + "\n");
+					} else {
+						sb.append("aml1:" + removeLastChar(StringUtils.capitalize(array[0])) + ","
+								+ "aml2:" + removeLastChar(StringUtils.capitalize(array[1]))
+								+ "\n");
+					}
+
 			}
 
 			// sb.append(line + ",");

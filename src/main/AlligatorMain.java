@@ -48,7 +48,7 @@ public class AlligatorMain {
 			// formats the output.txt in java objects
 			deductiveDB.readOutput();
 			similar.generateModel(ConfigManager.getFilePath());
-			similar.convertSimilar("Alligator/output.txt");
+		    similar.convertSimilar("Alligator/output.txt");
 			new AlligatorMain().evaluation();
 			
 
@@ -68,25 +68,7 @@ public class AlligatorMain {
 			// "integration/integration.aml");
 			// System.out.println("Schema Validated");
 
-			// }
-			// }
-
-			// xsl for opcua not working
-			// Krextor krextor = new Krextor();
-			// krextor.convertRdf("c:/Topology.xml", "opcua", "turtle",
-			// "c:/output.ttl");
-
-			// converts opcua to RDF
-			// RDFTransformer convert = new RDFTransformer();
-			//
-			// // give input and output
-			// convert.transform("c:/Topology.xml", "c:/test.ttl");
-
-			// automation ML part
-			// Generating facts from the AML files, they are converted into RDF
-
-			// getReport("C:/Users/omar/Desktop/examples/run -1/");
-
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 
