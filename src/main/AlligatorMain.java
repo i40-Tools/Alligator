@@ -23,7 +23,7 @@ public class AlligatorMain {
 
 	public static void main(String[] args) throws Throwable {
 
-		//Report.getReport(ConfigManager.getExperimentFolder());
+	     // Report.getReport(ConfigManager.getExperimentFolder());
 		//Report.getResults();
 		//Report.getSize();
 		//System.exit(0);
@@ -48,7 +48,7 @@ public class AlligatorMain {
 			// formats the output.txt in java objects
 			deductiveDB.readOutput();
 			similar.generateModel(ConfigManager.getFilePath());
-		    similar.convertSimilar("Alligator/output.txt");
+			similar.convertSimilar("Alligator/output.txt");
 			new AlligatorMain().evaluation();
 			
 

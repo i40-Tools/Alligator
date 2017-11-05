@@ -21,8 +21,8 @@ public class Report {
 	static void getReport(String root) throws Throwable {
 		int k = 2;
 		while (k <= 2) {
-			int i = 4;
-			while (i <= 4) {
+			int i = 5;
+			while (i <= 5) {
 				long startTime = System.currentTimeMillis();
 				if (k == 1) {
 					System.out.println(root + "M1/M1.1//Testbeds-" + i);
@@ -55,9 +55,9 @@ public class Report {
 				}
 
 				else {
-					System.out.println(root + "M" + k + "/Testbeds-" + i);
+					System.out.println(root + "M" + k + "/Testbeds-" + i+ "/Generated");
 
-					ConfigManager.filePath = root + "M" + k + "/Testbeds-" + i + "/";
+					ConfigManager.filePath = root + "M" + k + "/Testbeds-" + i + "/Generated/";
 					cleanUp();
 					Files2Facts filesAMLInRDF = new Files2Facts();
 						Similar similar = new Similar();
@@ -119,8 +119,8 @@ public class Report {
 	 * @throws IOException
 	 */
 	static void getResults() throws IOException {
-		int k = 7;
-		while (k <= 7) {
+		int k = 2;
+		while (k <= 2) {
 			int j = 1;
 			String line;
 			String precision = "";
@@ -154,9 +154,9 @@ public class Report {
 			}
 
 			System.out.print(precision);
-			//System.out.print(recall);
-			//System.out.print(fmeasure);
-			//System.out.print(time);
+			System.out.print(recall);
+			System.out.print(fmeasure);
+			System.out.print(time);
 
 			k++;
 		}

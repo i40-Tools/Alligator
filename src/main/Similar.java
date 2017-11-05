@@ -97,12 +97,11 @@ public class Similar extends Files2Facts {
 				addAmlValues(aml1List, aml1Values, "aml1:", "hasAttributeName");
 				addAmlValues(aml1List, aml1Values, "aml1:", "refBaseClassPath");
 				addAmlValues(aml1List, aml1Values, "aml1:", "identifier");
-				addAmlValues(aml1List, aml1Values, "aml1:", "hasCorrespondingAttributePath");
-
+				
 				addAmlValues(aml1negList, aml1negValues, "aml1:", "hasAttributeName");
 				addAmlValues(aml1negList, aml1negValues, "aml1:", "refBaseClassPath");
 				addAmlValues(aml1negList, aml1negValues, "aml1:", "identifier");
-				addAmlValues(aml1negList, aml1negValues, "aml1:", "hasCorrespondingAttributePath");
+				
 
 			}
 
@@ -111,13 +110,12 @@ public class Similar extends Files2Facts {
 				addAmlValues(aml2List, aml2Values, "aml2:", "hasAttributeName");
 				addAmlValues(aml2List, aml2Values, "aml2:", "refBaseClassPath");
 				addAmlValues(aml2List, aml2Values, "aml2:", "identifier");
-				addAmlValues(aml2List, aml2Values, "aml2:", "hasCorrespondingAttributePath");
+				
 
 				addAmlValues(aml2negList, aml2negValues, "aml2:", "hasAttributeName");
 				addAmlValues(aml2negList, aml2negValues, "aml2:", "refBaseClassPath");
 				addAmlValues(aml2negList, aml2negValues, "aml2:", "identifier");
-				addAmlValues(aml2negList, aml2negValues, "aml2:", "hasCorrespondingAttributePath");
-
+	
 			}
 		}
 
@@ -137,8 +135,11 @@ public class Similar extends Files2Facts {
 							.contains(aml1Values.get(j) + "\t" + aml2Values.get(j) + "\t" + "1")) {
 						duplicateCheck
 								.add(aml1Values.get(j) + "\t" + aml2Values.get(j) + "\t" + "1");
-
-						results += aml1Values.get(j) + "\t" + aml2Values.get(j) + "\t" + "1" + "\n";
+                                      
+						String res=aml1Values.get(j) + "\t" + aml2Values.get(j) + "\t" + "1" + "\n";
+						if(!res.contains("null")){
+						results += res;
+						}
 					}
 				}
 			}
@@ -146,23 +147,26 @@ public class Similar extends Files2Facts {
 
 		// update orignal computed results with the new negatiev values
 		for (int j = 0; j < aml1negValues.size(); j++) {
-			if (!aml1negValues.get(j).contains("aml1:eClassIRDI")
-					&& !aml1negValues.get(j).equals("aml1:eClassClassificationClass")
-					&& !aml1negValues.get(j).equals("aml1:eClassVersion")
-					&& !aml2negValues.get(j).contains("aml2:eClassIRDI")
-					&& !aml2negValues.get(j).equals("aml2:eClassClassificationClass")
-					&& !aml2negValues.get(j).equals("aml2:eClassVersion")
+			if (j < aml2Values.size()) {
+				if (!aml1negValues.get(j).contains("aml1:eClassIRDI")
+						&& !aml1negValues.get(j).equals("aml1:eClassClassificationClass")
+						&& !aml1negValues.get(j).equals("aml1:eClassVersion")
+						&& !aml2negValues.get(j).contains("aml2:eClassIRDI")
+						&& !aml2negValues.get(j).equals("aml2:eClassClassificationClass")
+						&& !aml2negValues.get(j).equals("aml2:eClassVersion")
 
-			) {
+				) {
 
-				if (!duplicateCheck
-						.contains(aml1negValues.get(j) + "\t" + aml2negValues.get(j) + "\t" + "0")
-						&& !duplicateCheck.contains(
-								aml1negValues.get(j) + "\t" + aml2negValues.get(j) + "\t" + "1")) {
-					duplicateCheck
-							.add(aml1negValues.get(j) + "\t" + aml2negValues.get(j) + "\t" + "0");
-					results += aml1negValues.get(j) + "\t" + aml2negValues.get(j) + "\t" + "0"
-							+ "\n";
+					if (!duplicateCheck.contains(
+							aml1negValues.get(j) + "\t" + aml2negValues.get(j) + "\t" + "0")
+							&& !duplicateCheck.contains(aml1negValues.get(j) + "\t"
+									+ aml2negValues.get(j) + "\t" + "1")) {
+						duplicateCheck.add(
+								aml1negValues.get(j) + "\t" + aml2negValues.get(j) + "\t" + "0");
+						String res=aml1negValues.get(j) + "\t" + aml2negValues.get(j) + "\t" + "0" + "\n";
+						if(!res.contains("null"))
+						results += res;
+					}
 				}
 			}
 		}
@@ -323,13 +327,10 @@ public class Similar extends Files2Facts {
 			while (iterator.hasNext()) {
 				Statement stmt = iterator.nextStatement();
 				subject = stmt.getSubject();
-				if (subject.asResource().getLocalName().equals(amlList.get(i))) {
-
+				if (subject.asResource().getLocalName().equals(amlList.get(i))) {					
 					String value = getValue(subject, predicate);
-					if (value != null) {
 						amlValue.add(aml + value);
 						break;
-					}
 				}
 			}
 		}
