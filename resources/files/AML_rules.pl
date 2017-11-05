@@ -87,6 +87,7 @@ clause1(sameId(X,Y),(identifier(X,T),identifier(Y,T))).
 
 
 % Rule:7 Generic Class are same if they have same eclass,iridi and eclassversion 
+%sameRoleClass is just a variable to store result.Not specific to roleClass but all classes.
 clause1(sameRoleClass(Z,T),(  
                              eClassClassificationAtt(X,Y),
                              eClassVersionAtt(B,C),
@@ -140,4 +141,3 @@ clause1(eClassIRDIAtt(X,Y),(  hasAttributeName(X,'eClassIRDI'),
                               hasAttributeValue(X,Z),
                               hasAttributeValue(Y,Z))
                               ).                                     
-                             
